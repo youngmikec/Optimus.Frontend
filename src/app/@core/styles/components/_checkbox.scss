@@ -1,0 +1,14 @@
+@use '../abstracts/theme' as *;
+
+.mat-checkbox-frame {
+  border-width: 0.0875rem !important;
+  border-color: var(--opt-neutral-200);
+}
+
+.mat-checkbox-ripple {
+  left: calc(50% - 0.9375rem) !important;
+  top: calc(50% - 0.9375rem) !important;
+  height: 1.875rem !important;
+  width: 1.875rem !important;
+  border-radius: 50% !important;
+}

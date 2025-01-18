@@ -1,0 +1,19 @@
+<ng-container *ngIf="(isLoading | async) !== false">
+  <div class="general-loader-container">
+    <div class="general-loader-backdrop"></div>
+
+    <div class="general-loader-content">
+      <app-general-loader></app-general-loader>
+    </div>
+  </div>
+</ng-container>
+
+<div id="login">
+  <div class="background-image-container">
+    <div class="grid-items" *ngFor="let image of shuffledImages">
+      <img [src]="image.src" [alt]="image.alt" loading="lazy" @imgAnimation />
+    </div>
+  </div>
+
+  <router-outlet></router-outlet>
+</div>

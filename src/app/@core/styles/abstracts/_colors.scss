@@ -1,0 +1,247 @@
+/******* Custom Palette *******/
+$mat-opt-primary-map: (
+  50: #e1e7f9,
+  100: #b3c2f0,
+  200: #819ae6,
+  300: #4e72dc,
+  400: #2853d5,
+  500: #0235cd,
+  600: #0230c8,
+  700: #0128c1,
+  800: #0122ba,
+  900: #0116ae,
+  A100: #d8dbff,
+  A200: #a5abff,
+  A400: #727bff,
+  A700: #5864ff,
+  contrast: (
+    50: #000000,
+    100: #000000,
+    200: #000000,
+    300: #ffffff,
+    400: #ffffff,
+    500: #ffffff,
+    600: #ffffff,
+    700: #ffffff,
+    800: #ffffff,
+    900: #ffffff,
+    A100: #000000,
+    A200: #000000,
+    A400: #000000,
+    A700: #ffffff,
+  ),
+);
+
+$mat-opt-accent-map: (
+  50: #f0e3e4,
+  100: #d9b9ba,
+  200: #c08b8d,
+  300: #a65d5f,
+  400: #933a3c,
+  500: #80171a,
+  600: #781417,
+  700: #6d1113,
+  800: #630d0f,
+  900: #500708,
+  A100: #ff8585,
+  A200: #ff5252,
+  A400: #ff1f1f,
+  A700: #ff0505,
+  contrast: (
+    50: #000000,
+    100: #000000,
+    200: #000000,
+    300: #ffffff,
+    400: #ffffff,
+    500: #ffffff,
+    600: #ffffff,
+    700: #ffffff,
+    800: #ffffff,
+    900: #ffffff,
+    A100: #000000,
+    A200: #000000,
+    A400: #ffffff,
+    A700: #ffffff,
+  ),
+);
+
+$mat-opt-warn-map: (
+  50: #f9e5e6,
+  100: #f1bfc0,
+  200: #e89496,
+  300: #df696c,
+  400: #d8494d,
+  500: #d1292d,
+  600: #cc2428,
+  700: #c61f22,
+  800: #c0191c,
+  900: #b50f11,
+  A100: #ffe3e3,
+  A200: #ffb0b0,
+  A400: #ff7d7e,
+  A700: #ff6364,
+  contrast: (
+    50: #000000,
+    100: #000000,
+    200: #000000,
+    300: #000000,
+    400: #ffffff,
+    500: #ffffff,
+    600: #ffffff,
+    700: #ffffff,
+    800: #ffffff,
+    900: #ffffff,
+    A100: #000000,
+    A200: #000000,
+    A400: #000000,
+    A700: #000000,
+  ),
+);
+/******************************/
+
+$opt-primary: #0235cd;
+$opt-primary-50: #ebf0ff;
+$opt-primary-100: #c3d2fe;
+$opt-primary-200: #518ef8;
+$opt-primary-400: #0235cd;
+$opt-primary-500: #002592;
+$opt-primary-700: #011142;
+$opt-primary-800: #000a27;
+$opt-primary-900: #00030d;
+
+$opt-secondary: #80171a;
+$opt-secondary-50: #fcf0f0;
+$opt-secondary-100: #f7d1d2;
+$opt-secondary-400: #cc2529;
+$opt-secondary-600: #701417;
+$opt-secondary-700: #500e10;
+$opt-secondary-900: #100303;
+
+$opt-secondary2: #d9b55f;
+$opt-secondary2-50: #fdfbf7;
+$opt-secondary2-100: #f9f4e7;
+$opt-secondary2-200: #f4e9cf;
+$opt-secondary2-250: #fff8eb;
+$opt-secondary2-300: #ecdaaf;
+$opt-secondary2-400: #e3c887;
+$opt-secondary2-600: #d2a63f;
+$opt-secondary2-650: #b87900;
+$opt-secondary2-700: #9e7a25;
+$opt-secondary2-800: #5f4916;
+$opt-secondary2-900: #201807;
+
+$opt-success-50: #ecfdf5;
+$opt-success-500: #10b981;
+$opt-success-600: #29bf12;
+
+$opt-warning-50: #fff1d6;
+$opt-warning-400: #e6b900;
+$opt-warning-500: #eb9b00;
+
+$opt-error-50: #fbe9ea;
+$opt-error-500: #d1292d;
+
+$opt-black: #000000;
+$opt-white: #ffffff;
+
+$opt-neutral-50: #f7f7f7;
+$opt-neutral-100: #e8e8e8;
+$opt-neutral-200: #d0d0d0;
+$opt-neutral-300: #b1b1b1;
+$opt-neutral-400: #8a8a8a;
+$opt-neutral-500: #636363;
+$opt-neutral-600: #575757;
+$opt-neutral-700: #3e3e3e;
+$opt-neutral-800: #252525;
+$opt-neutral-900: #0c0c0c;
+
+$opt-neutral2-50: #f7f8f9;
+$opt-neutral2-100: #e7eaee;
+$opt-neutral2-200: #d0d5dd;
+$opt-neutral2-300: #b8c0cc;
+$opt-neutral2-400: #a0abbb;
+$opt-neutral2-500: #64748b;
+$opt-neutral2-600: #4b5768;
+$opt-neutral2-700: #323a46;
+$opt-neutral2-800: #191d23;
+$opt-neutral2-900: #0d0f11;
+
+$colors: (
+  --opt-primary-color: (
+    normal: $opt-primary,
+    50: $opt-primary-50,
+    100: $opt-primary-100,
+    400: $opt-primary-400,
+    700: $opt-primary-700,
+    800: $opt-primary-800,
+    900: $opt-primary-900,
+  ),
+  --opt-secondary-color: (
+    normal: $opt-secondary,
+    50: $opt-secondary-50,
+    100: $opt-secondary-100,
+    400: $opt-secondary-400,
+    600: $opt-secondary-600,
+    700: $opt-secondary-700,
+    900: $opt-secondary-900,
+  ),
+  --opt-secondary2-color: (
+    normal: $opt-secondary2,
+    50: $opt-secondary2-50,
+    100: $opt-secondary2-100,
+    200: $opt-secondary2-200,
+    250: $opt-secondary2-250,
+    300: $opt-secondary2-300,
+    400: $opt-secondary2-400,
+    // 500: $opt-secondary2-500,
+    600: $opt-secondary2-600,
+    650: $opt-secondary2-650,
+    700: $opt-secondary2-700,
+    800: $opt-secondary2-800,
+    900: $opt-secondary2-900,
+  ),
+  --opt-black: (
+    normal: $opt-black,
+  ),
+  --opt-success: (
+    normal: $opt-success-500,
+    50: $opt-success-50,
+    600: $opt-success-600,
+  ),
+  --opt-warning: (
+    normal: $opt-warning-500,
+    50: $opt-warning-50,
+    400: $opt-warning-400,
+  ),
+  --opt-error: (
+    normal: $opt-error-500,
+    50: $opt-error-50,
+  ),
+  --opt-white: (
+    normal: $opt-white,
+  ),
+  --opt-neutral: (
+    50: $opt-neutral-50,
+    100: $opt-neutral-100,
+    200: $opt-neutral-200,
+    300: $opt-neutral-300,
+    400: $opt-neutral-400,
+    500: $opt-neutral-500,
+    600: $opt-neutral-600,
+    700: $opt-neutral-700,
+    800: $opt-neutral-800,
+    900: $opt-neutral-900,
+  ),
+  --opt-neutral2: (
+    50: $opt-neutral2-50,
+    100: $opt-neutral2-100,
+    200: $opt-neutral2-200,
+    300: $opt-neutral2-300,
+    400: $opt-neutral2-400,
+    500: $opt-neutral2-500,
+    600: $opt-neutral2-600,
+    700: $opt-neutral2-700,
+    800: $opt-neutral2-800,
+    900: $opt-neutral2-900,
+  ),
+);

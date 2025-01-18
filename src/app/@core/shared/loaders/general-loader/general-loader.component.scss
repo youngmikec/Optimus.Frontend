@@ -1,0 +1,82 @@
+#general-loader {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+
+  .logo-container {
+    width: 5rem;
+    height: 5rem;
+    border-radius: 50%;
+    -webkit-perspective: 800px;
+    perspective: 800px;
+
+    img {
+      max-width: 100%;
+      height: auto;
+      -webkit-user-drag: none;
+      -webkit-animation: pulse 1.5s linear infinite;
+      animation: pulse 1.5s linear infinite;
+
+      @-webkit-keyframes pulse {
+        0% {
+          -webkit-transform: scale(1);
+          -ms-transform: scale(1);
+          transform: scale(1);
+        }
+
+        50% {
+          -webkit-transform: scale(0.8);
+          -ms-transform: scale(0.8);
+          transform: scale(0.8);
+        }
+
+        100% {
+          -webkit-transform: scale(1);
+          -ms-transform: scale(1);
+          transform: scale(1);
+        }
+      }
+
+      @keyframes pulse {
+        0% {
+          -webkit-transform: scale(1);
+          -ms-transform: scale(1);
+          transform: scale(1);
+        }
+
+        50% {
+          -webkit-transform: scale(0.8);
+          -ms-transform: scale(0.8);
+          transform: scale(0.8);
+        }
+
+        100% {
+          -webkit-transform: scale(1);
+          -ms-transform: scale(1);
+          transform: scale(1);
+        }
+      }
+    }
+  }
+
+  .loader-text {
+    color: var(--opt-primary-color-800);
+    // color: var(--opt-white);
+    text-align: center;
+    margin-top: 1.5rem;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+  }
+}

@@ -1,0 +1,31 @@
+#table-loader {
+  .ph-item {
+    border: unset;
+  }
+
+  .ph-row.item {
+    padding-top: 0.9375rem;
+    padding-bottom: 0.9375rem;
+    border-top: 0.0625rem solid var(--opt-neutral-100);
+    align-items: center;
+  }
+
+  .round {
+    margin-top: 0rem;
+    border-radius: 0.625rem;
+  }
+
+  .background {
+    background-color: var(--opt-neutral-100);
+  }
+
+  .empty {
+    background-color: transparent;
+  }
+
+  .ph-item,
+  .ph-col-12 {
+    padding-left: 0rem;
+    padding-right: 0rem;
+  }
+}

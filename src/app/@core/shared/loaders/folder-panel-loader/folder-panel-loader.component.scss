@@ -1,0 +1,32 @@
+#folder-panel-loader {
+  .ph-item {
+    border: unset;
+  }
+
+  .ph-row {
+    padding: 0rem 1.25rem;
+    align-items: center;
+  }
+
+  .ph-item,
+  .ph-col-12 {
+    padding-left: 0rem;
+    padding-right: 0rem;
+  }
+
+  .item {
+    margin-top: 0rem;
+    border-radius: 0.5rem;
+    height: 0.875rem;
+  }
+
+  .caret {
+    width: 0;
+    height: 0;
+    display: inline-block;
+    border: 0.5rem solid transparent;
+    border-left-color: #ced4da;
+    background: transparent;
+    border-radius: 0rem;
+  }
+}

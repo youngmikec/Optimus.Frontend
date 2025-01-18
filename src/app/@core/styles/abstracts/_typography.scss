@@ -1,0 +1,200 @@
+@use 'media-query' as *;
+@use 'theme' as *;
+
+@font-face {
+  font-family: 'Mulish';
+  font-display: swap;
+  src: local('Mulish Thin'), local('Mulish-Thin'),
+    url(/assets/fonts/Mulish/Mulish-ExtraLight.ttf) format('truetype');
+  font-weight: 100;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Mulish';
+  font-display: swap;
+  src: local('Mulish Light'), local('Mulish-Light'),
+    url(/assets/fonts/Mulish/Mulish-Light.ttf) format('truetype');
+  font-weight: 300;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Mulish';
+  font-display: swap;
+  src: local('Mulish'), local('Mulish-Regular'),
+    url(/assets/fonts/Mulish/Mulish-Regular.ttf) format('truetype');
+  font-weight: 400;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Mulish';
+  font-display: swap;
+  src: local('Mulish Medium'), local('Mulish-Medium'),
+    url(/assets/fonts/Mulish/Mulish-Medium.ttf) format('truetype');
+  font-weight: 500;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Mulish';
+  font-display: swap;
+  src: local('Mulish Bold'), local('Mulish-Bold'),
+    url(/assets/fonts/Mulish/Mulish-Bold.ttf) format('truetype');
+  font-weight: 600;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Mulish';
+  font-display: swap;
+  src: local('Mulish XBold'), local('Mulish-XBold'),
+    url(/assets/fonts/Mulish/Mulish-ExtraBold.ttf) format('truetype');
+  font-weight: 700;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Mulish';
+  font-display: swap;
+  src: local('Mulish Black'), local('Mulish-Black'),
+    url(/assets/fonts/Mulish/Mulish-Black.ttf) format('truetype');
+  font-weight: 900;
+  font-style: normal;
+}
+
+// .opt-display-1 {
+//   font-size: 4.5rem;
+//   color: var(--opt-neutral-900);
+// }
+
+.opt-display-2 {
+  font-size: 3.75rem;
+  // color: var(--opt-neutral-900);
+}
+
+.opt-heading {
+  font-size: 4rem;
+  color: var(--opt-neutral-900);
+
+  @include opt-media-query-max(opt-md) {
+    font-size: 2.225rem;
+  }
+}
+
+.opt-heading-1 {
+  font-size: 3rem;
+  color: var(--opt-neutral-900);
+
+  @include opt-media-query-max(opt-md) {
+    font-size: 2.125rem;
+  }
+}
+
+.opt-heading-2 {
+  font-size: 2.5rem;
+  color: var(--opt-neral-900ut);
+
+  @include opt-media-query-max(opt-md) {
+    font-size: 2.0625rem;
+  }
+}
+
+.opt-heading-3 {
+  font-size: 2.0625rem;
+  color: var(--opt-neural-900t);
+
+  @include opt-media-query-max(opt-md) {
+    font-size: 1.75rem;
+  }
+}
+
+.opt-heading-4 {
+  font-size: 1.75rem;
+  color: var(--opt-neural-900t);
+
+  @include opt-media-query-max(opt-md) {
+    font-size: 1.4375rem;
+  }
+}
+
+.opt-heading-5 {
+  font-size: 1.4375rem;
+  color: var(--opt-neutral-900);
+
+  @include opt-media-query-max(opt-md) {
+    font-size: 1.1875rem;
+  }
+}
+
+.opt-heading-6 {
+  font-size: 1.1875rem;
+  color: var(--opt-neutral-900);
+
+  @include opt-media-query-max(opt-md) {
+    font-size: 1rem;
+  }
+}
+
+.opt-sub-heading {
+  font-size: 1.25rem;
+  color: var(--opt-neutral-900);
+}
+
+.opt-para-3 {
+  font-size: 1.125rem;
+  color: var(--opt-neutral-900);
+}
+
+.opt-para-2 {
+  font-size: 1rem;
+  color: var(--opt-neutral-900);
+}
+
+.opt-para-1 {
+  font-size: 0.875rem;
+  color: var(--opt-neutral-900);
+}
+
+.opt-caption {
+  font-size: 0.75rem;
+  color: var(--opt-neutral-900);
+}
+
+.opt-footer {
+  font-size: 0.25rem;
+  color: var(--opt-neutral-900);
+}
+
+/*** Font Weight ***/
+
+.fw-100 {
+  font-weight: 100;
+}
+
+.fw-300 {
+  font-weight: 300;
+}
+
+.fw-400 {
+  font-weight: 400;
+}
+
+.fw-500 {
+  font-weight: 500;
+}
+
+.fw-600 {
+  font-weight: 600;
+}
+
+.fw-700 {
+  font-weight: 700;
+}
+
+.fw-900 {
+  font-weight: 900;
+}
+
+/*******************/

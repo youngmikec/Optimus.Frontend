@@ -1,0 +1,170 @@
+trigger:
+  branches:
+    include:
+    - main
+    - dev
+  paths:
+    include:
+    - Optimus.Frontend/
+
+pool:
+  vmImage: ubuntu-latest
+
+variables:
+- name: azureSubscription
+  value: Revent Azure Subscription
+- name: azureSubscriptionOptiva
+  value: Optiva
+- name: dockerRegistryEndpoint
+  value: devappcontainers
+- name: dockerRegistryEndpointOptiva
+  value: optivaoptimus
+- name: dockerImageRegistry
+  value: devappcontainers.azurecr.io
+- name: dockerImageRegistryOptiva
+  value: optivaoptimus.azurecr.io
+- name: dockerImageTag
+  value: $[format('{0}-{1}', lower(variables['Build.SourceBranchName']), variables['Build.BuildId'])]
+- name: dockerImageName
+  value: "$(dockerImageRegistry)/optimus/webui:$(dockerImageTag)"
+- name: dockerImageNameOptiva
+  value: "$(dockerImageRegistryOptiva)/webui:$(dockerImageTag)"  
+- name: basePath
+  value: Optimus.Frontend
+- name: chartBasePath
+  value: $(basePath)/helm/optimus-webui
+- name: isDev
+  value: $[eq(variables['Build.SourceBranch'], 'refs/heads/dev')]
+- name: isMain
+  value: $[eq(variables['Build.SourceBranch'], 'refs/heads/main')]
+- name: DOCKER_BUILDKIT
+  value: 1
+
+stages:
+- stage: Build
+  displayName: Build
+  dependsOn: []
+  jobs:
+    - job: Build
+      steps:
+        - task: Docker@1
+          displayName: "Build Docker Image"
+          inputs:
+            containerregistrytype: Container Registry
+            dockerRegistryEndpoint: $(dockerRegistryEndpoint)
+            dockerFile: $(basePath)/src/Dockerfile
+            buildContext: $(basePath)
+            useDefaultContext: false
+            imageName: $(dockerImageName)
+            includeSourceTags: true
+
+        - task: Docker@1
+          displayName: "Push Docker Image"
+          inputs:
+            containerregistrytype: Container Registry
+            dockerRegistryEndpoint: $(dockerRegistryEndpoint)
+            command: "Push an image"
+            imageName: "$(dockerImageName)"
+            includeSourceTags: true
+
+- stage: DeployDev
+  displayName: Deploy to Dev
+  dependsOn:
+  - Build
+  jobs:
+  - deployment: DeployDev
+    displayName: Deploy to Dev
+    environment: dev
+    strategy:
+      runOnce:
+        deploy:
+          steps:
+          - checkout: self
+
+          - task: AzureCLI@2
+            displayName: Set KeyVault IDs for dev deployment
+            inputs:
+              azureSubscription: $(azureSubscription)
+              scriptType: bash
+              scriptLocation: inlineScript
+              addSpnToEnvironment: true
+              useGlobalConfig: true
+              inlineScript: |
+                subId=`az account show --query id --output tsv`
+                tenantId=`az account show --query tenantId --output tsv`
+
+                sed -e "s/subscriptionId: \"<set by pipeline>\"/subscriptionId: \"${subId}\"/g" -i'' $(chartBasePath)/values.yaml
+                sed -e "s/tenantId: \"<set by pipeline>\"/tenantId: \"${tenantId}\"/g" -i'' $(chartBasePath)/values.yaml
+
+          - task: HelmDeploy@0
+            displayName: Deploy Dev
+            inputs:
+              connectionType: Azure Resource Manager
+              azureSubscription: $(azureSubscription)
+              azureResourceGroup: dev
+              kubernetesCluster: dev
+              namespace: default
+              command: upgrade
+              arguments: --install
+              chartType: FilePath
+              chartPath: $(chartBasePath)
+              releaseName: optimus-webui
+              overrideValues: image.tag=$(dockerImageTag)
+
+
+- stage: BuildOptiva
+  displayName: Build to Optiva
+  condition: eq(variables.isMain, true)
+  jobs:
+    - job: Build
+      steps:
+        - task: Docker@1
+          displayName: "Build Docker Image"
+          inputs:
+            containerregistrytype: Container Registry
+            dockerRegistryEndpoint: $(dockerRegistryEndpointOptiva)
+            dockerFile: $(basePath)/src/Dockerfile
+            buildContext: $(basePath)
+            useDefaultContext: false
+            imageName: $(dockerImageNameOptiva)
+            includeSourceTags: true
+
+
+        - task: Docker@1
+          displayName: "Push Docker Image to Optiva"
+          inputs:
+            containerregistrytype: Container Registry
+            dockerRegistryEndpoint: $(dockerRegistryEndpointOptiva)
+            command: "Push an image"
+            imageName: "$(dockerImageNameOptiva)"
+            includeSourceTags: true
+
+- stage: DeployToACA
+  displayName: Deploy to ACA
+  dependsOn:
+  - BuildOptiva
+  jobs:
+  - deployment: DeployACA
+    displayName: Deploy to ACA
+    environment:
+      name: aca    
+    strategy:
+      runOnce:
+        deploy:
+          steps:
+          - task: AzureCLI@2
+            displayName: Deploy to Azure Container App
+            inputs:
+              azureSubscription: $(azureSubscriptionOptiva)
+              scriptType: bash
+              scriptLocation: inlineScript
+              inlineScript: |
+                az extension add --name containerapp
+            
+                az containerapp env update --name optimus --resource-group projectOptimus
+                
+                az containerapp update --name webui \
+                  --resource-group projectOptimus \
+                  --image $(dockerImageRegistryOptiva)/webui:$(dockerImageTag)
+                
+                echo "Container app updated successfully!"

@@ -1,0 +1,67 @@
+@use 'theme' as *;
+
+.opt-text-primary {
+  color: var(--opt-primary-color) !important;
+}
+
+.opt-text-secondary {
+  color: var(--opt-secondary-color) !important;
+}
+
+.opt-text-secondary2 {
+  color: var(--opt-secondary2-color) !important;
+}
+
+.opt-text-black {
+  color: var(--opt-black) !important;
+}
+
+.opt-text-white {
+  color: var(--opt-white) !important;
+}
+
+.opt-text-neutral {
+  color: var(--opt-neutral-400) !important;
+}
+
+.opt-text-neutral-500 {
+  color: var(--opt-neutral-500) !important;
+}
+
+.opt-bg-primary {
+  background: var(--opt-primary-color) !important;
+}
+
+.status-approved,
+.status-active,
+.status-pending,
+.status-inactive {
+  font-size: 0.75rem;
+  font-weight: 400;
+  border-radius: 0.3125rem;
+  padding: 0.125rem 0.625rem;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+.status-active {
+  background-color: var(--opt-primary-color-100);
+  color: var(--opt-primary-color);
+}
+
+.status-pending {
+  background-color: var(--opt-warning-50);
+  color: var(--opt-warning);
+}
+
+.status-inactive {
+  background-color: var(--opt-neutral-100);
+  color: var(--opt-neutral-500);
+}
+
+.status-approved {
+  background-color: var(--opt-success-50);
+  color: var(--opt-success-600);
+}

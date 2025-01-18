@@ -1,0 +1,53 @@
+// @use '@angular/material' as mat;
+
+// @use '../abstracts/colors' as *;
+
+// @include mat.core();
+
+// $mat-opt-primary: mat.define-palette($mat-opt-primary-map, 500);
+// $mat-opt-accent: mat.define-palette($mat-opt-accent-map, 500);
+// $mat-opt-warn: mat.define-palette($mat-opt-warn-map, 500);
+
+// $mat-opt-typography: mat.define-typography-config(
+//   $font-family: 'Mulish, sans-serif',
+// );
+
+// $mat-opt-theme: mat.define-light-theme(
+//   (
+//     color: (
+//       primary: $mat-opt-primary,
+//       accent: $mat-opt-accent,
+//       warn: $mat-opt-warn,
+//     ),
+//     typography: $mat-opt-typography,
+//   )
+// );
+
+// @include mat.all-component-themes($mat-opt-theme);
+
+@use '@angular/material' as mat;
+
+@use '../abstracts/colors' as *;
+
+@include mat.core();
+
+$mat-opt-primary: mat.define-palette($mat-opt-primary-map, 500);
+$mat-opt-accent: mat.define-palette($mat-opt-accent-map, 500);
+$mat-opt-warn: mat.define-palette($mat-opt-warn-map, 500);
+
+$mat-opt-typography: mat.define-typography-config(
+  $font-family: 'Mulish, sans-serif',
+);
+
+$mat-opt-theme: mat.define-light-theme(
+  (
+    color: (
+      primary: $mat-opt-primary,
+      accent: $mat-opt-accent,
+      warn: $mat-opt-warn,
+    ),
+    typography: $mat-opt-typography,
+  )
+);
+
+@include mat.all-component-themes($mat-opt-theme);

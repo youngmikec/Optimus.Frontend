@@ -1,0 +1,15 @@
+{
+  "applinks": {
+    "apps": [],
+    "details": [
+      {
+        "appID": "AGDX28L3K5.com.optiva.app",
+        "paths": ["*"]
+      },
+      {
+        "appID": "AGDX28L3K5.com.optiva.ios-app-pilot",
+        "paths": ["NOT /_/*", "/*"]
+      }
+    ]
+  }
+}

@@ -1,0 +1,15 @@
+@use 'colors' as *;
+
+:root {
+  @each $name, $shades in $colors {
+    @each $shade, $value in $shades {
+      // #{$name}: nth($color, 1);
+
+      @if #{$shade} == 'normal' {
+        #{$name}: $value;
+      } @else {
+        #{$name}-#{$shade}: $value;
+      }
+    }
+  }
+}

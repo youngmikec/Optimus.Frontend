@@ -1,0 +1,16 @@
+.mat-standard-chip {
+  min-height: 1.5625rem !important;
+}
+
+.mat-chip.mat-standard-chip {
+  background-color: #0d0f11 !important;
+  color: #f7f8f9 !important;
+
+  svg {
+    opacity: 1 !important;
+  }
+}
+
+.mat-standard-chip .mat-chip-remove .mat-icon {
+  color: #f7f8f9 !important;
+}

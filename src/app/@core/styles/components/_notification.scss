@@ -1,0 +1,26 @@
+@use '../abstracts/theme' as *;
+
+.opt-notification-success,
+.opt-notification-warning,
+.opt-notification-error {
+  border-radius: 0.25rem !important;
+  padding: 0.75rem 1rem !important;
+  min-height: 3rem !important;
+  -webkit-box-shadow: 0px 10px 25px rgba(232, 232, 232, 0.5) !important;
+  box-shadow: 0px 10px 25px rgba(232, 232, 232, 0.5) !important;
+}
+
+.opt-notification-success {
+  color: var(--opt-success) !important;
+  background: var(--opt-success-50) !important;
+}
+
+.opt-notification-warning {
+  color: var(--opt-warning) !important;
+  background: var(--opt-warning-50) !important;
+}
+
+.opt-notification-error {
+  color: var(--opt-error) !important;
+  background: var(--opt-error-50) !important;
+}

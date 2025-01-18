@@ -1,0 +1,23 @@
+<section id="general-loader">
+  <div class="logo-container">
+    <img
+      *ngIf="logoVariation === 1"
+      src="/assets/images/new-logo.png"
+      alt="Optiva Brand Logo"
+    />
+
+    <img
+      *ngIf="logoVariation === 2"
+      src="/assets/images/new-logo.png"
+      alt="Optiva Brand Logo"
+    />
+  </div>
+
+  <h6
+    *ngIf="loaderText !== ''"
+    class="loader-text opt-heading-6 fw-400"
+    [ngClass]="{ 'text-white': logoVariation === 1 }"
+  >
+    {{ loaderText }}
+  </h6>
+</section>

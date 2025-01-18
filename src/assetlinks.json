@@ -1,0 +1,26 @@
+[
+  {
+    "relation": [
+      "delegate_permission/common.handle_all_urls"
+    ],
+    "target": {
+      "namespace": "android_app",
+      "package_name": "com.optiva.app",
+      "sha256_cert_fingerprints": [
+        "CD:DF:8C:1E:64:8E:7D:D7:DA:C1:5D:D4:8C:7A:0B:EE:A0:B4:E1:19:E2:86:A7:51:C4:99:E0:15:B6:7B:08:88"
+      ]
+    }
+  },
+  {
+    "relation": [
+      "delegate_permission/common.handle_all_urls"
+    ],
+    "target": {
+      "namespace": "android_app",
+      "package_name": "com.optiva.pilot",
+      "sha256_cert_fingerprints": [
+        "DE:6C:4D:90:B2:0D:E6:08:98:6B:70:4C:77:EB:DF:54:C2:3F:F1:42:F5:FA:D7:18:68:D4:52:37:67:F8:7E:19"
+      ]
+    }
+  }
+]
