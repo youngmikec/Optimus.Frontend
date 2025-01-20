@@ -59,17 +59,17 @@ const routes: Routes = [
         canActivate: [AuthGuard],
         //canActivateChild: [AppGuard],
       },
-      // {
-      //   path: 'sales-service',
-      //   // data: { breadcrumb: 'Sales Service' },
-      //   data: { breadcrumb: 'Client Service' },
-      //   loadChildren: () =>
-      //     import(
-      //       'src/app/@components/webapp/sales-service/sales-service.module'
-      //     ).then((m) => m.SalesServiceModule),
-      //   canActivate: [AuthGuard],
-      //   //canActivateChild: [AppGuard],
-      // },
+      {
+        path: 'sales-service',
+        // data: { breadcrumb: 'Sales Service' },
+        data: { breadcrumb: 'Client Service' },
+        loadChildren: () =>
+          import(
+            'src/app/@components/webapp/client-service/client-service.module'
+          ).then((m) => m.ClientServiceModule),
+        canActivate: [AuthGuard],
+        //canActivateChild: [AppGuard],
+      },
       {
         path: 'invoice',
         data: { breadcrumb: 'Invoice' },

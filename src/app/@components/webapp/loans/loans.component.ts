@@ -6,6 +6,7 @@ import { MatTableDataSource } from '@angular/material/table';
 import { ActivatedRoute } from '@angular/router';
 import { Store, select } from '@ngrx/store';
 import { Observable, Subscription } from 'rxjs';
+import { FormControl } from '@angular/forms';
 import { DefaultPagination } from 'src/app/@core/enums/default-pagination.enum';
 import * as fromApp from 'src/app/@core/stores/app.reducer';
 import * as SaleServiceSelectors from 'src/app/@core/stores/sale-service/sale-service.selectors';
@@ -17,11 +18,10 @@ import * as QuoteLoanActions from 'src/app/@core/stores/quoteCalculator/quoteCal
 // import * as QuoteSelectors from 'src/app/@core/stores/quoteCalculator/quoteCalculator.selectors';
 
 // import { RequestLoanComponent } from '../sales-service/sale-dashboard/sale-loans/request-loan/request-loan.component';
-import { EditLoanRequestComponent } from '../sales-service/sale-dashboard/sale-loans/edit-loan-request/edit-loan-request.component';
-import { RepayLoanComponent } from '../sales-service/sale-dashboard/sale-loans/repay-loan/repay-loan.component';
-import { ILoanActions } from '../sales-service/sale-dashboard/sale-loans/sale-loans.component';
+// import { EditLoanRequestComponent } from '../sales-service/sale-dashboard/sale-loans/edit-loan-request/edit-loan-request.component';
+// import { RepayLoanComponent } from '../sales-service/sale-dashboard/sale-loans/repay-loan/repay-loan.component';
+// import { ILoanActions } from '../sales-service/sale-dashboard/sale-loans/sale-loans.component';
 import { ILoan } from 'src/app/@core/models/quote-calculator.model';
-import { FormControl } from '@angular/forms';
 @Component({
   selector: 'app-loans',
   templateUrl: './loans.component.html',
@@ -62,7 +62,8 @@ export class LoansComponent implements OnInit {
   isLoading$!: Observable<boolean>;
 
   selectedLoan: ILoan | null = null;
-  loanActions: ILoanActions = null;
+  loanActions: any = null;
+  // loanActions: ILoanActions = null;
 
   selectedApplicationQuote: any = {};
   selectedContry!: any;
@@ -224,52 +225,52 @@ export class LoansComponent implements OnInit {
     this.getAllLoans();
   }
 
-  onUpdateLoan(loan: any) {
-    const dialogRef = this.dialog.open(EditLoanRequestComponent, {
-      data: {
-        applicantId: this.applicantId,
-        loan: loan,
-      },
-      width: '400px',
-      disableClose: true,
-      autoFocus: true,
-    });
+  // onUpdateLoan(loan: any) {
+  //   const dialogRef = this.dialog.open(EditLoanRequestComponent, {
+  //     data: {
+  //       applicantId: this.applicantId,
+  //       loan: loan,
+  //     },
+  //     width: '400px',
+  //     disableClose: true,
+  //     autoFocus: true,
+  //   });
 
-    dialogRef.afterClosed().subscribe((result) => {
-      this.getAllLoans();
+  //   dialogRef.afterClosed().subscribe((result) => {
+  //     this.getAllLoans();
 
-      if (result) {
-        // Assuming you have an identifier like 'loanId'
-        const index = this.dataSource.data.findIndex(
-          (item) => item.loanId === result.loanId
-        );
-        if (index !== -1) {
-          this.dataSource.data[index] = result;
-          this.dataSource._updateChangeSubscription();
-          this.snackBar.open('Loan request updated and awaiting approval', '', {
-            duration: 4000,
-          });
-        }
-      }
-    });
-  }
+  //     if (result) {
+  //       // Assuming you have an identifier like 'loanId'
+  //       const index = this.dataSource.data.findIndex(
+  //         (item) => item.loanId === result.loanId
+  //       );
+  //       if (index !== -1) {
+  //         this.dataSource.data[index] = result;
+  //         this.dataSource._updateChangeSubscription();
+  //         this.snackBar.open('Loan request updated and awaiting approval', '', {
+  //           duration: 4000,
+  //         });
+  //       }
+  //     }
+  //   });
+  // }
 
-  repayLoan(loanData: any) {
-    const dialogRef = this.dialog.open(RepayLoanComponent, {
-      data: {
-        loan: this.loanFilterData,
-      },
-      width: '400px',
-      disableClose: true,
-    });
+  // repayLoan(loanData: any) {
+  //   const dialogRef = this.dialog.open(RepayLoanComponent, {
+  //     data: {
+  //       loan: this.loanFilterData,
+  //     },
+  //     width: '400px',
+  //     disableClose: true,
+  //   });
 
-    dialogRef.afterClosed().subscribe(() => {
-      this.getAllLoans();
-    });
-  }
+  //   dialogRef.afterClosed().subscribe(() => {
+  //     this.getAllLoans();
+  //   });
+  // }
 
   // toggleAction(action: ILoanActions, invoiceLoan?: ILoan) {
-  toggleAction(action: ILoanActions, invoiceLoan?: ILoan | any) {
+  toggleAction(action: any, invoiceLoan?: ILoan | any) {
     if (this.loanActions === action || !invoiceLoan) {
       this.loanActions = null;
       return;
@@ -301,17 +302,17 @@ export class LoansComponent implements OnInit {
     this.loanActions = action;
   }
 
-  selectLoan(loan: ILoan): void {
-    const dialogRef = this.dialog.open(RepayLoanComponent, {
-      data: {
-        loan,
-      },
-      width: '400px',
-      disableClose: true,
-    });
+  // selectLoan(loan: ILoan): void {
+  //   const dialogRef = this.dialog.open(RepayLoanComponent, {
+  //     data: {
+  //       loan,
+  //     },
+  //     width: '400px',
+  //     disableClose: true,
+  //   });
 
-    dialogRef.afterClosed().subscribe(() => {
-      // this.getLoans();
-    });
-  }
+  //   dialogRef.afterClosed().subscribe(() => {
+  //     // this.getLoans();
+  //   });
+  // }
 }

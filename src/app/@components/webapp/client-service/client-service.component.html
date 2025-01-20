@@ -1,0 +1,261 @@
+<section id="sales-service">
+    <div class="sales-service-header">
+      <!-- <h6 class="opt-heading-6 fw-700 mb-0">Sales List</h6> -->
+      <h6 class="opt-heading-6 fw-700 mb-0">Client List</h6>
+  
+      <div class="table-controls">
+        <div class="input-style1 input-no-error">
+          <mat-form-field appearance="outline" [style.width.%]="100">
+            <span matPrefix class="img-fluid">
+              <img src="/assets/icons/search.svg" alt="icon" />
+            </span>
+  
+            <input
+              matInput
+              placeholder="Search Client list"
+              [formControl]="searchCtrl"
+            />
+          </mat-form-field>
+        </div>
+  
+        <div class="input-style1 input-no-error filter">
+          <mat-form-field
+            appearance="outline"
+            [style.width.%]="100"
+            [style.float]="'right'"
+          >
+            <mat-select
+              [(value)]="selectedCountry"
+              (selectionChange)="onCountryChange($event)"
+            >
+              <mat-option value=""> All Countries </mat-option>
+              <mat-option
+                [value]="country.id"
+                *ngFor="let country of allCountries"
+              >
+                {{ country.name }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+  
+        <button
+          matRipple
+          class="btn opt-btn-neutral opt-btn-with-icon"
+          [matMenuTriggerFor]="menu"
+        >
+          All Views
+          <span class="img-fluid"
+            ><img src="/assets/icons/filter-icon.svg" alt="filter-icon"
+          /></span>
+          <mat-menu #menu="matMenu">
+            <button
+              mat-menu-item
+              [disabled]=""
+              (click)="openSaveViewModal()"
+              class="fw-600"
+            >
+              Save View As
+            </button>
+            <ng-container *ngFor="let view of tableViews">
+              <button
+                mat-menu-item
+                [disabled]=""
+                (click)="openCreateEditView(view)"
+              >
+                {{ view.name }}
+              </button>
+            </ng-container>
+          </mat-menu>
+        </button>
+  
+        <!-- <button
+          matRipple
+          class="btn opt-btn-neutral opt-btn-with-icon"
+          matTooltip="Create A New Table Column View"
+        >
+          + New
+        </button> -->
+        <button
+          matRipple
+          class="btn opt-btn-neutral opt-btn-with-icon"
+          [matMenuTriggerFor]="filter"
+        >
+          Filters
+          <span class="img-fluid"
+            ><img src="/assets/icons/filter-icon.svg" alt="filter-icon"
+          /></span>
+          <mat-menu #filter="matMenu">
+            <ng-container>
+              <button mat-menu-item [disabled]="" (click)="openDialog(date)">
+                Date
+              </button>
+            </ng-container>
+            <ng-container *ngFor="let option of filterOptions">
+              <button
+                mat-menu-item
+                [disabled]=""
+                (click)="openFilterModal(option)"
+              >
+                {{ option.fullName }}
+              </button>
+            </ng-container>
+  
+            <ng-container>
+              <ng-template #date>
+                <!--Date picker section-->
+                <h4>Filter by Date</h4>
+                <p>Please, select a Start Date and an End Date as a range.</p>
+                <button
+                  matRipple
+                  class="btn opt-btn-white justify-content-between opt-btn-with-icon"
+                  (click)="picker.open()"
+                >
+                  <span class="img-fluid">
+                    <img src="/assets/icons/calendar.svg" alt="Calendar Icon" />
+                  </span>
+                  <mat-date-range-input [rangePicker]="picker">
+                    <input
+                      matStartDate
+                      placeholder="Start date"
+                      [formControl]="startDateControl"
+                    />
+                    <input
+                      matEndDate
+                      placeholder="End date"
+                      [formControl]="endDateControl"
+                    />
+                  </mat-date-range-input>
+  
+                  <mat-date-range-picker #picker>
+                    <mat-date-range-picker-actions>
+                      <button mat-button matDateRangePickerCancel>Cancel</button>
+                      <button
+                        mat-raised-button
+                        color="primary"
+                        matDateRangePickerApply
+                        (click)="dialog.closeAll()"
+                      >
+                        Apply
+                      </button>
+                    </mat-date-range-picker-actions>
+                  </mat-date-range-picker>
+                  <span class="img-fluid"
+                    ><img src="/assets/icons/arrow-down.svg" alt="dropdown-icon"
+                  /></span>
+                </button>
+              </ng-template>
+            </ng-container>
+          </mat-menu>
+        </button>
+  
+        <button
+          matRipple
+          [matMenuTriggerFor]="export"
+          class="btn opt-btn-neutral opt-btn-with-icon"
+          matTooltip="Export table"
+        >
+          Export
+  
+          <mat-menu #export="matMenu">
+            <ng-container>
+              <button mat-menu-item [disabled]="" (click)="exportToPdf()">
+                PDF
+              </button>
+            </ng-container>
+            <ng-container>
+              <button mat-menu-item [disabled]="" (click)="exportToCsv()">
+                CSV
+              </button>
+            </ng-container>
+          </mat-menu>
+        </button>
+      </div>
+    </div>
+  
+    <div
+      class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-4 opt-para-1 mb-4 mt-4"
+    >
+      <!-- TOTAL CLIENTS CARD  -->
+      <div class="col">
+        <div class="card h-100">
+          <div class="card-body align-items-center">
+            <div class="d-flex align-items-center flex-row mb-3">
+              <div class="p-2">
+                <img src="/assets/icons/document_1.svg" alt="avater" />
+              </div>
+              <div class="d-flex flex-col">
+                <div class="d-flex justify-content-between align-items-center">
+                  <div>
+                    <div>
+                      <div class="card-subtitle fw-700 text-muted mt-2">
+                        Total Clients
+                      </div>
+                      <div class="fw-bolder opt-sub-heading my-1">
+                        {{ totalRecords || 0 }}
+                      </div>
+                      <p class="opt-para-1 fw-600 text-muted">
+                        (11 countries in total)
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+  
+      <!-- TOTAL AMOUNT PAID CARD  -->
+      <div class="col">
+        <div class="card h-100">
+          <div class="card-body align-items-center">
+            <div class="d-flex align-items-center flex-row mb-3">
+              <div class="p-2">
+                <img src="/assets/icons/document_2.svg" alt="avater" />
+              </div>
+              <div class="d-flex flex-col">
+                <div class="d-flex justify-content-between align-items-center">
+                  <div>
+                    <div>
+                      <div class="card-subtitle fw-700 text-muted mt-2">
+                        Total Amount Paid
+                      </div>
+                      <div class="fw-bolder opt-sub-heading my-1">
+                        <!-- {{
+                        ((salesAnalytics$ | async)?.applicationQuoteAmount
+                          | currency : 'USD' : 'symbol-narrow') ?? 0
+                      }} -->
+                        2
+                      </div>
+                      <p class="opt-para-1 fw-600 text-muted">
+                        (54 invoices in total)
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  
+    <div class="list-section">
+      <mat-tab-group>
+        <mat-tab label="All Contacts">
+          <app-all-sales
+            [search]="search$ | async"
+            [filteredDatasource]="dataSource"
+            [recordsTotal]="totalRecords"
+            [startDate]="dateForm.get('startDate')?.value"
+            [endDate]="dateForm.get('endDate')?.value"
+            [selectedStatus]="selectedStatus"
+            [selectedAssignment]="selectedAssignment"
+            [selectedCountry]="selectedCountry"
+          ></app-all-sales>
+        </mat-tab>
+      </mat-tab-group>
+    </div>
+  </section>
+  
