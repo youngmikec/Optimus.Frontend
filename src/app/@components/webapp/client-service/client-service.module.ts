@@ -6,6 +6,9 @@ import { AllSalesComponent } from './client-service-list/all-sales/all-sales.com
 
 @NgModule({
     imports: [ClientServiceRoutes, SharedModule],
-    declarations: [ClientServiceComponent, AllSalesComponent]
+    declarations: [
+        ClientServiceComponent, 
+        AllSalesComponent, 
+    ]
 })
 export class ClientServiceModule {}

@@ -1,0 +1,22 @@
+<img
+  [src]="'/assets/icons/' + icon"
+  alt="filter-icon"
+  class="d-block mx-auto"
+/>
+
+<p class="opt-heading-6 fw-700 text-center">{{ data.title }}</p>
+<p class="fw-500 text-center">{{ data.subTitle }}</p>
+
+<div class="d-flex justify-content-between mt-3">
+  <button
+    matRipple
+    class="btn opt-btn-primary-outline"
+    (click)="confirm(false)"
+  >
+    Cancel
+  </button>
+
+  <button matRipple class="btn btn-primary" (click)="confirm(true)">
+    Confirm
+  </button>
+</div>

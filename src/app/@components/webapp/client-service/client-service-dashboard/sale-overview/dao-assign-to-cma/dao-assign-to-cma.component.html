@@ -1,0 +1,25 @@
+<p class="opt-heading-6 fw-700 text-center">Assign to CMA</p>
+<p class="fw-500">Include information to support this action.</p>
+
+<div class="input-style1">
+  <label class="form-label opt-caption">Add a reason</label>
+  <mat-form-field appearance="outline" [style.width.%]="100">
+    <textarea
+      type="text"
+      matInput
+      rows="5"
+      placeholder="Enter reason..."
+      [formControl]="reasonCtrl"
+    ></textarea>
+  </mat-form-field>
+</div>
+
+<div class="d-flex justify-content-between mt-3">
+  <button matRipple class="btn opt-btn-primary-outline" (click)="close()">
+    Cancel
+  </button>
+
+  <button matRipple class="btn btn-primary" (click)="assignCMA()">
+    Assign to CMA
+  </button>
+</div>

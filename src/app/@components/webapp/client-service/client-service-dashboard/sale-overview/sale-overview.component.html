@@ -1,0 +1,1175 @@
+<div id="sale-overview">
+    <div class="row mt-4">
+      <div class="col-12 col-sm-12 col-xl-8">
+        <div class="mb-4">
+          <div
+            class="row row-cols-1 row-cols-sm-2 row-cols-md-2 g-4 opt-para-1 mb-4"
+          >
+            <!-- TOTAL APPLICATION CARD  -->
+            <div class="col">
+              <div class="card h-100">
+                <div class="card-body align-items-center">
+                  <div class="d-flex align-items-center flex-row mb-3">
+                    <div class="p-2">
+                      <img src="/assets/icons/document_1.svg" alt="avater" />
+                    </div>
+                    <div class="d-flex flex-col">
+                      <div
+                        class="d-flex justify-content-between align-items-center"
+                      >
+                        <div>
+                          <div>
+                            <div class="card-subtitle fw-700 mt-2">
+                              Total Program Fee
+                            </div>
+                            <div class="fw-bolder opt-sub-heading my-1">
+                              {{
+                                ((salesAnalytics$ | async)?.applicationQuoteAmount
+                                  | currency : 'USD' : 'symbol-narrow') ?? 0
+                              }}
+                            </div>
+                            <a
+                              (click)="linkToViewInvoice()"
+                              href="javascript:void(0)"
+                              class="card-link opt-para-1 fw-600"
+                            >
+                              View Invoices
+                            </a>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+  
+            <!-- TOTAL AMOUNT PAID CARD  -->
+            <div class="col">
+              <div class="card h-100">
+                <div class="card-body align-items-center">
+                  <div class="d-flex align-items-center flex-row mb-3">
+                    <div class="p-2">
+                      <img src="/assets/icons/document_1.svg" alt="avater" />
+                    </div>
+                    <div class="d-flex flex-col">
+                      <div
+                        class="d-flex justify-content-between align-items-center"
+                      >
+                        <div>
+                          <div>
+                            <div class="card-subtitle fw-700 mt-2">
+                              Total Amount Paid
+                            </div>
+                            <div class="fw-bolder opt-sub-heading my-1">
+                              {{
+                                ((salesAnalytics$ | async)?.paid
+                                  | currency : 'USD' : 'symbol-narrow') ?? 0
+                              }}
+                            </div>
+                            <!-- <a
+                              (click)="linkToViewInvoice()"
+                              href="javascript:void(0)"
+                              class="card-link opt-para-1 fw-600"
+                            >
+                              View Invoices
+                            </a> -->
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+  
+            <!-- TOTAL LOAN ACCOUNT CARD -->
+            <div class="col">
+              <div class="card h-100">
+                <div class="card-body align-items-center">
+                  <div class="d-flex align-items-center flex-row mb-3">
+                    <div class="p-2">
+                      <img src="/assets/icons/document_2.svg" alt="avater" />
+                    </div>
+                    <div class="d-flex flex-col">
+                      <div
+                        class="d-flex justify-content-between align-items-center"
+                      >
+                        <div>
+                          <div>
+                            <div class="card-subtitle fw-700 mt-2">
+                              Total Loan Amount
+                            </div>
+                            <div class="fw-bolder opt-sub-heading my-1">
+                              {{
+                                ((salesAnalytics$ | async)?.loanAmount
+                                  | currency : 'USD' : 'symbol-narrow') ?? 0
+                              }}
+                            </div>
+                            <a
+                              (click)="linkToCreateInvoice()"
+                              href="javascript:void(0)"
+                              class="card-link opt-para-1 fw-600"
+                            >
+                              Create Invoices
+                            </a>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+  
+            <!-- TOTAL APPLICATION CARD -->
+            <div class="col">
+              <div class="card h-100">
+                <div class="card-body align-items-center">
+                  <div class="d-flex align-items-center flex-row mb-3">
+                    <div class="p-2">
+                      <img src="/assets/icons/progress.svg" alt="avater" />
+                    </div>
+                    <div class="d-flex flex-col">
+                      <div
+                        class="d-flex justify-content-between align-items-center"
+                      >
+                        <div>
+                          <div>
+                            <div class="card-subtitle fw-700 mt-2">
+                              Total Outstanding
+                            </div>
+                            <div class="fw-bolder opt-sub-heading my-1">
+                              {{
+                                ((salesAnalytics$ | async)?.unpaid
+                                  | currency : 'USD' : 'symbol-narrow') ?? 0
+                              }}
+                            </div>
+                            <a
+                              class="card-link opt-para-1 fw-600"
+                              href="javascript:void(0)"
+                              (click)="viewPaymentPlanSchedule = true"
+                            >
+                              View More
+                            </a>
+                            <!-- <app-payment-plan-schedule
+                              @slideInOutFromRight
+                              *ngIf="viewPaymentPlanSchedule"
+                              [outstandingLoan]="
+                                (salesAnalytics$ | async)?.unpaid
+                              "
+                              (closePage)="viewPaymentPlanSchedule = false"
+                            ></app-payment-plan-schedule> -->
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+  
+          <div class="row row-cols-1 row-cols-sm-2 g-4 opt-para-1">
+            <!-- PHASE SECTION -->
+            <div class="col">
+              <div class="card h-100">
+                <div class="card-body px-4">
+                  <div class="d-flex justify-content-between mt-2">
+                    <div
+                      class="cursor-pointer fw-bolder opt-para-1 fw-600 d-flex align-items-center"
+                    >
+                      Phases
+                      <span class="img-fluid ms-2"
+                        ><img
+                          src="/assets/icons/info-circle-solid.svg"
+                          alt="info-circle"
+                      /></span>
+                    </div>
+  
+                    <ng-container [ngSwitch]="currentPhase?.phase">
+                      <ng-container *ngSwitchCase="Phases.ONBOARDING">
+                        <button
+                          *ngIf="
+                            currentPhase.name === 'Onboarding' &&
+                            currentPhase.subPhase !== 'start-onboarding' &&
+                            currentPhase.phaseStatus === 1 &&
+                            permissionService.hasPermission('Assign SM')
+                          "
+                          matRipple
+                          class="btn opt-btn-neutral review-btn"
+                          (click)="triggerPhaseAction(Phases.ONBOARDING)"
+                        >
+                          Assign SM
+                        </button>
+  
+                        <button
+                          matRipple
+                          *ngIf="
+                            currentPhase.subPhase === 'start-onboarding' &&
+                            permissionService.hasPermission('Start Onboarding')
+                          "
+                          class="btn opt-btn-neutral review-btn"
+                          (click)="triggerPhaseAction(Phases.ONBOARDING)"
+                        >
+                          Start Onboarding
+                        </button>
+  
+                        <button
+                          matRipple
+                          *ngIf="
+                            currentPhase.subPhase === 'call-applicant' &&
+                            permissionService.hasPermission('Call Applicant')
+                          "
+                          class="btn opt-btn-neutral review-btn"
+                          (click)="triggerPhaseAction(Phases.ONBOARDING)"
+                        >
+                          Call Applicant
+                        </button>
+  
+                        <button
+                          matRipple
+                          *ngIf="
+                            currentPhase.subPhase ===
+                              'schedule-onboarding-meeting' &&
+                            permissionService.hasPermission(
+                              'Schedule Onboarding Meeting'
+                            )
+                          "
+                          class="btn opt-btn-neutral review-btn"
+                          (click)="triggerPhaseAction(Phases.ONBOARDING)"
+                        >
+                          Schedule Onboarding Meeting
+                        </button>
+  
+                        <button
+                          matRipple
+                          *ngIf="
+                            currentPhase.subPhase === 'complete-onboarding' &&
+                            permissionService.hasPermission('Complete Onboarding')
+                          "
+                          class="btn opt-btn-neutral review-btn"
+                          (click)="triggerPhaseAction(Phases.ONBOARDING)"
+                        >
+                          Complete Onboarding
+                        </button>
+                      </ng-container>
+  
+                      <ng-container *ngSwitchCase="Phases.DOCUMENT_COLLATION">
+                        <button
+                          matRipple
+                          *ngIf="
+                            currentPhase.subPhase !==
+                              'complete-document-collation' &&
+                            permissionService.hasPermission(
+                              'Start Document Collation'
+                            )
+                          "
+                          class="btn opt-btn-neutral review-btn"
+                          (click)="triggerPhaseAction(Phases.DOCUMENT_COLLATION)"
+                        >
+                          Start Document Collation
+                        </button>
+  
+                        <button
+                          matRipple
+                          *ngIf="
+                            currentPhase.subPhase ===
+                              'complete-document-collation' &&
+                            permissionService.hasPermission(
+                              'Complete Document Collation'
+                            )
+                          "
+                          class="btn opt-btn-neutral review-btn"
+                          (click)="triggerPhaseAction(Phases.DOCUMENT_COLLATION)"
+                        >
+                          Complete Document Collation
+                        </button>
+                      </ng-container>
+  
+                      <ng-container *ngSwitchCase="Phases.DOCUMENT_PROCESSING">
+                        <button
+                          matRipple
+                          *ngIf="
+                            currentPhase.subPhase !==
+                              'complete-document-processing' &&
+                            permissionService.hasPermission(
+                              'Start Document Processing'
+                            )
+                          "
+                          class="btn opt-btn-neutral review-btn"
+                          (click)="triggerPhaseAction(Phases.DOCUMENT_PROCESSING)"
+                        >
+                          Start Document Processing
+                        </button>
+  
+                        <button
+                          matRipple
+                          *ngIf="
+                            currentPhase.subPhase ===
+                              'complete-document-processing' &&
+                            permissionService.hasPermission(
+                              'Complete Document Processing'
+                            )
+                          "
+                          class="btn opt-btn-neutral review-btn"
+                          (click)="triggerPhaseAction(Phases.DOCUMENT_PROCESSING)"
+                        >
+                          Complete Document Processing
+                        </button>
+                      </ng-container>
+  
+                      <ng-container *ngSwitchCase="Phases.DOCUMENT_SUPPORT">
+                        <button
+                          matRipple
+                          *ngIf="
+                            currentPhase.subPhase !==
+                              'complete-document-support' &&
+                            permissionService.hasPermission(
+                              'Start Document Support'
+                            )
+                          "
+                          class="btn opt-btn-neutral review-btn"
+                          (click)="triggerPhaseAction(Phases.DOCUMENT_SUPPORT)"
+                        >
+                          Start Document Support
+                        </button>
+  
+                        <button
+                          matRipple
+                          *ngIf="
+                            currentPhase.subPhase ===
+                              'complete-document-support' &&
+                            permissionService.hasPermission(
+                              'Complete Document Support'
+                            )
+                          "
+                          class="btn opt-btn-neutral review-btn"
+                          (click)="triggerPhaseAction(Phases.DOCUMENT_SUPPORT)"
+                        >
+                          Complete Document Support
+                        </button>
+                      </ng-container>
+  
+                      <ng-container *ngSwitchCase="Phases.DOCUMENT_AUDIT">
+                        <button
+                          matRipple
+                          *ngIf="
+                            currentPhase.subPhase !== 'complete-document-audit' &&
+                            permissionService.hasPermission(
+                              'Start Document Audit'
+                            )
+                          "
+                          class="btn opt-btn-neutral review-btn"
+                          (click)="triggerPhaseAction(Phases.DOCUMENT_AUDIT)"
+                        >
+                          Start Document Audit
+                        </button>
+  
+                        <button
+                          matRipple
+                          *ngIf="
+                            currentPhase.subPhase === 'complete-document-audit' &&
+                            permissionService.hasPermission(
+                              'Complete Document Audit'
+                            )
+                          "
+                          class="btn opt-btn-neutral review-btn"
+                          (click)="triggerPhaseAction(Phases.DOCUMENT_AUDIT)"
+                        >
+                          Complete Document Audit
+                        </button>
+                      </ng-container>
+                    </ng-container>
+                  </div>
+  
+                  <ng-container
+                    *ngIf="applicationPhaseError$ | async as phasesError"
+                  >
+                    <p class="text-center text-danger mt-5">{{ phasesError }}</p>
+                  </ng-container>
+  
+                  <div
+                    class="spinner-border text-primary d-grid mx-auto mt-5"
+                    role="status"
+                    *ngIf="(applicationPhaseLoading$ | async) === true"
+                  >
+                    <span class="visually-hidden">Loading...</span>
+                  </div>
+  
+                  <ng-container
+                    *ngIf="applicationPhases$ | async as applicationPhases"
+                  >
+                    <div class="my-4" *ngIf="applicationPhases.lenght > 0">
+                      <div class="opt-para-1">
+                        Some documents have been uploaded, proceed to review them
+                        and carry out necessary actions.
+                      </div>
+                    </div>
+  
+                    <div
+                      class="phase-list list-wrapper my-4"
+                      *ngIf="(applicationPhaseLoading$ | async) === false"
+                    >
+                      <div
+                        class="phase"
+                        [ngClass]="{
+                          undone:
+                            applicationPhase?.phaseStatusDesc === 'NotStarted',
+                          inprogress:
+                            applicationPhase?.phaseStatusDesc === 'Started',
+                          completed:
+                            applicationPhase?.phaseStatusDesc === 'Completed'
+                        }"
+                        *ngFor="let applicationPhase of applicationPhases"
+                      >
+                        <div class="d-flex justify-content-between">
+                          <div>
+                            <ng-container
+                              [ngSwitch]="applicationPhase?.phaseStatusDesc"
+                            >
+                              <span
+                                class="img-fluid me-2"
+                                *ngSwitchCase="'Completed'"
+                              >
+                                <img
+                                  src="/assets/icons/success-rectangle.svg"
+                                  alt="success-rectangle"
+                                />
+                              </span>
+  
+                              <span
+                                class="img-fluid me-2"
+                                *ngSwitchCase="'Started'"
+                              >
+                                <img
+                                  src="/assets/icons/inprogress-rectangle.svg"
+                                  alt="inprogress-rectangle"
+                                />
+                              </span>
+  
+                              <span
+                                class="img-fluid me-2"
+                                *ngSwitchCase="'NotStarted'"
+                              >
+                                <img
+                                  src="/assets/icons/undone-rectangle.svg"
+                                  alt="undone-rectangle"
+                                />
+                              </span>
+                            </ng-container>
+  
+                            {{ applicationPhase.name }}
+                          </div>
+  
+                          <div class="opt-caption">
+                            Due: {{ applicationPhase.dueDate | date : 'd/M/yy' }}
+                            <span
+                              class="img-fluid"
+                              [matTooltip]="resolveStartEndDate(applicationPhase)"
+                            >
+                              <img
+                                src="/assets/icons/info-circle.svg"
+                                alt="info-circle"
+                            /></span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </ng-container>
+                </div>
+              </div>
+            </div>
+  
+            <!-- TASKS SECTION -->
+            <div class="col notes">
+              <div class="card h-100">
+                <div class="card-body px-0 pt-2">
+                  <div
+                    class="d-flex justify-content-between mt-2 border-bottom px-3 pb-3"
+                  >
+                    <div
+                      class="cursor-pointer fw-bolder opt-para-1 fw-600 d-flex align-items-center my-2"
+                    >
+                      Tasks
+                    </div>
+  
+                    <button
+                      matRipple
+                      class="btn opt-btn-neutral opt-btn-with-icon"
+                      (click)="addTaskModal()"
+                    >
+                      <span class="img-fluid"
+                        ><img src="/assets/icons/add_grey.svg" alt="arrow-right"
+                      /></span>
+                      Add New
+                    </button>
+                  </div>
+  
+                  <div class="list-wrapper px-3 pt-3">
+                    <ng-container *ngIf="tasks.length > 0; else noTask">
+                      <div>
+                        <ng-container *ngFor="let task of tasks">
+                          <div
+                            class="my-2 d-flex align-items-center my-1 pb-3 border-bottom"
+                            (click)="viewTask(task); $event.stopPropagation()"
+                            role="button"
+                          >
+                            <span class="col-1">
+                              <span
+                                role="button"
+                                class="img-fluid"
+                                (click)="
+                                  completeTask(task.id); $event.stopPropagation()
+                                "
+                                *ngIf="task.workFlowStatus === 1"
+                              >
+                                <svg
+                                  width="14"
+                                  height="14"
+                                  viewBox="0 0 14 14"
+                                  fill="none"
+                                  xmlns="http://www.w3.org/2000/svg"
+                                >
+                                  <path
+                                    d="M13 7C13 3.6875 10.3125 1 7 1C3.6875 1 1 3.6875 1 7C1 10.3125 3.6875 13 7 13C10.3125 13 13 10.3125 13 7Z"
+                                    stroke="#D0D0D0"
+                                    stroke-width="1.4"
+                                    stroke-miterlimit="10"
+                                  />
+                                </svg>
+                              </span>
+  
+                              <span
+                                class="img-fluid"
+                                *ngIf="task.workFlowStatus === 3"
+                              >
+                                <svg
+                                  xmlns="http://www.w3.org/2000/svg"
+                                  width="16"
+                                  height="16"
+                                  viewBox="0 0 16 16"
+                                  fill="none"
+                                >
+                                  <path
+                                    d="M8.00016 1.33203C4.32683 1.33203 1.3335 4.32536 1.3335 7.9987C1.3335 11.672 4.32683 14.6654 8.00016 14.6654C11.6735 14.6654 14.6668 11.672 14.6668 7.9987C14.6668 4.32536 11.6735 1.33203 8.00016 1.33203ZM11.1868 6.46536L7.40683 10.2454C7.3135 10.3387 7.18683 10.392 7.0535 10.392C6.92016 10.392 6.7935 10.3387 6.70016 10.2454L4.8135 8.3587C4.62016 8.16536 4.62016 7.84536 4.8135 7.65203C5.00683 7.4587 5.32683 7.4587 5.52016 7.65203L7.0535 9.18536L10.4802 5.7587C10.6735 5.56536 10.9935 5.56536 11.1868 5.7587C11.3802 5.95203 11.3802 6.26536 11.1868 6.46536Z"
+                                    fill="#10B981"
+                                  />
+                                </svg>
+                              </span>
+                            </span>
+  
+                            <div class="opt-para-1 col-11">
+                              <div class="d-flex justify-content-between">
+                                <div
+                                  [ngClass]="{
+                                    'text-decoration-line-through':
+                                      task.workFlowStatus === 3
+                                  }"
+                                  class="fw-600"
+                                >
+                                  {{ task.title }}
+                                </div>
+                                <img
+                                  src="/assets/icons/more.svg"
+                                  [matMenuTriggerFor]="menu"
+                                  alt="more"
+                                  (click)="$event.stopPropagation()"
+                                />
+                                <mat-menu #menu="matMenu">
+                                  <button
+                                    mat-menu-item
+                                    (click)="
+                                      editTaskModal(task);
+                                      $event.stopPropagation()
+                                    "
+                                  >
+                                    Edit Task
+                                  </button>
+                                  <button
+                                    mat-menu-item
+                                    (click)="
+                                      cancelTaskModal(task.id);
+                                      $event.stopPropagation()
+                                    "
+                                  >
+                                    Cancel Task
+                                  </button>
+                                </mat-menu>
+                              </div>
+                              <div
+                                class="text-muted mt-1 d-flex justify-content-between opt-text-neutral-500"
+                              >
+                                <span class="opt-caption">
+                                  Due {{ task.dueDate | date : 'short' }}
+                                </span>
+                                <span class="opt-caption">
+                                  Assigned to {{ task.assignedToName }}
+                                </span>
+                              </div>
+                            </div>
+                          </div>
+                        </ng-container>
+                      </div>
+                    </ng-container>
+  
+                    <ng-template #noTask>
+                      <div class="w-100 pt-5 text-center">No Task Available</div>
+                    </ng-template>
+                  </div>
+                </div>
+              </div>
+            </div>
+  
+            <!-- NOTES SECTION -->
+            <div class="col notes">
+              <div class="card h-100">
+                <div class="card-body px-0 pt-2">
+                  <div
+                    class="d-flex justify-content-between mt-2 border-bottom px-4 pb-3"
+                  >
+                    <div
+                      class="cursor-pointer fw-bolder opt-para-1 fw-600 d-flex align-items-center my-2"
+                    >
+                      Notes
+                    </div>
+  
+                    <button
+                      (click)="routeTo(3)"
+                      matRipple
+                      class="btn opt-btn-neutral opt-btn-with-icon"
+                    >
+                      See All
+                      <span class="img-fluid"
+                        ><img
+                          src="/assets/icons/arrow-right.svg"
+                          alt="arrow-right"
+                      /></span>
+                    </button>
+                  </div>
+  
+                  <div class="list-wrapper px-4 pt-3 h-100">
+                    <!-- NOTE -->
+                    <div
+                      class="note note-wrapper border-bottom mb-3 pb-2"
+                      *ngFor="let note of notes$ | async"
+                    >
+                      <div class="my-2 d-flex align-items-center">
+                        <div class="opt-para-1">
+                          <div class="opt-caption text-muted mt-1">
+                            {{ note?.lastModifiedDate | date : 'hh:mm a' }} - YOU
+                          </div>
+                          <div
+                            [innerHTML]="note?.description?.slice(0, 10) + '...'"
+                          ></div>
+                          <div
+                            class="text-muted mt-1 note-body"
+                            [innerHTML]="note?.description"
+                          ></div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+  
+            <!-- ACTIVITIES SECTION -->
+            <div class="col activities">
+              <div class="card">
+                <div class="card-body px-0 pt-2">
+                  <div
+                    class="d-flex justify-content-between mt-2 border-bottom px-4 pb-3"
+                  >
+                    <div
+                      class="cursor-pointer fw-bolder opt-para-1 fw-600 d-flex align-items-center my-2"
+                    >
+                      Activities
+                    </div>
+  
+                    <button
+                      matRipple
+                      (click)="routeTo(4)"
+                      class="btn opt-btn-neutral opt-btn-with-icon"
+                    >
+                      See All
+                      <span class="img-fluid"
+                        ><img
+                          src="/assets/icons/arrow-right.svg"
+                          alt="arrow-right"
+                      /></span>
+                    </button>
+                  </div>
+  
+                  <!-- ACTIVITY -->
+                  <div class="activity list-wrapper mb-3 pb-2 px-4 pt-3">
+                    <!-- Section: Timeline -->
+                    <section class="pt-3 ms-2">
+                      <ul
+                        class="timeline-with-icons"
+                        *ngFor="let activity of truncActivities.query"
+                      >
+                        <li class="timeline-item mb-2">
+                          <span
+                            class="timeline-icon"
+                            *ngIf="activity.status === 1"
+                          >
+                            <img
+                              src="/assets/icons/success-check.svg"
+                              alt="avater"
+                            />
+                          </span>
+  
+                          <span
+                            class="timeline-icon"
+                            *ngIf="activity.status !== 1"
+                          >
+                            <!-- <i class="fas fa-rocket text-primary fa-sm fa-fw"></i> -->
+                            <img
+                              src="/assets/icons/pending-marker.svg"
+                              alt="success-check"
+                            />
+                          </span>
+  
+                          <div class="mb-0">
+                            <span class="fw-semibold">{{
+                              activity.documentActivity
+                            }}</span>
+                          </div>
+                          <div class="my-2" *ngIf="activity.name">
+                            <span class="img-fluid"
+                              ><img
+                                src="/assets/icons/document-text.svg"
+                                alt="inprogress-rectangle"
+                            /></span>
+                            {{ activity.name }}
+                          </div>
+                        </li>
+                      </ul>
+                    </section>
+                    <!-- Section: Timeline -->
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+  
+      <!-- USER PERSONAL DETAILS -->
+      <div class="col-12 col-xl-4">
+        <div class="row">
+          <div class="col-12 col-md-6 col-lg-12 mb-3 pb-2">
+            <div class="card">
+              <div class="card-body">
+                <div class="d-flex text-black">
+                  <div class="flex-grow-1">
+                    <div class="d-flex align-items-center flex-row mb-3">
+                      <div class="p-2">
+                        <img
+                          src="/assets/images/female-avatar.svg"
+                          alt="avater"
+                        />
+                      </div>
+                      <div class="d-flex flex-col">
+                        <div class="">
+                          <h5 class="opt-sub-heading mb-1">
+                            {{ applicant?.fullName ?? '-' | titlecase }}
+                          </h5>
+                          <div class="pb-0 mb-0">
+                            {{ applicant?.email ?? '-' }}
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+  
+                    <div
+                      class="d-flex align-items-center flex-row"
+                      *ngIf="applicant?.mobileNo || applicant?.mobileNo2"
+                    >
+                      <div class="">
+                        <img src="/assets/icons/call.svg" alt="call" />
+                      </div>
+                      <div class="d-flex flex-col p-2">
+                        <div class="text-muted">
+                          <div class="">
+                            {{ applicant?.mobileNo ?? '-' }},
+                            {{ applicant?.mobileNo2 ?? '-' }}
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+  
+                    <div
+                      class="d-flex align-items-center flex-row mb-3"
+                      *ngIf="applicant?.address || applicant?.shortAddress"
+                    >
+                      <div class="">
+                        <img src="/assets/icons/location.svg" alt="call" />
+                      </div>
+                      <div class="d-flex flex-col p-2">
+                        <div class="text-muted">
+                          <div class="">
+                            {{ applicant?.address ?? applicant?.shortAddress }}
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="border-bottom"></div>
+                    <div class="d-flex justify-content-center pb-3 pt-4">
+                      <button
+                        matRipple
+                        class="btn opt-btn-neutral opt-btn-with-icon"
+                        (click)="viewApplicantDetails(applicant?.id)"
+                      >
+                        View Details
+                        <span class="img-fluid"
+                          ><img
+                            src="/assets/icons/arrow-right.svg"
+                            alt="arrow-right"
+                        /></span>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+  
+          <!-- ASSIGNED OFFICERS SECTION -->
+          <div class="col-12 col-md-6 col-lg-12 mb-3 pb-2 notes">
+            <div class="card h-100">
+              <div class="card-body px-4">
+                <div class="d-flex justify-content-between mt-2">
+                  <div
+                    class="cursor-pointer fw-bolder opt-para-1 fw-600 d-flex align-items-center my-2"
+                  >
+                    Assigned Officer
+                  </div>
+                </div>
+  
+                <ng-container *ngFor="let officer of assignedOfficers">
+                  <!-- <p>{{ assignedOfficers$ | json }}</p> -->
+  
+                  <div class="d-flex justify-content-between">
+                    <div
+                      class="cursor-pointer fw-bolder text-muted opt-caption fw-600 my-2"
+                    >
+                      {{ officer.role === 'DMS' ? 'SM' : officer.role }}
+                    </div>
+  
+                    <div class="d-flex align-items-center flex-row mb-2">
+                      <div class="text-content">
+                        <div
+                          *ngIf="
+                            permissionService.hasPermission(
+                              'Edit ' + officer.role
+                            )
+                          "
+                          class="icon-text cursor-pointer"
+                          (click)="
+                            openAssignOfficerModal(
+                              officer.role,
+                              officer.mainOfficer,
+                              officer.supportOfficer
+                            )
+                          "
+                        >
+                          <img
+                            src="/assets/images/webapp/sale-service/sale-dashboard/edit-icon.svg"
+                            alt="Edit icon"
+                          />
+                          <div class="d-flex align-items-center">
+                            <div class="opt-caption mb-0 text-primary">
+                              <span class="fw-bold link"
+                                >Edit
+                                {{
+                                  officer.role === 'DMS' ? 'SM' : officer.role
+                                }}</span
+                              >
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="note">
+                    <div
+                      class="text-content mb-3"
+                      *ngIf="officer.mainOfficer[0].approvalName"
+                    >
+                      <div class="icon-text">
+                        <div class="circle-abbreviate">
+                          <p class="fw-400 opt-footer">
+                            {{
+                              officer.mainOfficer[0].approvalName
+                                .split(' ')[0]
+                                .charAt(0)
+                            }}
+                          </p>
+                          <p class="fw-400 opt-footer">
+                            {{
+                              officer.mainOfficer[0].approvalName
+                                .split(' ')[1]
+                                .charAt(0)
+                            }}
+                          </p>
+                        </div>
+                        <div class="d-flex align-items-center">
+                          <div class="opt-caption mb-0 text-muted">
+                            <span class="fw-bold">{{
+                              officer.mainOfficer[0].approvalName
+                            }}</span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+  
+                    <div
+                      class="text-content mb-3"
+                      *ngIf="officer.supportOfficer[0].supportOfficerName"
+                    >
+                      <div class="icon-text">
+                        <div class="circle-abbreviate">
+                          <p class="fw-400 opt-footer">
+                            {{
+                              officer.supportOfficer[0].supportOfficerName
+                                .split(' ')[0]
+                                .charAt(0)
+                            }}
+                          </p>
+                          <p class="fw-400 opt-footer">
+                            {{
+                              officer.supportOfficer[0].supportOfficerName
+                                .split(' ')[1]
+                                .charAt(0)
+                            }}
+                          </p>
+                        </div>
+                        <div class="d-flex align-items-center">
+                          <div class="opt-caption mb-0 text-muted">
+                            <span class="fw-bold">{{
+                              officer.supportOfficer[0].supportOfficerName
+                            }}</span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+  
+                  <hr />
+                </ng-container>
+  
+                <!-- UPCOMING MEETINGS SECTION -->
+                <div class="col-12">
+                  <div class="card h-100">
+                    <div class="card-body">
+                      <div class="d-flex justify-content-between mt-2">
+                        <div
+                          class="cursor-pointer fw-bolder opt-para-1 fw-600 d-flex align-items-center"
+                        >
+                          Upcoming Meetings
+                        </div>
+  
+                        <button
+                          matRipple
+                          class="btn opt-btn-neutral opt-btn-with-icon"
+                          (click)="openCreateMeetingModal()"
+                        >
+                          <span class="img-fluid"
+                            ><img
+                              src="/assets/icons/add_grey.svg"
+                              alt="arrow-right"
+                          /></span>
+                          Add New
+                        </button>
+                      </div>
+  
+                      <ng-container *ngIf="meetings">
+                        <div class="meetings">
+                          <div class="meeting" *ngFor="let meeting of meetings">
+                            <span>
+                              <svg
+                                width="4"
+                                height="135"
+                                viewBox="0 0 4 135"
+                                fill="none"
+                                xmlns="http://www.w3.org/2000/svg"
+                              >
+                                <rect
+                                  width="4"
+                                  height="135"
+                                  rx="2"
+                                  fill="#F6BA27"
+                                />
+                              </svg>
+                            </span>
+  
+                            <div class="meeting-container">
+                              <div class="timeframe">
+                                <p class="opt-caption fw-500">
+                                  {{
+                                    meeting.startDate | date : 'short' | uppercase
+                                  }}
+                                  -
+                                  {{
+                                    meeting.endDate
+                                      | date : 'shortTime'
+                                      | uppercase
+                                  }}
+                                </p>
+  
+                                <span
+                                  [matMenuTriggerFor]="metingMenu"
+                                  class="meeting-menu"
+                                  role="button"
+                                >
+                                  <svg
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    width="16"
+                                    height="16"
+                                    viewBox="0 0 16 16"
+                                    fill="none"
+                                  >
+                                    <path
+                                      d="M3.33333 6.66602C2.6 6.66602 2 7.26602 2 7.99935C2 8.73268 2.6 9.33268 3.33333 9.33268C4.06667 9.33268 4.66667 8.73268 4.66667 7.99935C4.66667 7.26602 4.06667 6.66602 3.33333 6.66602Z"
+                                      stroke="#518ef8"
+                                    />
+                                    <path
+                                      d="M12.6654 6.66602C11.932 6.66602 11.332 7.26602 11.332 7.99935C11.332 8.73268 11.932 9.33268 12.6654 9.33268C13.3987 9.33268 13.9987 8.73268 13.9987 7.99935C13.9987 7.26602 13.3987 6.66602 12.6654 6.66602Z"
+                                      stroke="#518ef8"
+                                    />
+                                    <path
+                                      d="M8.0013 6.66602C7.26797 6.66602 6.66797 7.26602 6.66797 7.99935C6.66797 8.73268 7.26797 9.33268 8.0013 9.33268C8.73464 9.33268 9.33464 8.73268 9.33464 7.99935C9.33464 7.26602 8.73464 6.66602 8.0013 6.66602Z"
+                                      stroke="#518ef8"
+                                    />
+                                  </svg>
+                                </span>
+                              </div>
+  
+                              <p class="meeting-title opt-para-1 fw-600">
+                                {{ meeting.title }}
+                              </p>
+  
+                              <div class="meeting-avatar">
+                                <div
+                                  class="avatar opt-text-white"
+                                  *ngFor="
+                                    let guest of meeting.guests.slice(0, 3);
+                                    let i = index
+                                  "
+                                  [ngStyle]="{ background: avatarBackground[i] }"
+                                >
+                                  {{ guest.guestInitials | uppercase }}
+                                </div>
+  
+                                <div
+                                  class="avatar opt-text-black"
+                                  *ngIf="meeting.guests.length > 3"
+                                >
+                                  +{{ meeting.guests.length - 3 }}
+                                </div>
+                              </div>
+  
+                              <div class="d-flex gap-2">
+                                <span
+                                  ><svg
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    width="16"
+                                    height="16"
+                                    viewBox="0 0 16 16"
+                                    fill="none"
+                                  >
+                                    <path
+                                      d="M8.00187 8.95297C9.15063 8.95297 10.0819 8.02172 10.0819 6.87297C10.0819 5.72422 9.15063 4.79297 8.00187 4.79297C6.85312 4.79297 5.92188 5.72422 5.92188 6.87297C5.92188 8.02172 6.85312 8.95297 8.00187 8.95297Z"
+                                      stroke="#292D32"
+                                    />
+                                    <path
+                                      d="M2.41184 5.65968C3.72517 -0.113657 12.2785 -0.106991 13.5852 5.66634C14.3518 9.05301 12.2452 11.9197 10.3985 13.693C9.0585 14.9863 6.9385 14.9863 5.59184 13.693C3.75184 11.9197 1.64517 9.04634 2.41184 5.65968Z"
+                                      stroke="#292D32"
+                                    /></svg
+                                ></span>
+  
+                                <p class="opt-caption fw-400 location">
+                                  {{ meeting.location }}
+                                </p>
+                              </div>
+                            </div>
+  
+                            <mat-menu #metingMenu="matMenu">
+                              <button
+                                mat-menu-item
+                                matRipple
+                                (click)="
+                                  openCreateMeetingModal(meeting, 'edit');
+                                  $event.stopPropagation()
+                                "
+                                class="fw-600"
+                              >
+                                Edit
+                              </button>
+                              <button
+                                matRipple
+                                mat-menu-item
+                                (click)="
+                                  cancelMeeting(meeting.meetingId);
+                                  $event.stopPropagation()
+                                "
+                                class="fw-600"
+                              >
+                                Cancel
+                              </button>
+                              <button
+                                matRipple
+                                mat-menu-item
+                                (click)="$event.stopPropagation()"
+                                class="fw-600"
+                              >
+                                SendReminder
+                              </button>
+                              <button
+                                matRipple
+                                mat-menu-item
+                                (click)="$event.stopPropagation()"
+                                class="fw-600"
+                              >
+                                Mark as Complete
+                              </button>
+                            </mat-menu>
+                          </div>
+                        </div>
+                      </ng-container>
+  
+                      <ng-container *ngIf="!meetings">
+                        <div class="my-4">
+                          <div
+                            class="opt-para-1 d-flex justify-content-center py-5"
+                          >
+                            No new meetings.
+                          </div>
+  
+                          <button
+                            matRipple
+                            class="btn opt-btn-neutral opt-btn-with-icon w-100"
+                            (click)="openCreateMeetingModal()"
+                          >
+                            Add New Meeting
+                            <span class="img-fluid"
+                              ><img
+                                src="/assets/icons/google_calendar.svg"
+                                alt="arrow-right"
+                            /></span>
+                          </button>
+                        </div>
+                      </ng-container>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  

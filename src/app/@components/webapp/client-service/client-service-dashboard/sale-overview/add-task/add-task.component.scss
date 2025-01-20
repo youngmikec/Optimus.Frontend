@@ -1,0 +1,62 @@
+@use '../../../../../../@core/styles/abstracts' as *;
+
+#main {
+  width: 33rem;
+
+  @include opt-media-query-max(opt-sm) {
+    width: fit-content;
+  }
+
+  .header {
+    display: flex;
+    justify-content: space-between;
+    gap: 1.25rem;
+    margin-bottom: 1.25rem;
+
+    .email {
+      background-color: #ebf0ff !important;
+      border-color: #323a46 !important;
+    }
+  }
+
+  .amount-container {
+    text-align: center;
+    width: 100%;
+
+    .header {
+      width: fit-content;
+      margin: auto;
+    }
+
+    .content {
+      background-color: $opt-neutral2-50;
+      padding: 0.625rem 0px;
+      color: $opt-primary;
+      font-size: 1.125rem;
+      font-weight: 700;
+    }
+  }
+
+  .cta-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+    gap: 0.625rem;
+    margin-top: 0.625rem;
+  }
+
+  .input-label {
+    font-style: italic;
+  }
+
+  .input-width {
+    width: 20.375rem;
+  }
+
+  .delete-note-btn {
+    background-color: #d1292d !important;
+    border-color: #d1292d !important;
+    color: #fbe9ea !important;
+  }
+}

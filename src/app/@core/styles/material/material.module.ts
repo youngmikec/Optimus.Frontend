@@ -75,6 +75,12 @@ const material = [
   MatAutocompleteModule,
   MatSliderModule,
   MatExpansionModule,
+  MatCardModule,
+  MatIconModule,
+  MatButtonModule,
+  MatMenuModule,
+  MatTabsModule,
+  MatChipsModule,
 ];
 
 @NgModule({

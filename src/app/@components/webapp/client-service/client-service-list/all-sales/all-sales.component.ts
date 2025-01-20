@@ -102,14 +102,14 @@ export class AllSalesComponent implements OnChanges, OnInit {
 
       this.store.select(salesSelectors.searchSaleList).subscribe((resData) => {
         if (resData) {
-          this.dataSource = new MatTableDataSource(resData.pageItems);
+          this.dataSource = new MatTableDataSource(resData.data);
           this.totalRecords = resData.totalCount;
         }
       });
     } else {
       this.store.select(salesSelectors.getSaleList).subscribe((resData) => {
         if (resData) {
-          this.dataSource = new MatTableDataSource(resData.pageItems);
+          this.dataSource = new MatTableDataSource(resData.data);
           this.totalRecords = resData.totalCount;
         }
       });
@@ -139,7 +139,7 @@ export class AllSalesComponent implements OnChanges, OnInit {
 
     this.store.select(salesSelectors.getSaleList).subscribe((resData) => {
       if (resData) {
-        this.dataSource = new MatTableDataSource(resData.pageItems);
+        this.dataSource = new MatTableDataSource(resData.data);
         this.totalRecords = resData.totalCount;
       }
     });
