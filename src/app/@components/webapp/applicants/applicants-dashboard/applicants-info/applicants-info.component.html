@@ -1,0 +1,512 @@
+<div id="applicants-info">
+  <div class="applicants-info-grid">
+    <!-- <div class="grid-1">
+      <div class="top-arrows d-flex">
+        <div class="svg-bg" (click)="onCouraselChange('prev')">
+          <svg
+            width="6"
+            height="10"
+            viewBox="0 0 6 10"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M4.32048 0.546499L2.18048 2.6865L0.867148 3.99317C0.313815 4.5465 0.313815 5.4465 0.867148 5.99983L4.32048 9.45317C4.77381 9.9065 5.54715 9.57983 5.54715 8.9465V5.2065V1.05317C5.54715 0.413166 4.77381 0.0931657 4.32048 0.546499Z"
+              fill="#191D23"
+            />
+          </svg>
+        </div>
+
+        <div class="svg-bg" (click)="onCouraselChange('next')">
+          <svg
+            width="6"
+            height="10"
+            viewBox="0 0 6 10"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M1.67952 0.546499L3.81952 2.6865L5.13285 3.99317C5.68618 4.5465 5.68618 5.4465 5.13285 5.99983L1.67952 9.45317C1.22619 9.9065 0.452852 9.57983 0.452852 8.9465V5.2065V1.05317C0.452852 0.413166 1.22619 0.0931657 1.67952 0.546499Z"
+              fill="#191D23"
+            />
+          </svg>
+        </div>
+      </div>
+
+      <div class="applicants-details" *ngIf="topApplicantList">
+        <div class="circle-abbreviate">
+          <h5 class="fw-700 opt-heading5">
+            {{
+              topApplicantList[applicantIndex]?.applicant?.firstName[
+                applicantIndex
+              ]
+            }}
+            {{
+              topApplicantList[applicantIndex]?.applicant?.lastName[
+                applicantIndex
+              ]
+            }}
+          </h5>
+        </div>
+        <h4 class="opt-heading4 fw-700">
+          {{ topApplicantList[applicantIndex]?.applicant?.name }}
+        </h4>
+        <p class="opt-para1 fw-500">
+          {{ topApplicantList[applicantIndex]?.applicant?.recordKey }}
+        </p>
+        <div class="number-email">
+          <div class="icon-text">
+            <svg
+              width="15"
+              height="16"
+              viewBox="0 0 15 16"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M14.1463 12.2202C14.1463 12.4602 14.093 12.7068 13.9797 12.9468C13.8663 13.1868 13.7197 13.4135 13.5263 13.6268C13.1997 13.9868 12.8397 14.2468 12.433 14.4135C12.033 14.5802 11.5997 14.6668 11.133 14.6668C10.453 14.6668 9.72634 14.5068 8.95967 14.1802C8.19301 13.8535 7.42634 13.4135 6.66634 12.8602C5.89967 12.3002 5.17301 11.6802 4.47967 10.9935C3.79301 10.3002 3.17301 9.5735 2.61967 8.8135C2.07301 8.0535 1.63301 7.2935 1.31301 6.54016C0.993008 5.78016 0.833008 5.0535 0.833008 4.36016C0.833008 3.90683 0.913008 3.4735 1.07301 3.0735C1.23301 2.66683 1.48634 2.2935 1.83967 1.96016C2.26634 1.54016 2.73301 1.3335 3.22634 1.3335C3.41301 1.3335 3.59967 1.3735 3.76634 1.4535C3.93967 1.5335 4.09301 1.6535 4.21301 1.82683L5.75967 4.00683C5.87967 4.1735 5.96634 4.32683 6.02634 4.4735C6.08634 4.6135 6.11967 4.7535 6.11967 4.88016C6.11967 5.04016 6.07301 5.20016 5.97967 5.3535C5.89301 5.50683 5.76634 5.66683 5.60634 5.82683L5.09967 6.3535C5.02634 6.42683 4.99301 6.5135 4.99301 6.62016C4.99301 6.6735 4.99967 6.72016 5.01301 6.7735C5.03301 6.82683 5.05301 6.86683 5.06634 6.90683C5.18634 7.12683 5.39301 7.4135 5.68634 7.76016C5.98634 8.10683 6.30634 8.46016 6.65301 8.8135C7.01301 9.16683 7.35967 9.4935 7.71301 9.7935C8.05967 10.0868 8.34634 10.2868 8.57301 10.4068C8.60634 10.4202 8.64634 10.4402 8.69301 10.4602C8.74634 10.4802 8.79967 10.4868 8.85967 10.4868C8.97301 10.4868 9.05967 10.4468 9.13301 10.3735L9.63967 9.8735C9.80634 9.70683 9.96634 9.58016 10.1197 9.50016C10.273 9.40683 10.4263 9.36016 10.593 9.36016C10.7197 9.36016 10.853 9.38683 10.9997 9.44683C11.1463 9.50683 11.2997 9.5935 11.4663 9.70683L13.673 11.2735C13.8463 11.3935 13.9663 11.5335 14.0397 11.7002C14.1063 11.8668 14.1463 12.0335 14.1463 12.2202Z"
+                stroke="#0235CD"
+                stroke-miterlimit="10"
+              />
+            </svg>
+
+            <p
+              class="opt-para-1"
+              [matTooltip]="
+                (topApplicantList[applicantIndex]?.applicant?.countryCode ??
+                  '') +
+                topApplicantList[applicantIndex]?.applicant?.mobileNo
+              "
+              matTooltipPosition="below"
+              matTooltipClass="custom-tooltip"
+            >
+              {{
+                topApplicantList[applicantIndex]?.applicant?.countryCode ?? ''
+              }}
+              {{
+                topApplicantList[applicantIndex]?.applicant?.mobileNo.substring(
+                  0,
+                  11
+                ) +
+                  (topApplicantList[applicantIndex]?.applicant?.mobileNo
+                    .length > 11
+                    ? '...'
+                    : '')
+              }}
+            </p>
+          </div>
+
+          <div class="icon-text">
+            <svg
+              width="17"
+              height="16"
+              viewBox="0 0 17 16"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M11.833 13.6668H5.16634C3.16634 13.6668 1.83301 12.6668 1.83301 10.3335V5.66683C1.83301 3.3335 3.16634 2.3335 5.16634 2.3335H11.833C13.833 2.3335 15.1663 3.3335 15.1663 5.66683V10.3335C15.1663 12.6668 13.833 13.6668 11.833 13.6668Z"
+                stroke="#0235CD"
+                stroke-miterlimit="10"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              />
+              <path
+                d="M11.8337 6L9.74699 7.66667C9.06032 8.21333 7.93366 8.21333 7.24699 7.66667L5.16699 6"
+                stroke="#0235CD"
+                stroke-miterlimit="10"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              />
+            </svg>
+
+            <p
+              class="opt-para-1"
+              [matTooltip]="topApplicantList[applicantIndex]?.applicant?.email"
+              matTooltipPosition="below"
+              matTooltipClass="custom-tooltip"
+            >
+              {{
+                topApplicantList[applicantIndex]?.applicant?.email.substring(
+                  0,
+                  16
+                ) +
+                  (topApplicantList[applicantIndex]?.applicant?.email.length >
+                  16
+                    ? '...'
+                    : '')
+              }}
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <div class="border"></div>
+
+      <div class="all-applicants">
+        <div class="d-flex justify-content-between mb-4">
+          <h6 class="opt-heading-6 fw-700 mb-0">Top Applicants</h6>
+          <a
+            routerLink="/app/applicants/all-applicants"
+            class="opt-para-1 fw-600 mb-0"
+            >See all</a
+          >
+        </div>
+
+        <div class="input-style1 input-no-error">
+          <mat-form-field appearance="outline" [style.width.%]="100">
+            <span matPrefix class="img-fluid">
+              <img src="/assets/icons/search.svg" alt="icon" />
+            </span>
+
+            <input matInput placeholder="Search applicants" />
+          </mat-form-field>
+        </div>
+      </div>
+
+      <div class="text-content-container">
+        <div class="text-content" *ngFor="let applicant of topApplicantList">
+          <div class="icon-text">
+            <div class="circle-abbreviate">
+              <p class="fw-400 opt-footer">
+                {{ applicant?.applicant?.firstName[0] }}
+                {{ applicant?.applicant?.lastName[0] }}
+              </p>
+            </div>
+            <div>
+              <p class="opt-para-1 fw-600 mb-0">
+                {{ applicant?.applicant?.name }}
+              </p>
+              <p class="opt-caption mb-0 unpaid-invoices">
+                {{ applicant?.quoteCount }} Quotes
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div> -->
+
+    <div class="grid-2">
+      <div class="dashboard_header">
+        <div>
+          <h6 class="fw-700">Statistics</h6>
+        </div>
+
+        <div class="header-links">
+          <a class="view-as-list" routerLink="/app/applicants/all-applicants"
+            >View as list</a
+          >
+
+          <div class="header-buttons">
+            <div class="input-style1 input-no-error filter">
+              <mat-form-field
+                appearance="outline"
+                [style.width.%]="100"
+                [style.float]="'right'"
+              >
+                <span>
+                  <img src="assets/icons/calendar.svg" alt="" />
+                </span>
+
+                <mat-select
+                  [(ngModel)]="selectedYear"
+                  (selectionChange)="onSelectedYearChange($event)"
+                >
+                  <mat-option [value]="year" *ngFor="let year of yearList">
+                    {{ year }}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+
+            <button
+              matRipple
+              class="btn opt-btn-primary-outline back-btn"
+              routerLink="/app/calculator/quote"
+            >
+              Calculate New Quote
+            </button>
+
+            <a
+              *ngIf="permissions[1]"
+              (click)="onCreateApplicant('create', null)"
+              matRipple
+              class="btn opt-btn-primary opt-btn-sm"
+            >
+              Create Applicant
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <div class="cards-section">
+        <div class="stat-card">
+          <div class="stat-card-icon">
+            <svg
+              width="43"
+              height="40"
+              viewBox="0 0 43 40"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <ellipse
+                cx="21.5096"
+                cy="20"
+                rx="20.6496"
+                ry="20"
+                fill="#C3D2FE"
+              />
+              <ellipse
+                cx="21.5093"
+                cy="20"
+                rx="16.5197"
+                ry="16"
+                fill="#0235CD"
+              />
+              <g clip-path="url(#clip0_3446_103168)">
+                <path
+                  d="M17.1822 13.627V11H17.1817L14.4699 13.6264V13.627H17.1822Z"
+                  fill="white"
+                />
+                <path
+                  d="M17.3279 19.3555H19.808V23.9024H17.3279V19.3555Z"
+                  fill="white"
+                />
+                <path
+                  d="M18.914 11C18.559 11 18.2711 11.2878 18.2711 11.6429V14.0388C18.2711 14.3939 17.9833 14.6817 17.6283 14.6817H15.1128C14.7578 14.6817 14.4699 14.9695 14.4699 15.3245V28.3571C14.4699 28.7122 14.7578 29 15.1128 29H27.9055C28.2606 29 28.5484 28.7122 28.5484 28.3571V11.6429C28.5484 11.2878 28.2606 11 27.9055 11H18.914ZM20.8969 24.3152C20.8969 24.6702 20.6091 24.958 20.2541 24.958H16.8818C16.5267 24.958 16.2389 24.6702 16.2389 24.3152V18.9446C16.2389 18.5895 16.5267 18.3017 16.8818 18.3017H20.2541C20.6091 18.3017 20.8969 18.5895 20.8969 18.9446V24.3152ZM26.8133 24.4307C26.8133 24.722 26.5772 24.958 26.2859 24.958H22.6149C22.3236 24.958 22.0875 24.722 22.0875 24.4307C22.0875 24.1395 22.3236 23.9034 22.6149 23.9034H26.2859C26.5772 23.9034 26.8133 24.1395 26.8133 24.4307ZM26.8133 22.1901C26.8133 22.4813 26.5772 22.7174 26.2859 22.7174H22.6149C22.3236 22.7174 22.0875 22.4813 22.0875 22.1901C22.0875 21.8988 22.3236 21.6627 22.6149 21.6627H26.2859C26.5772 21.6627 26.8133 21.8988 26.8133 22.1901ZM26.8133 19.9494C26.8133 20.2407 26.5772 20.4768 26.2859 20.4768H22.6149C22.3236 20.4768 22.0875 20.2407 22.0875 19.9494C22.0875 19.6582 22.3236 19.4221 22.6149 19.4221H26.2859C26.5772 19.4221 26.8133 19.6582 26.8133 19.9494Z"
+                  fill="white"
+                />
+              </g>
+              <defs>
+                <clipPath id="clip0_3446_103168">
+                  <rect
+                    width="18.5846"
+                    height="18"
+                    fill="white"
+                    transform="translate(12.2169 11)"
+                  />
+                </clipPath>
+              </defs>
+            </svg>
+          </div>
+          <div class="stat-card-content">
+            <p class="opt-para-1">Application</p>
+
+            <div class="d-flex mb-2 align-items-center">
+              <h4 class="opt-heading-4 fw-700 mb-0 me-3">
+                {{ singleApplicantDashboardData?.applicationCount | number }}
+              </h4>
+            </div>
+            <p class="opt-para-1 mb-0">
+              ({{ singleApplicantDashboardData?.familyMembersCount | number }}
+              family members in total)
+            </p>
+          </div>
+        </div>
+
+        <div class="stat-card">
+          <div class="stat-card-icon">
+            <svg
+              width="43"
+              height="40"
+              viewBox="0 0 43 40"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <ellipse
+                cx="21.5096"
+                cy="20"
+                rx="20.6496"
+                ry="20"
+                fill="#C3D2FE"
+              />
+              <ellipse
+                cx="21.5093"
+                cy="20"
+                rx="16.5197"
+                ry="16"
+                fill="#0235CD"
+              />
+              <g clip-path="url(#clip0_3446_103168)">
+                <path
+                  d="M17.1822 13.627V11H17.1817L14.4699 13.6264V13.627H17.1822Z"
+                  fill="white"
+                />
+                <path
+                  d="M17.3279 19.3555H19.808V23.9024H17.3279V19.3555Z"
+                  fill="white"
+                />
+                <path
+                  d="M18.914 11C18.559 11 18.2711 11.2878 18.2711 11.6429V14.0388C18.2711 14.3939 17.9833 14.6817 17.6283 14.6817H15.1128C14.7578 14.6817 14.4699 14.9695 14.4699 15.3245V28.3571C14.4699 28.7122 14.7578 29 15.1128 29H27.9055C28.2606 29 28.5484 28.7122 28.5484 28.3571V11.6429C28.5484 11.2878 28.2606 11 27.9055 11H18.914ZM20.8969 24.3152C20.8969 24.6702 20.6091 24.958 20.2541 24.958H16.8818C16.5267 24.958 16.2389 24.6702 16.2389 24.3152V18.9446C16.2389 18.5895 16.5267 18.3017 16.8818 18.3017H20.2541C20.6091 18.3017 20.8969 18.5895 20.8969 18.9446V24.3152ZM26.8133 24.4307C26.8133 24.722 26.5772 24.958 26.2859 24.958H22.6149C22.3236 24.958 22.0875 24.722 22.0875 24.4307C22.0875 24.1395 22.3236 23.9034 22.6149 23.9034H26.2859C26.5772 23.9034 26.8133 24.1395 26.8133 24.4307ZM26.8133 22.1901C26.8133 22.4813 26.5772 22.7174 26.2859 22.7174H22.6149C22.3236 22.7174 22.0875 22.4813 22.0875 22.1901C22.0875 21.8988 22.3236 21.6627 22.6149 21.6627H26.2859C26.5772 21.6627 26.8133 21.8988 26.8133 22.1901ZM26.8133 19.9494C26.8133 20.2407 26.5772 20.4768 26.2859 20.4768H22.6149C22.3236 20.4768 22.0875 20.2407 22.0875 19.9494C22.0875 19.6582 22.3236 19.4221 22.6149 19.4221H26.2859C26.5772 19.4221 26.8133 19.6582 26.8133 19.9494Z"
+                  fill="white"
+                />
+              </g>
+              <defs>
+                <clipPath id="clip0_3446_103168">
+                  <rect
+                    width="18.5846"
+                    height="18"
+                    fill="white"
+                    transform="translate(12.2169 11)"
+                  />
+                </clipPath>
+              </defs>
+            </svg>
+          </div>
+          <div class="stat-card-content">
+            <p class="opt-para-1">Amount in invoices</p>
+
+            <div class="d-flex mb-2 align-items-center">
+              <h4 class="opt-heading-4 fw-700 mb-0 me-3">
+                ${{ singleApplicantDashboardData?.invoiceValue | number }}
+              </h4>
+              <!-- <div>
+                <div class="d-flex align-items-center country-percent">
+                  <p class="opt-footer fw-600 me-1 mb-0">+2%</p>
+                  <svg
+                    width="11"
+                    height="8"
+                    viewBox="0 0 11 8"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      d="M10 1.5L5.8 5.7L4.2 3.3L1 6.5"
+                      stroke="#10B981"
+                      stroke-width="1.5"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    />
+                  </svg>
+                </div>
+              </div> -->
+            </div>
+            <p class="opt-para-1 mb-0">
+              ({{ singleApplicantDashboardData?.invoiceCount | number }}
+              invoices in total)
+            </p>
+          </div>
+        </div>
+
+        <div class="stat-card">
+          <div class="stat-card-icon">
+            <svg
+              width="43"
+              height="40"
+              viewBox="0 0 43 40"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <ellipse
+                cx="21.5096"
+                cy="20"
+                rx="20.6496"
+                ry="20"
+                fill="#C3D2FE"
+              />
+              <ellipse
+                cx="21.5093"
+                cy="20"
+                rx="16.5197"
+                ry="16"
+                fill="#0235CD"
+              />
+              <g clip-path="url(#clip0_3446_103168)">
+                <path
+                  d="M17.1822 13.627V11H17.1817L14.4699 13.6264V13.627H17.1822Z"
+                  fill="white"
+                />
+                <path
+                  d="M17.3279 19.3555H19.808V23.9024H17.3279V19.3555Z"
+                  fill="white"
+                />
+                <path
+                  d="M18.914 11C18.559 11 18.2711 11.2878 18.2711 11.6429V14.0388C18.2711 14.3939 17.9833 14.6817 17.6283 14.6817H15.1128C14.7578 14.6817 14.4699 14.9695 14.4699 15.3245V28.3571C14.4699 28.7122 14.7578 29 15.1128 29H27.9055C28.2606 29 28.5484 28.7122 28.5484 28.3571V11.6429C28.5484 11.2878 28.2606 11 27.9055 11H18.914ZM20.8969 24.3152C20.8969 24.6702 20.6091 24.958 20.2541 24.958H16.8818C16.5267 24.958 16.2389 24.6702 16.2389 24.3152V18.9446C16.2389 18.5895 16.5267 18.3017 16.8818 18.3017H20.2541C20.6091 18.3017 20.8969 18.5895 20.8969 18.9446V24.3152ZM26.8133 24.4307C26.8133 24.722 26.5772 24.958 26.2859 24.958H22.6149C22.3236 24.958 22.0875 24.722 22.0875 24.4307C22.0875 24.1395 22.3236 23.9034 22.6149 23.9034H26.2859C26.5772 23.9034 26.8133 24.1395 26.8133 24.4307ZM26.8133 22.1901C26.8133 22.4813 26.5772 22.7174 26.2859 22.7174H22.6149C22.3236 22.7174 22.0875 22.4813 22.0875 22.1901C22.0875 21.8988 22.3236 21.6627 22.6149 21.6627H26.2859C26.5772 21.6627 26.8133 21.8988 26.8133 22.1901ZM26.8133 19.9494C26.8133 20.2407 26.5772 20.4768 26.2859 20.4768H22.6149C22.3236 20.4768 22.0875 20.2407 22.0875 19.9494C22.0875 19.6582 22.3236 19.4221 22.6149 19.4221H26.2859C26.5772 19.4221 26.8133 19.6582 26.8133 19.9494Z"
+                  fill="white"
+                />
+              </g>
+              <defs>
+                <clipPath id="clip0_3446_103168">
+                  <rect
+                    width="18.5846"
+                    height="18"
+                    fill="white"
+                    transform="translate(12.2169 11)"
+                  />
+                </clipPath>
+              </defs>
+            </svg>
+          </div>
+          <div class="stat-card-content">
+            <p class="opt-para-1">Amount in payments</p>
+
+            <div class="d-flex mb-2 align-items-center">
+              <h4 class="opt-heading-4 fw-700 mb-0 me-3">
+                ${{ singleApplicantDashboardData?.paymentValue | number }}
+              </h4>
+              <!-- <div>
+                <div class="d-flex align-items-center country-percent">
+                  <p class="opt-footer fw-600 me-1 mb-0">+2%</p>
+                  <svg
+                    width="11"
+                    height="8"
+                    viewBox="0 0 11 8"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      d="M10 1.5L5.8 5.7L4.2 3.3L1 6.5"
+                      stroke="#10B981"
+                      stroke-width="1.5"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    />
+                  </svg>
+                </div>
+              </div> -->
+            </div>
+            <p class="opt-para-1 mb-0">
+              ({{ singleApplicantDashboardData?.paymentCount | number }}
+              payments in total)
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <div class="line-chart-cards">
+        <div class="d-flex justify-content-between mb-4">
+          <h6 class="opt-heading-6 fw-700 mb-0">Amount</h6>
+          <div class="applicant-invoice-payment">
+            <a
+              class="opt-para-1 fw-600 mb-0"
+              [class]="selectedChart === 'invoice' ? 'chart-active' : ''"
+              (click)="selectedChart = 'invoice'"
+              >Invoices</a
+            >
+            <a
+              class="opt-para-1 fw-600 mb-0"
+              [class]="selectedChart === 'payment' ? 'chart-active' : ''"
+              (click)="selectedChart = 'payment'"
+              >Payments</a
+            >
+          </div>
+        </div>
+        <div id="line-chart">
+          <apx-chart
+            [series]="chartOptions.series"
+            [chart]="chartOptions.chart"
+            [xaxis]="chartOptions.xaxis"
+            [stroke]="chartOptions.stroke"
+            [colors]="chartOptions.colors"
+            [dataLabels]="chartOptions.dataLabels"
+            [legend]="chartOptions.legend"
+            [markers]="chartOptions.markers"
+            [grid]="chartOptions.grid"
+            [yaxis]="chartOptions.yaxis"
+            [title]="chartOptions.title"
+          ></apx-chart>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

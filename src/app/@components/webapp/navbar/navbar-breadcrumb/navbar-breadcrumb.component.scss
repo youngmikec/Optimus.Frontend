@@ -1,0 +1,29 @@
+#navbar-breadcrumb {
+  display: flex;
+
+  .breadcrumb-link {
+    color: var(--opt-neutral-500);
+    margin-bottom: 0rem;
+    cursor: pointer;
+    white-space: nowrap;
+    padding: 0.125rem 0.3125rem;
+    border-radius: 0.3125rem;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+  }
+
+  .content-left {
+    margin-right: 0.5rem;
+  }
+
+  .breadcrumb-separator {
+    color: var(--opt-neutral-500);
+    margin: 0rem 0.125rem;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+  }
+}

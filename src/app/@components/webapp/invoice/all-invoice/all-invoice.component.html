@@ -1,0 +1,175 @@
+<ng-container *ngIf="dataSource !== null && dataSource; else noTableData">
+  <div class="table-responsive">
+    <table mat-table [dataSource]="dataSource" matSort>
+      <ng-container matColumnDef="invoiceNumber">
+        <th
+          #resizableElement
+          mat-header-cell
+          *matHeaderCellDef
+          mat-sort-header
+          class="mat-column-resizable"
+        >
+          Invoice Number
+          <div
+            class="resize-handle"
+            (mousedown)="onResizeColumn($event, 'name')"
+          ></div>
+        </th>
+        <td matRipple mat-cell *matCellDef="let row">
+          {{ row.invoiceNo }}
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="applicantName">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>
+          Applicant's Full Name
+        </th>
+        <td matRipple mat-cell *matCellDef="let row">
+          {{ row.applicationQuote?.name || '--' }}
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="countryProgram">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>
+          Country Program
+        </th>
+        <td matRipple mat-cell *matCellDef="let row">
+          {{ row?.applicationQuote?.description || '--' }}
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="programFee">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Program Fee</th>
+        <td matRipple mat-cell *matCellDef="let row">
+          {{
+            row.applicationQuote.amount || 0
+              | currency : row?.baseCurrencyCode : 'symbol-narrow'
+          }}
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="minimumPayment">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>
+          Minimum Payment
+        </th>
+        <td matRipple mat-cell *matCellDef="let row">
+          {{
+            (row.invoiceDetails[0] ? row.invoiceDetails[0].amount : 0)
+              | currency : row?.baseCurrencyCode : 'symbol-narrow'
+          }}
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="invoicedAmount">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>
+          Invoiced Amount
+        </th>
+        <td matRipple mat-cell *matCellDef="let row">
+          {{
+            (row.invoiceQuotations[1] ? row.invoiceQuotations[1].amount : 0)
+              | currency : row?.baseCurrencyCode || 'USD' : 'symbol-narrow'
+          }}
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="totalPaid">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Total Paid</th>
+        <td matRipple mat-cell *matCellDef="let row">
+          {{
+            (row.invoiceQuotations[1]
+              ? row.invoiceQuotations[1]?.amountPaid
+              : 0
+            ) | currency : row?.baseCurrencyCode || 'USD' : 'symbol-narrow'
+          }}
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="createdDate">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Created Date</th>
+        <td matRipple mat-cell *matCellDef="let row">
+          {{ row.createdDate | date }}
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="createdBy">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Created By</th>
+        <td matRipple mat-cell *matCellDef="let row">
+          {{ row?.createdBy }}
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="status">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>
+          Invoice Status
+        </th>
+        <td matRipple mat-cell *matCellDef="let row">
+          <span
+            [ngClass]="{
+              'status-active': row.paymentStatusDesc === 'Paid',
+              'status-inactive': row.paymentStatusDesc === 'Pending'
+            }"
+          >
+            {{ row.paymentStatusDesc }}
+          </span>
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="actions">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Actions</th>
+        <td mat-cell *matCellDef="let row">
+          <div class="table-cta-container">
+            <div
+              class="cta-container"
+              matRipple
+              matTooltip="Profile"
+              matTooltipPosition="above"
+              matTooltipClass="custom-tooltip"
+            >
+              <img src="/assets/icons/edit.svg" alt="view icon" />
+            </div>
+
+            <div class="toggle-container">
+              <mat-slide-toggle
+                matTooltipPosition="above"
+                matTooltipClass="custom-tooltip"
+                [matTooltip]="row.status === 1 ? 'Deactivate' : 'Activate'"
+                [checked]="row.status === 1 ? 'true' : 'false'"
+              >
+              </mat-slide-toggle>
+            </div>
+          </div>
+        </td>
+      </ng-container>
+
+      <tr
+        role="button"
+        mat-row
+        *matRowDef="let row; columns: displayedColumns"
+        (click)="navigateToInvoice(row); $event.stopPropagation()"
+      ></tr>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+
+      <!-- Row shown when there is no matching data. -->
+      <tr class="mat-row" *matNoDataRow>
+        <td class="mat-cell" colspan="4">No matching data"</td>
+      </tr>
+    </table>
+  </div>
+  <mat-paginator
+    [pageSizeOptions]="[
+      10, 15, 20, 25, 30, 35, 40, 45, 50, 55, 60, 65, 70, 75, 80, 85, 90, 95,
+      100
+    ]"
+    [pageIndex]=""
+    showFirstLastButtons
+    [pageSize]="pageSize"
+    [hidePageSize]="false"
+    [length]="totalRecords"
+    (page)="onPaginationChange($event)"
+  ></mat-paginator>
+</ng-container>
+
+<ng-template #noTableData>
+  <app-table-loader></app-table-loader>
+</ng-template>

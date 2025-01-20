@@ -1,0 +1,52 @@
+<div class="comment" [ngClass]="{ 'comment-focused': isFocused }">
+  <quill-editor
+    #quillEditor
+    class="d-flex flex-column-reverse"
+    [bounds]="'self'"
+    [placeholder]="placeholder"
+    [modules]="quillModules"
+    (onFocus)="isFocused = true"
+    (onBlur)="isFocused = false"
+    [(ngModel)]="comment"
+  >
+  </quill-editor>
+
+  <div class="custom-actions">
+    <!-- <div matRipple class="close-icon-container" [matMenuTriggerFor]="users">
+      @
+    </div>
+    <mat-menu #users="matMenu">
+      <button
+        mat-menu-item
+        *ngFor="let user of usersRef"
+        class="reference-button"
+        (click)="referenceUser(user)"
+      >
+        <img [src]="user?.profilePicture" alt="Profile Picture" />
+        {{ user?.name }}
+      </button>
+    </mat-menu> -->
+    <button
+      matRipple
+      class="btn opt-btn-primary-outline border-0"
+      (click)="cancelComment()"
+      *ngIf="showCancelBtn"
+    >
+      Cancel
+    </button>
+    <button
+      matRipple
+      class="btn opt-btn-primary"
+      [disabled]="!comment"
+      (click)="sendComment()"
+    >
+      {{ activeBtnLabel }}
+      <span
+        class="spinner-border spinner-border-sm mx-2"
+        role="status"
+        aria-hidden="true"
+        *ngIf="isCreating$ | async"
+      ></span>
+    </button>
+  </div>
+</div>

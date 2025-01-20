@@ -1,0 +1,93 @@
+<section id="manage-contact-category">
+  <div>
+    <div class="main" *ngIf="data?.status === false">
+      <svg
+        width="60"
+        height="60"
+        viewBox="0 0 60 60"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <circle cx="30" cy="30" r="30" fill="#FBE9EA" />
+        <path
+          d="M30 45C38.25 45 45 38.25 45 30C45 21.75 38.25 15 30 15C21.75 15 15 21.75 15 30C15 38.25 21.75 45 30 45Z"
+          stroke="#D1292D"
+          stroke-width="1.8"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        />
+        <path
+          d="M30 24V31.5"
+          stroke="#D1292D"
+          stroke-width="1.8"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        />
+        <path
+          d="M29.9922 36H30.0057"
+          stroke="#D1292D"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        />
+      </svg>
+      <div class="mt-3">
+        <div class="fw-700 opt-para-1 mb-1">
+          Are you sure you want to remove this device?
+        </div>
+        <div class="opt-para-1 mb-3">
+          This decision cannot be undone. Are you sure?
+        </div>
+      </div>
+    </div>
+
+    <div class="main" *ngIf="data?.status === true">
+      <svg
+        width="60"
+        height="60"
+        viewBox="0 0 60 60"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <path
+          d="M30 5C16.225 5 5 16.225 5 30C5 43.775 16.225 55 30 55C43.775 55 55 43.775 55 30C55 16.225 43.775 5 30 5ZM41.95 24.25L27.775 38.425C27.425 38.775 26.95 38.975 26.45 38.975C25.95 38.975 25.475 38.775 25.125 38.425L18.05 31.35C17.325 30.625 17.325 29.425 18.05 28.7C18.775 27.975 19.975 27.975 20.7 28.7L26.45 34.45L39.3 21.6C40.025 20.875 41.225 20.875 41.95 21.6C42.675 22.325 42.675 23.5 41.95 24.25Z"
+          fill="#0235CD"
+        />
+      </svg>
+      <div class="mt-3">
+        <div class="fw-700 opt-para-1 mb-1">Approve Mobile Device Access</div>
+        <div class="opt-para-1 mb-3">
+          Are you sure you want to approve access for this mobile device with ID
+          {{ data?.submitData?.deviceId }} ?
+        </div>
+      </div>
+    </div>
+
+    <div class="cta-container">
+      <button
+        matRipple
+        type="button"
+        class="btn opt-btn-primary-outline"
+        (click)="closeDialog()"
+      >
+        Cancel
+      </button>
+
+      <button
+        matRipple
+        type="button"
+        [class]="
+          data.status === false ? 'btn opt-btn-danger' : 'btn opt-btn-primary'
+        "
+        [disabled]="(isLoading | async) !== false"
+        (click)="toggleUserStatus(data.status)"
+      >
+        <ng-container *ngIf="data.status === false">Remove</ng-container>
+        <ng-container *ngIf="data.status === true">Approve</ng-container>
+        <ng-container *ngIf="(isLoading | async) !== false">
+          <app-button-loader></app-button-loader>
+        </ng-container>
+      </button>
+    </div>
+  </div>
+</section>

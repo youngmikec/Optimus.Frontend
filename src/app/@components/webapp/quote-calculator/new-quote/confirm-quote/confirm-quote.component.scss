@@ -1,0 +1,29 @@
+@use '../../../../../@core/styles/abstracts' as *;
+
+#confirm-container {
+  width: 23rem;
+
+  @include opt-media-query-max(opt-sm) {
+    width: fit-content;
+  }
+
+  .header {
+    display: flex;
+    justify-content: flex-end;
+  }
+
+  .content {
+    display: flex;
+    justify-content: center;
+    text-align: center;
+    margin-top: 1.5rem;
+  }
+
+  .cta-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 2rem;
+  }
+}

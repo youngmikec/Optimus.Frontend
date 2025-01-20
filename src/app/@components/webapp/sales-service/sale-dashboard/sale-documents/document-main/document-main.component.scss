@@ -1,0 +1,9 @@
+.content {
+  height: calc(100vh - 25vh);
+  display: grid;
+  place-content: center;
+}
+
+.document-header {
+  background-color: #f9f4e7;
+}

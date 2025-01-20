@@ -1,0 +1,607 @@
+<section id="new-user-category">
+  <form [formGroup]="addEditUserForm">
+    <div class="new-user-category-header">
+      <h6 class="opt-heading-6 fw-600 mb-0">Create New User</h6>
+
+      <!-- <ng-container *ngIf="data?.instance !== 'update'">
+          Create New User
+        </ng-container>
+        <ng-container *ngIf="data?.instance === 'update'"
+          >Edit User</ng-container
+        > -->
+
+      <!-- <div matRipple class="close-icon-container" (click)="closeDialog()">
+          <img src="/assets/icons/modal-close-icon.svg" alt="modal close icon" />
+        </div> -->
+
+      <div class="button-container">
+        <a
+          routerLink="/app/admin-settings/user-management"
+          matRipple
+          class="btn opt-btn-primary-outline back-btn"
+        >
+          Cancel
+        </a>
+
+        <button
+          matRipple
+          type="submit"
+          class="btn opt-btn-primary opt-btn-md"
+          (click)="createUser()"
+          [disabled]="
+            addEditUserForm['invalid'] || (isLoading | async) !== false
+          "
+        >
+          Create
+          <ng-container *ngIf="(isLoading | async) !== false">
+            <app-button-loader></app-button-loader>
+          </ng-container>
+        </button>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-4">
+        <p class="opt-para-1 fw-600">Basic Information</p>
+        <p class="opt-caption fw-400 content-text">
+          Basic information about a user includes their name, email address,
+          contact number, role, department, division...
+        </p>
+      </div>
+      <div class="col-8">
+        <!-- <form [formGroup]="addEditUserForm"> -->
+        <div class="row">
+          <div class="col-md-6">
+            <div class="input-style1">
+              <label class="input-label input-required">First Name</label>
+
+              <mat-form-field appearance="outline" [style.width.%]="100">
+                <input
+                  type="text"
+                  matInput
+                  formControlName="firstName"
+                  placeholder="Enter first name"
+                />
+
+                <mat-error *ngIf="newUserFormControls['firstName'].invalid">
+                  <img
+                    src="/assets/icons/error.svg"
+                    alt=""
+                    class="img-fluid error-icon"
+                  />
+                  {{ getErrorMessage('firstName') }}
+                </mat-error>
+              </mat-form-field>
+            </div>
+          </div>
+
+          <div class="col-md-6">
+            <div class="input-style1">
+              <label class="input-label input-required">Last Name</label>
+
+              <mat-form-field appearance="outline" [style.width.%]="100">
+                <input
+                  type="text"
+                  matInput
+                  formControlName="lastName"
+                  placeholder="Enter last name"
+                />
+
+                <mat-error *ngIf="newUserFormControls['lastName'].invalid">
+                  <img
+                    src="/assets/icons/error.svg"
+                    alt=""
+                    class="img-fluid error-icon"
+                  />
+                  {{ getErrorMessage('lastName') }}
+                </mat-error>
+              </mat-form-field>
+            </div>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-md-6">
+            <div class="input-style1">
+              <label class="input-label input-required">Email address</label>
+
+              <mat-form-field appearance="outline" [style.width.%]="100">
+                <input
+                  matInput
+                  placeholder="Enter email address"
+                  formControlName="email"
+                />
+
+                <mat-error *ngIf="newUserFormControls['email'].invalid">
+                  <img
+                    src="/assets/icons/error.svg"
+                    alt=""
+                    class="img-fluid error-icon"
+                  />
+                  {{ getErrorMessage('email') }}
+                </mat-error>
+              </mat-form-field>
+            </div>
+          </div>
+
+          <div class="col-md-6">
+            <div class="input-style1">
+              <label class="input-label input-required">Contact Number</label>
+
+              <div class="select-input-style">
+                <mat-form-field
+                  appearance="outline"
+                  [style.width.%]="100"
+                  class="select-field"
+                >
+                  <input
+                    #countryCode
+                    type="text"
+                    matInput
+                    placeholder="234"
+                    formControlName="countryCode"
+                    [matAutocomplete]="forCountryCode"
+                    (input)="onFilterCountryCode(countryCode.value)"
+                  />
+
+                  <mat-autocomplete
+                    class="country-code"
+                    autoActiveFirstOption
+                    #forCountryCode="matAutocomplete"
+                  >
+                    <ng-container
+                      *ngIf="
+                        (allFilteredCountryCodes | async) !== null;
+                        else noCountryCodes
+                      "
+                    >
+                      <mat-option
+                        *ngFor="
+                          let countryCode of allFilteredCountryCodes | async
+                        "
+                        class="country-code"
+                        value="{{ countryCode.dialCode }}"
+                      >
+                        <div class="country-code-container">
+                          <!-- <img [src]="countryCode.flag" alt="" class="flag" /> -->
+
+                          <p class="country">
+                            {{ countryCode.name }} <span></span>
+                          </p>
+
+                          <p class="code">({{ countryCode.dialCode }})</p>
+                        </div>
+                      </mat-option>
+                    </ng-container>
+
+                    <ng-template #noCountryCodes>
+                      <mat-option disabled>Loading Country Codes...</mat-option>
+                    </ng-template>
+                  </mat-autocomplete>
+                  <mat-error *ngIf="newUserFormControls['countryCode'].invalid">
+                    <img
+                      src="/assets/icons/error.svg"
+                      alt=""
+                      class="img-fluid error-icon"
+                    />
+                    {{ getErrorMessage('countryCode') }}
+                  </mat-error>
+                </mat-form-field>
+                <mat-form-field appearance="outline" [style.width.%]="100">
+                  <input
+                    matInput
+                    type="number"
+                    placeholder="123456"
+                    formControlName="phoneNumber"
+                  />
+
+                  <mat-error *ngIf="newUserFormControls['phoneNumber'].invalid">
+                    <img
+                      src="/assets/icons/error.svg"
+                      alt=""
+                      class="img-fluid error-icon"
+                    />
+                    {{ getErrorMessage('phoneNumber') }}
+                  </mat-error>
+                </mat-form-field>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-md-6">
+            <div class="input-style1">
+              <label class="input-label input-required">Role</label>
+
+              <mat-form-field appearance="outline" [style.width.%]="100">
+                <mat-select formControlName="roleId" placeholder="Select role">
+                  <ng-container
+                    *ngIf="
+                      allActiveRoles !== null && allActiveRoles?.length !== 0;
+                      else noRolesByEmail
+                    "
+                  >
+                    <ng-container *ngFor="let role of allActiveRoles?.roleList">
+                      <mat-option [value]="role.id">
+                        {{ role?.name }}
+                      </mat-option>
+                    </ng-container>
+                  </ng-container>
+
+                  <ng-template #noRolesByEmail>
+                    <ng-container *ngIf="allActiveRoles === null">
+                      <mat-option disabled> Loading roles...</mat-option>
+                    </ng-container>
+
+                    <ng-container *ngIf="allActiveRoles?.length === 0">
+                      <mat-option disabled> No role is available</mat-option>
+                    </ng-container>
+                  </ng-template>
+                </mat-select>
+
+                <mat-error *ngIf="newUserFormControls['roleId'].invalid">
+                  <img
+                    src="/assets/icons/error.svg"
+                    alt=""
+                    class="img-fluid error-icon"
+                  />
+                  {{ getErrorMessage('roleId') }}
+                </mat-error>
+              </mat-form-field>
+            </div>
+          </div>
+
+          <div class="col-md-6">
+            <div class="input-style1">
+              <label class="input-label input-required">Division</label>
+
+              <mat-form-field appearance="outline" [style.width.%]="100">
+                <mat-select
+                  formControlName="division"
+                  placeholder="Select division"
+                  (selectionChange)="getDepartmentByDivisionId($event)"
+                >
+                  <ng-container
+                    *ngIf="
+                      allDivisions !== null && allDivisions?.length !== 0;
+                      else noDivision
+                    "
+                  >
+                    <ng-container *ngFor="let division of allDivisions?.entity">
+                      <mat-option [value]="division.id">
+                        {{ division?.name }}
+                      </mat-option>
+                    </ng-container>
+                  </ng-container>
+
+                  <ng-template #noDivision>
+                    <ng-container *ngIf="allDivisions === null">
+                      <mat-option disabled> Loading division...</mat-option>
+                    </ng-container>
+
+                    <ng-container *ngIf="allActiveRoles?.length === 0">
+                      <mat-option disabled>
+                        No division is available</mat-option
+                      >
+                    </ng-container>
+                  </ng-template>
+                </mat-select>
+
+                <mat-error *ngIf="newUserFormControls['division'].invalid">
+                  <img
+                    src="/assets/icons/error.svg"
+                    alt=""
+                    class="img-fluid error-icon"
+                  />
+                  {{ getErrorMessage('division') }}
+                </mat-error>
+              </mat-form-field>
+            </div>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-md-6">
+            <div class="input-style1">
+              <label class="input-label input-required">Department</label>
+
+              <mat-form-field appearance="outline" [style.width.%]="100">
+                <mat-select
+                  formControlName="department"
+                  placeholder="Select department"
+                  (selectionChange)="getUnitByDepartmentId($event)"
+                >
+                  <ng-container
+                    *ngIf="
+                      allDepartments !== null && allDepartments?.length !== 0;
+                      else noDepartment
+                    "
+                  >
+                    <ng-container
+                      *ngFor="let department of allDepartments?.entity"
+                    >
+                      <mat-option [value]="department.id">
+                        {{ department?.name }}
+                      </mat-option>
+                    </ng-container>
+                  </ng-container>
+
+                  <ng-template #noDepartment>
+                    <ng-container *ngIf="allDepartments === null">
+                      <mat-option disabled> Loading department...</mat-option>
+                    </ng-container>
+
+                    <ng-container *ngIf="allDepartments?.length === 0">
+                      <mat-option disabled>
+                        No department is available</mat-option
+                      >
+                    </ng-container>
+                  </ng-template>
+                </mat-select>
+
+                <mat-error *ngIf="newUserFormControls['department'].invalid">
+                  <img
+                    src="/assets/icons/error.svg"
+                    alt=""
+                    class="img-fluid error-icon"
+                  />
+                  {{ getErrorMessage('department') }}
+                </mat-error>
+              </mat-form-field>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="input-style1">
+              <label class="input-label">Unit</label>
+
+              <mat-form-field appearance="outline" [style.width.%]="100">
+                <mat-select formControlName="unitId" placeholder="Select unit">
+                  <ng-container
+                    *ngIf="
+                      allUnits !== null && allUnits?.length !== 0;
+                      else noUnit
+                    "
+                  >
+                    <ng-container *ngFor="let unit of allUnits">
+                      <mat-option [value]="unit.id">
+                        {{ unit?.name }}
+                      </mat-option>
+                    </ng-container>
+                  </ng-container>
+
+                  <ng-template #noUnit>
+                    <ng-container *ngIf="allUnits === null">
+                      <mat-option disabled> Loading units...</mat-option>
+                    </ng-container>
+
+                    <ng-container *ngIf="allUnits?.length === 0">
+                      <mat-option disabled> No unit is available</mat-option>
+                    </ng-container>
+                  </ng-template>
+                </mat-select>
+
+                <mat-error *ngIf="newUserFormControls['unitId'].invalid">
+                  <img
+                    src="/assets/icons/error.svg"
+                    alt=""
+                    class="img-fluid error-icon"
+                  />
+                  {{ getErrorMessage('unit') }}
+                </mat-error>
+              </mat-form-field>
+            </div>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-md-6">
+            <div class="input-style1">
+              <label class="input-label input-required">Location</label>
+
+              <mat-form-field appearance="outline" [style.width.%]="100">
+                <mat-select
+                  formControlName="location"
+                  placeholder="Select location"
+                >
+                  <ng-container
+                    *ngIf="
+                      allLocation !== null && allLocation?.length !== 0;
+                      else noLocation
+                    "
+                  >
+                    <ng-container *ngFor="let location of allLocation?.entity">
+                      <mat-option [value]="location.id">
+                        {{ location?.name }}
+                      </mat-option>
+                    </ng-container>
+                  </ng-container>
+
+                  <ng-template #noLocation>
+                    <ng-container *ngIf="allLocation === null">
+                      <mat-option disabled> Loading location...</mat-option>
+                    </ng-container>
+
+                    <ng-container *ngIf="allLocation?.length === 0">
+                      <mat-option disabled>
+                        No location is available</mat-option
+                      >
+                    </ng-container>
+                  </ng-template>
+                </mat-select>
+
+                <mat-error *ngIf="newUserFormControls['location'].invalid">
+                  <img
+                    src="/assets/icons/error.svg"
+                    alt=""
+                    class="img-fluid error-icon"
+                  />
+                  {{ getErrorMessage('location') }}
+                </mat-error>
+              </mat-form-field>
+            </div>
+          </div>
+
+          <div class="col-md-6">
+            <div class="input-style1">
+              <label class="input-label input-required">Job Title</label>
+
+              <mat-form-field appearance="outline" [style.width.%]="100">
+                <mat-select
+                  formControlName="jobTitle"
+                  placeholder="Select Job Title"
+                >
+                  <mat-option
+                    [value]="title.id"
+                    *ngFor="let title of jobTitles$ | async"
+                  >
+                    {{ title?.name }}
+                  </mat-option>
+                </mat-select>
+
+                <mat-error *ngIf="newUserFormControls['jobTitle'].invalid">
+                  <img
+                    src="/assets/icons/error.svg"
+                    alt=""
+                    class="img-fluid error-icon"
+                  />
+                  {{ getErrorMessage('jobTitle') }}
+                </mat-error>
+              </mat-form-field>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="border mb-4"></div>
+
+    <div class="row">
+      <div class="col-4">
+        <p class="opt-para-1 fw-600">Device Access</p>
+        <p class="opt-caption content-text">
+          Set the devices that this user may be allowed to access their account.
+        </p>
+      </div>
+
+      <div class="col-8">
+        <form [formGroup]="addEditUserForm" class="toggle-section">
+          <div class="toggle-container">
+            <mat-slide-toggle
+              matTooltipPosition="above"
+              matTooltipClass="custom-tooltip"
+              matInput
+              formControlName="allowWebAccess"
+              [checked]="allowWebAccess"
+              (change)="toggleChanges($event)"
+            >
+              Allow web access
+            </mat-slide-toggle>
+          </div>
+
+          <div class="border"></div>
+
+          <div class="toggle-container">
+            <mat-slide-toggle
+              matTooltipPosition="above"
+              matTooltipClass="custom-tooltip"
+              matInput
+              formControlName="allowMobileAccess"
+              (change)="toggleChangeMultipleDev($event)"
+            >
+              Allow mobile devices?*
+            </mat-slide-toggle>
+          </div>
+
+          <!-- <ng-container>
+            <div formArrayName="device">
+              <div
+                class="mb-4"
+                *ngFor="
+                  let workRequest of addEditUserFormArray.controls;
+                  let i = index
+                "
+              >
+                <div [formGroupName]="i">
+                  <div class="row mt-3" *ngIf="allowMobileAccess === true">
+                    <div class="col-md-6">
+                      <div class="input-style1">
+                        <mat-form-field
+                          appearance="outline"
+                          [style.width.%]="100"
+                        >
+                          <input
+                            matInput
+                            formControlName="deviceId"
+                            placeholder="Enter device serial number"
+                          />
+                        </mat-form-field>
+                      </div>
+                    </div>
+                    <div class="col-md-6">
+                      <div class="add-remove-container">
+                        <div
+                          *ngIf="addEditUserFormArray!.length > 1"
+                          class="remove-btn ms-auto"
+                          matRipple
+                          (click)="removeDeviceId(i)"
+                        >
+                          <svg
+                            width="18"
+                            height="18"
+                            viewBox="0 0 18 18"
+                            fill="none"
+                            xmlns="http://www.w3.org/2000/svg"
+                          >
+                            <path
+                              d="M8.99935 0.667969C4.40768 0.667969 0.666016 4.40964 0.666016 9.0013C0.666016 13.593 4.40768 17.3346 8.99935 17.3346C13.591 17.3346 17.3327 13.593 17.3327 9.0013C17.3327 4.40964 13.591 0.667969 8.99935 0.667969ZM12.266 9.6263H5.59935C5.25768 9.6263 4.97435 9.34297 4.97435 9.0013C4.97435 8.65964 5.25768 8.3763 5.59935 8.3763H12.266C12.6077 8.3763 12.891 8.65964 12.891 9.0013C12.891 9.34297 12.616 9.6263 12.266 9.6263Z"
+                              fill="#E1004B"
+                            />
+                          </svg>
+
+                          <p class="mb-0">Remove</p>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div
+                      *ngIf="i === addEditUserFormArray.length - 1"
+                      class="add-btn"
+                      matRipple
+                      (click)="addDeviceId()"
+                    >
+                      <svg
+                        width="20"
+                        height="20"
+                        viewBox="0 0 20 20"
+                        fill="none"
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <path
+                          d="M5 10H15"
+                          stroke="#701417"
+                          stroke-width="1.25"
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                        />
+                        <path
+                          d="M10 15V5"
+                          stroke="#701417"
+                          stroke-width="1.25"
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                        />
+                      </svg>
+
+                      <p class="mb-0">Add another mobile device</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </ng-container> -->
+        </form>
+      </div>
+    </div>
+  </form>
+</section>

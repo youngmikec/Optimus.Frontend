@@ -1,0 +1,28 @@
+<div class="show_all">
+  <a
+    [routerLink]="isVendor ? '/app/work-requests-vendor' : '/app/work-requests'"
+    class="opt-para-1 opt-text-primary fw-500"
+    >View all</a
+  >
+</div>
+<div id="chart" class="w-100 h-100">
+  <ng-container *ngIf="showChart; else noData">
+    <apx-chart
+      [series]="chartOptions.series"
+      [chart]="chartOptions.chart"
+      [labels]="chartOptions.labels"
+      [responsive]="chartOptions.responsive"
+      [plotOptions]="chartOptions.plotOptions"
+      [dataLabels]="chartOptions.dataLabels"
+      [legend]="chartOptions.legend"
+      [title]="chartOptions.title"
+      [colors]="chartOptions.colors"
+    >
+    </apx-chart>
+  </ng-container>
+
+  <ng-template #noData>
+    <div class="title opt-heading-6">Work Request</div>
+    <div id="no-chart-content">No Data Available</div>
+  </ng-template>
+</div>

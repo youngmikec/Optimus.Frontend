@@ -1,0 +1,159 @@
+<div class="file-wrapper p-4">
+  <div class="d-flex justify-content-between align-items-center">
+    <h2 class="opt-para-1 fw-600 m-0">
+      {{ fileData.familyMemberDocument.documentName }}
+    </h2>
+
+    <button matRipple class="btn border-0" (click)="closeDetails()">
+      <span class="img-fluid pe-2">
+        <img src="/assets/icons/close.svg" alt="filter-icon" />
+      </span>
+      Collapse
+    </button>
+  </div>
+
+  <pdf-viewer
+    *ngIf="fileExtension === 'pdf'"
+    [src]="fileData.familyMemberDocument.documentUrl"
+    [render-text]="true"
+    [original-size]="false"
+    style="width: 311px; height: 352px"
+  ></pdf-viewer>
+
+  <img
+    *ngIf="
+      fileExtension === 'jpg' ||
+      fileExtension === 'png' ||
+      fileExtension === 'jpeg'
+    "
+    [src]="fileData.familyMemberDocument.documentUrl"
+    [alt]="fileData.familyMemberDocument.documentName"
+    width="311"
+    height="352"
+  />
+
+  <div class="file-actions">
+    <div (click)="viewDocument()">
+      <span class="img-fluid">
+        <img src="/assets/icons/eye.svg" alt="filter-icon" />
+      </span>
+      <p>View</p>
+    </div>
+
+    <div
+      (click)="replaceDocument()"
+      *ngIf="
+        (documentPhase.phase === phasesEnum.DOCUMENT_COLLATION ||
+          documentPhase.phase === phasesEnum.DOCUMENT_SUPPORT ||
+          documentPhase.phase === phasesEnum.DOCUMENT_AUDIT) &&
+        permissionService.hasPermission('Replace Document')
+      "
+    >
+      <span class="img-fluid">
+        <img src="/assets/icons/replace.svg" alt="filter-icon" />
+      </span>
+      <p>Replace</p>
+    </div>
+
+    <div
+      [matMenuTriggerFor]="approveRejectMenu"
+      *ngIf="
+        (documentPhase.phase === phasesEnum.DOCUMENT_COLLATION ||
+          documentPhase.phase === phasesEnum.DOCUMENT_PROCESSING ||
+          documentPhase.phase === phasesEnum.DOCUMENT_SUPPORT) &&
+        fileData.documentStatus !== 2 &&
+        fileData.documentStatus !== 3
+      "
+    >
+      <span class="img-fluid">
+        <img src="/assets/icons/message-question.svg" alt="filter-icon" />
+      </span>
+      <p>Approve/Reject</p>
+    </div>
+    <mat-menu #approveRejectMenu="matMenu">
+      <button
+        mat-menu-item
+        (click)="approve()"
+        *ngIf="permissionService.hasPermission('Approve Document')"
+      >
+        Approve
+      </button>
+      <button
+        mat-menu-item
+        (click)="reject()"
+        class="text-danger"
+        *ngIf="permissionService.hasPermission('Reject Document')"
+      >
+        Reject
+      </button>
+    </mat-menu>
+
+    <div (click)="viewDocComments = true">
+      <span class="img-fluid">
+        <img src="/assets/icons/comment.svg" alt="filter-icon" />
+      </span>
+      <p>Comment</p>
+    </div>
+
+    <div [matMenuTriggerFor]="replyThreadMenu">
+      <span class="img-fluid">
+        <img src="/assets/icons/more-blue.svg" alt="filter-icon" />
+      </span>
+      <p>More</p>
+    </div>
+    <mat-menu #replyThreadMenu="matMenu">
+      <button mat-menu-item (click)="sendDocument()">Send</button>
+      <button mat-menu-item (click)="viewDocVersionHistory = true">
+        Version History
+      </button>
+      <button mat-menu-item (click)="rejectionReason()">
+        Rejection Reason
+      </button>
+    </mat-menu>
+  </div>
+
+  <hr />
+
+  <div class="file-info">
+    <p>
+      <span class="label">Date Created</span>
+      <span class="value">{{ fileData.createdDate | date }}</span>
+    </p>
+
+    <p>
+      <span class="label">Created By</span>
+      <span class="value">{{ fileData.createdBy }}</span>
+    </p>
+
+    <p>
+      <span class="label">Last Modified Date</span>
+      <span class="value">{{ fileData.lastModifiedDate | date }}</span>
+    </p>
+
+    <p>
+      <span class="label">Last Modified By</span>
+      <span class="value">{{ fileData.lastModifiedBy }}</span>
+    </p>
+
+    <!-- <p>
+            <span class="label">Size</span>
+            <span class="value">{{ fileData.size }}</span>
+        </p> -->
+  </div>
+
+  <app-document-comments
+    @slideInOutFromRight
+    *ngIf="viewDocComments"
+    [documentId]="fileData.familyMemberDocumentId"
+    (closeDocComments)="viewDocComments = false"
+  ></app-document-comments>
+
+  <app-document-version-history
+    @slideInOutFromRight
+    *ngIf="viewDocVersionHistory"
+    [documentId]="fileData.familyMemberDocumentId"
+    [documentName]="fileData.familyMemberDocument.documentName"
+    (closeDocComments)="viewDocVersionHistory = false"
+  >
+  </app-document-version-history>
+</div>

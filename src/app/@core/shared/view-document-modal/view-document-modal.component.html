@@ -1,0 +1,85 @@
+<section>
+  <div class="manage-contact-category-header">
+    <h6 class="opt-heading-6 fw-600 mb-0">
+      {{ data?.name }}
+    </h6>
+
+    <div class="content-right">
+      <button
+        (click)="downloadPdf()"
+        matRipple
+        matTooltip="Download Invoice"
+        matTooltipClass="custom-tooltip"
+        class="btn topbar-buttons"
+        [disabled]="!pdfUrl"
+      >
+        <span class="img-fluid"
+          ><img src="/assets/icons/import.svg" alt=""
+        /></span>
+      </button>
+
+      <button
+        (click)="printPdf()"
+        matRipple
+        matTooltip="Print Invoice"
+        matTooltipClass="custom-tooltip"
+        class="btn topbar-buttons"
+        [disabled]="!pdfUrl"
+      >
+        <span class="img-fluid"
+          ><img src="/assets/icons/printer.svg" alt=""
+        /></span>
+      </button>
+
+      <button
+        matRipple
+        matTooltip="Send Invoice"
+        matTooltipClass="custom-tooltip"
+        class="btn topbar-buttons"
+        (click)="openSendToApplicantModal()"
+        [disabled]="!pdfUrl || (isLoading | async) !== false"
+      >
+        <span class="text">Send</span>
+        <span class="img-fluid" *ngIf="(isLoading | async) !== true"
+          ><img src="/assets/icons/send.svg" alt=""
+        /></span>
+        <ng-container *ngIf="(isLoading | async) !== false">
+          <app-button-loader></app-button-loader>
+        </ng-container>
+      </button>
+
+      <div matRipple class="close-icon-container" (click)="closeDialog()">
+        <img src="/assets/icons/modal-close-icon.svg" alt="modal close icon" />
+      </div>
+    </div>
+  </div>
+
+  <div>
+    <ng-container *ngIf="fileType === 'PDF'; else otherFormat">
+      <pdf-viewer
+        *ngIf="data?.url"
+        [src]="data?.url"
+        [render-text]="true"
+        [original-size]="false"
+        style="width: 25rem; height: 28.125rem"
+        (after-load-complete)="handleAfterLoading()"
+      ></pdf-viewer>
+
+      <!--Loading spinner-->
+      <div class="d-flex justify-content-center justify-items-center">
+        <div
+          class="spinner-border text-primary d-grid mx-auto mt-5"
+          role="status"
+          *ngIf="isPdfLoading && pdfUrl"
+        >
+          <span class="visually-hidden">Loading...</span>
+        </div>
+      </div>
+      <!--Loading spinner-->
+    </ng-container>
+
+    <ng-template #otherFormat>
+      <img class="w-100 h-100" [src]="data?.url" />
+    </ng-template>
+  </div>
+</section>

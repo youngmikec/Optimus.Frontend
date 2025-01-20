@@ -1,0 +1,126 @@
+<section id="manage-contact-category">
+  <div class="manage-contact-category-header">
+    <h6 class="opt-heading-6 fw-600 mb-0">
+      <ng-container *ngIf="data.type === 'create'">
+        Create New Country
+      </ng-container>
+      <ng-container *ngIf="data.type === 'edit'"> Edit Country </ng-container>
+    </h6>
+
+    <div matRipple class="close-icon-container" (click)="closeDialog()">
+      <img src="/assets/icons/modal-close-icon.svg" alt="modal close icon" />
+    </div>
+  </div>
+
+  <form [formGroup]="createCountryForm" (ngSubmit)="onSubmit()">
+    <div class="input-style1 input-width mb-1">
+      <label class="input-label input-required">Country Name</label>
+
+      <mat-form-field appearance="outline" [style.width.%]="100">
+        <mat-select
+          formControlName="country_name"
+          placeholder="Select country name"
+          #singleSelect
+        >
+          <mat-option>
+            <ngx-mat-select-search
+              placeholderLabel="Search..."
+              noEntriesFoundLabel="no matching country found"
+              [formControl]="countryFilterCtrl"
+            ></ngx-mat-select-search>
+          </mat-option>
+          <mat-option
+            [value]="country.name"
+            *ngFor="let country of filteredCountry | async"
+          >
+            <img [src]="country.flag" alt="" class="country-flag" />
+            <span>{{ country.name }}</span>
+          </mat-option>
+        </mat-select>
+
+        <mat-error *ngIf="createCountryFormControls['country_name'].invalid">
+          <img
+            src="/assets/icons/error.svg"
+            alt=""
+            class="img-fluid error-icon"
+          />
+          {{ getErrorMessage('country_name') }}
+        </mat-error>
+      </mat-form-field>
+    </div>
+
+    <div class="input-style1 input-width mb-1">
+      <label class="input-label input-required">Currency</label>
+
+      <mat-form-field appearance="outline" [style.width.%]="100">
+        <mat-select
+          formControlName="currency_name"
+          placeholder="Select currency"
+        >
+          <mat-option
+            [value]="currency.currencyCode"
+            *ngFor="let currency of currencyList"
+          >
+            <span>{{ currency.name }} ({{ currency.currencyCode }})</span>
+          </mat-option>
+        </mat-select>
+
+        <mat-error *ngIf="createCountryFormControls['currency_name'].invalid">
+          <img
+            src="/assets/icons/error.svg"
+            alt=""
+            class="img-fluid error-icon"
+          />
+          {{ getErrorMessage('currency_name') }}
+        </mat-error>
+      </mat-form-field>
+    </div>
+
+    <div class="input-style1 input-width mb-1">
+      <label class="input-label input-required">Program Type</label>
+
+      <mat-form-field appearance="outline" [style.width.%]="100">
+        <mat-select formControlName="programType" placeholder="Select currency">
+          <mat-option
+            [value]="program.value"
+            *ngFor="let program of programTypeList"
+          >
+            <span>{{ program.name }}</span>
+          </mat-option>
+        </mat-select>
+
+        <mat-error *ngIf="createCountryFormControls['programType'].invalid">
+          <img
+            src="/assets/icons/error.svg"
+            alt=""
+            class="img-fluid error-icon"
+          />
+          {{ getErrorMessage('programType') }}
+        </mat-error>
+      </mat-form-field>
+    </div>
+
+    <div class="cta-container">
+      <button
+        matRipple
+        type="button"
+        class="btn opt-btn-primary-outline"
+        (click)="closeDialog()"
+      >
+        Cancel
+      </button>
+
+      <button
+        matRipple
+        class="btn opt-btn-primary"
+        [disabled]="createCountryForm.invalid || (isLoading | async) !== false"
+      >
+        <ng-container *ngIf="data.type === 'edit'">Save</ng-container>
+        <ng-container *ngIf="data.type === 'create'">Create</ng-container>
+        <ng-container *ngIf="(isLoading | async) !== false">
+          <app-button-loader></app-button-loader>
+        </ng-container>
+      </button>
+    </div>
+  </form>
+</section>

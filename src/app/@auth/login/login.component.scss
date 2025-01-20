@@ -1,0 +1,101 @@
+@use '../../@core/styles/abstracts/media-query' as *;
+
+.login-background {
+  min-width: 33rem;
+  background-color: var(--opt-white);
+  position: absolute;
+  top: 5rem;
+  left: 50%;
+  // transform: translate(-50, -50%);
+  transform: translateX(-50%);
+
+  @include opt-media-query-max(opt-md) {
+    min-width: auto;
+    padding: 0 3rem;
+  }
+
+  @include opt-media-query-max(opt-sm) {
+    min-width: auto;
+    top: 1rem;
+    padding: 0 2.5rem;
+  }
+
+  @include opt-media-query-max(opt-xsm) {
+    width: auto;
+    position: static;
+    top: 0;
+    left: 0;
+    transform: translate(0, 0);
+  }
+
+  .content-section {
+    .form-section {
+      padding: 3rem 6rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+
+      @include opt-media-query-max(opt-md) {
+        padding: 2.5rem 4.5rem;
+      }
+
+      @include opt-media-query-max(opt-sm) {
+        padding: 1rem 0;
+      }
+
+      @include opt-media-query-max(opt-xsm) {
+        padding: 0 0;
+      }
+
+      .text-optimus {
+        margin: 0 auto 2.5rem;
+
+        @include opt-media-query-max(opt-md) {
+          margin: 0 auto 1rem;
+        }
+
+        @include opt-media-query-max(opt-sm) {
+          margin: 1rem 0 0;
+        }
+
+        @include opt-media-query-max(opt-xsm) {
+          padding: 1rem 0 0;
+        }
+      }
+
+      form {
+        button {
+          margin-top: 0.625rem;
+        }
+      }
+
+      .forgot-password-text {
+        color: var(--opt-primary-color-900);
+
+        margin: 2rem 0rem;
+
+        span {
+          a {
+            color: var(--opt-primary-color);
+            text-decoration: none;
+          }
+        }
+      }
+
+      .logo-content {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+
+        h3 {
+          color: var(--opt-neutral2-500);
+          padding-top: 0.5rem;
+        }
+
+        img {
+          max-width: 3.5rem;
+        }
+      }
+    }
+  }
+}

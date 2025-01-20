@@ -1,0 +1,23 @@
+.partner-list {
+  margin-block: 1rem;
+
+  .partner-item {
+    border: 1px solid var(--opt-neutral-50);
+    padding: 0.7rem;
+    display: flex;
+    gap: 0.8rem;
+    align-items: center;
+    margin-bottom: 0.5rem;
+    border-radius: 0.6rem;
+
+    img {
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+    }
+
+    p {
+      margin: 0;
+    }
+  }
+}

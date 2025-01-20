@@ -1,0 +1,133 @@
+<ng-container
+  *ngIf="
+    dataSource !== null && dataSource && displayedColumns.length;
+    else noTableData
+  "
+>
+  <table mat-table [dataSource]="dataSource" matSort>
+    <!-- Application ID Column -->
+    <ng-container *ngFor="let column of displayedColumns; let i = index">
+      <ng-container
+        matColumnDef="{{ column }}"
+        *ngIf="shouldDisplayColumn(tableColumns[i].name)"
+      >
+        <th mat-header-cell *matHeaderCellDef>{{ tableColumns[i].name }}</th>
+        <td matRipple mat-cell *matCellDef="let sale" class="cursor">
+          {{ sale[column] }}
+        </td>
+      </ng-container>
+
+      <ng-container
+        matColumnDef="{{ column }}"
+        *ngIf="tableColumns[i]?.name === 'Country Program'"
+      >
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>
+          {{ tableColumns[i].name }}
+        </th>
+        <td matRipple mat-cell *matCellDef="let sale" class="cursor">
+          {{ sale.migrationRoute.countryName }}
+        </td>
+      </ng-container>
+
+      <ng-container
+        matColumnDef="{{ column }}"
+        *ngIf="tableColumns[i]?.name === 'Application stage'"
+      >
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>
+          {{ tableColumns[i].name }}
+        </th>
+        <td matRipple mat-cell *matCellDef="let sale" class="cursor">
+          {{ sale.applicationPhase.name }}
+        </td>
+      </ng-container>
+
+      <ng-container
+        matColumnDef="{{ column }}"
+        *ngIf="tableColumns[i]?.name === 'Assigned/Unassigned'"
+      >
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>
+          {{ tableColumns[i].name }}
+        </th>
+        <td matRipple mat-cell *matCellDef="let sale" class="cursor">
+          {{ sale.assignmentStatusDesc }}
+        </td>
+      </ng-container>
+
+      <ng-container
+        matColumnDef="{{ column }}"
+        *ngIf="tableColumns[i]?.name === 'Migration Route'"
+      >
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>
+          {{ tableColumns[i].name }}
+        </th>
+        <td matRipple mat-cell *matCellDef="let sale" class="cursor">
+          {{ sale?.migrationRoute?.name }}
+        </td>
+      </ng-container>
+
+      <ng-container
+        matColumnDef="{{ column }}"
+        *ngIf="tableColumns[i]?.name === 'Status'"
+      >
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>
+          {{ tableColumns[i].name }}
+        </th>
+        <td mat-cell *matCellDef="let sale">
+          <span
+            *ngIf="sale[column]"
+            [ngClass]="{
+              'status-active': sale[column] === 1,
+              'status-inactive': sale[column] === 2
+            }"
+          >
+            {{ sale[column] === 1 ? 'Active' : 'Inactive' }}
+          </span>
+          <span
+            *ngIf="!sale[column]"
+            [ngClass]="{
+              'status-active': sale[column] === 1,
+              'status-inactive': sale[column] === 2
+            }"
+          >
+            {{ 'Inactive' }}
+          </span>
+        </td>
+      </ng-container>
+
+      <ng-container
+        matColumnDef="{{ column }}"
+        *ngIf="tableColumns[i]?.name === 'Created Date'"
+      >
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>
+          {{ tableColumns[i].name }}
+        </th>
+        <td mat-cell *matCellDef="let sale">
+          {{ sale[column] | date }}
+        </td>
+      </ng-container>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr
+      mat-row
+      *matRowDef="let row; columns: displayedColumns"
+      (click)="goToSaleOverview(row); $event.stopPropagation()"
+    ></tr>
+  </table>
+
+  <mat-paginator
+    [pageSizeOptions]="[
+      10, 15, 20, 25, 30, 35, 40, 45, 50, 55, 60, 65, 70, 75, 80, 85, 90, 95,
+      100
+    ]"
+    showFirstLastButtons
+    [pageSize]="10"
+    [hidePageSize]="false"
+    [length]="totalRecords"
+    (page)="onPaginationChange($event)"
+  ></mat-paginator>
+</ng-container>
+
+<ng-template #noTableData>
+  <app-table-loader></app-table-loader>
+</ng-template>

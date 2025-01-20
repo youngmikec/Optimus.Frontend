@@ -1,0 +1,11 @@
+.show_all {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  text-align: right;
+  z-index: 1;
+
+  a {
+    text-decoration: none !important;
+  }
+}

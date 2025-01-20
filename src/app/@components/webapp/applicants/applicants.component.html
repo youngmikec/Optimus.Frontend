@@ -1,0 +1,49 @@
+<section id="contact-category">
+  <div class="contact-category-header">
+    <h6 class="opt-heading-6 fw-700 mb-0">Applicants</h6>
+
+    <div class="table-controls">
+      <a class="view-as-list" routerLink="/app/applicants">View as dashboard</a>
+      <div class="input-style1 input-no-error">
+        <mat-form-field appearance="outline" [style.width.%]="100">
+          <span matPrefix class="img-fluid">
+            <img src="/assets/icons/search.svg" alt="icon" />
+          </span>
+
+          <input
+            matInput
+            [(ngModel)]="searchInputParam"
+            (ngModelChange)="onInputSearch()"
+            placeholder="Search applicants"
+          />
+        </mat-form-field>
+      </div>
+
+      <!-- <button matRipple class="btn opt-btn-neutral opt-btn-with-icon">
+        <span class="img-fluid"
+          ><img src="/assets/icons/filter-icon.svg" alt="filter-icon"
+        /></span>
+        Filters
+      </button> -->
+
+      <button
+        *ngIf="permissions[1]"
+        (click)="onCreateApplicant('create', null)"
+        matRipple
+        class="btn opt-btn-primary"
+      >
+        Create Applicant
+      </button>
+    </div>
+  </div>
+
+  <div class="list-section">
+    <mat-tab-group>
+      <mat-tab label="All Applicants">
+        <app-all-applications
+          [searchValue]="searchInputParam"
+        ></app-all-applications>
+      </mat-tab>
+    </mat-tab-group>
+  </div>
+</section>

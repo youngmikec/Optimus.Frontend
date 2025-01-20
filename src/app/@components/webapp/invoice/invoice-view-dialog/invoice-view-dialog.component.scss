@@ -1,0 +1,206 @@
+@use '../../../../@core/styles/abstracts' as *;
+
+.topbar {
+  width: 100%;
+  height: 5rem;
+
+  .content-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    overflow: auto;
+    white-space: nowrap;
+
+    .content-right {
+      display: flex;
+      gap: 1rem;
+
+      .topbar-buttons {
+        padding: 0.3rem 0.5rem !important;
+        background-color: var(--opt-primary-color-50);
+        border: 1px solid $opt-primary-400;
+        color: $opt-primary-400;
+
+        .text {
+          padding-right: 0.25rem;
+        }
+      }
+
+      .close-button {
+        cursor: pointer;
+        border: 0.063rem solid transparent;
+        transition-duration: 0.3s;
+        border-radius: 0.2rem;
+
+        &:hover {
+          border: 0.063rem solid #636363;
+        }
+      }
+    }
+  }
+}
+
+#quote-invoice {
+  padding: 1rem 2rem 2rem;
+  // background-color: $opt-neutral2-100;
+
+  .main {
+    background-color: $opt-white;
+  }
+
+  .quote-invoice-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1.25rem;
+    margin-bottom: 1.25rem;
+    cursor: pointer;
+    padding-bottom: 0.5rem;
+    border-bottom: 0.25rem solid #d0d5dd;
+
+    .close-icon-container {
+      padding: 0.315rem 0.63rem;
+      display: flex;
+      align-items: center;
+
+      &:hover {
+        background-color: #e7eaee;
+      }
+    }
+
+    h6 {
+      background: linear-gradient(180deg, #80171a 0%, #011b6a 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      text-fill-color: transparent;
+    }
+  }
+
+  .quote-content-section-1 {
+    .section-1-content {
+      .content-1 {
+        display: flex;
+        justify-content: space-between;
+        position: relative;
+
+        .header {
+          color: $opt-neutral-400;
+        }
+      }
+
+      .section-2 {
+        color: $opt-black !important;
+        padding-bottom: 1.5rem;
+        border-bottom: 0.1875rem solid $opt-primary;
+
+        .section-2-header {
+          margin-top: 2.5rem;
+          font-size: 1.4375rem;
+          text-decoration: underline;
+
+          @include opt-media-query-max(opt-md) {
+            font-size: 1.1875rem;
+          }
+        }
+
+        .section-2-content {
+          font-size: 1rem;
+        }
+      }
+
+      .main-section {
+        .description-table {
+          .header {
+            color: $opt-primary;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 0;
+          }
+
+          .content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.5rem 0;
+            border-bottom: 0.0625rem solid $opt-neutral-300;
+          }
+        }
+
+        .total-payment-container {
+          width: 100%;
+          display: flex;
+          margin-top: 1rem;
+
+          .item1 {
+            padding: 0.5rem 1rem;
+            background-color: $opt-primary-100;
+            width: 70%;
+          }
+
+          .item2 {
+            padding: 0.5rem 1rem;
+            background-color: $opt-primary;
+            color: $opt-white;
+            text-align: right;
+            width: 30%;
+          }
+        }
+
+        .payment-table-main-container {
+          .payment-table-container {
+            table {
+              border: none;
+              width: 100%;
+
+              th {
+                padding: 0.5rem;
+                color: $opt-primary;
+              }
+
+              td {
+                padding: 0.5rem;
+
+                &:nth-child(1) {
+                  color: $opt-neutral-400;
+                  width: 25%;
+                }
+
+                &:nth-child(2) {
+                  color: $opt-black;
+                  width: 35%;
+                }
+
+                &:nth-child(3) {
+                  color: $opt-black;
+                  width: 35%;
+                }
+              }
+            }
+          }
+        }
+      }
+
+      .section-3 {
+        margin-top: 2.75rem;
+
+        .row {
+          display: flex;
+
+          .item {
+            display: flex;
+            vertical-align: top;
+            width: fit-content;
+          }
+        }
+      }
+
+      .section-4 {
+        margin-top: 1.25rem;
+        display: flex;
+        justify-content: space-around;
+      }
+    }
+  }
+}

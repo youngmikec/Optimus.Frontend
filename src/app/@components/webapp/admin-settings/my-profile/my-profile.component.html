@@ -1,0 +1,441 @@
+<section id="my-profile">
+  <div class="profile-section">
+    <div class="profile-picture-section">
+      <div class="profile-picture-container">
+        <img [src]="logoPreview" alt="Profile Picture" />
+      </div>
+
+      <div
+        matRipple
+        class="upload-picture-container"
+        (click)="onChangePassword()"
+      >
+        <svg
+          width="35"
+          height="35"
+          viewBox="0 0 35 35"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <circle
+            cx="17.3346"
+            cy="17.3346"
+            r="16"
+            fill="#0235CD"
+            stroke="white"
+            stroke-width="2.66667"
+          />
+          <path
+            d="M13.2601 25.1122H21.4112C23.5579 25.1122 24.4134 23.7978 24.5145 22.1955L24.919 15.7711C25.0279 14.0911 23.6901 12.6678 22.0023 12.6678C21.5279 12.6678 21.0923 12.3955 20.8745 11.9755L20.3145 10.8478C19.9567 10.14 19.0234 9.55664 18.2301 9.55664H16.449C15.6479 9.55664 14.7145 10.14 14.3567 10.8478L13.7967 11.9755C13.579 12.3955 13.1434 12.6678 12.669 12.6678C10.9812 12.6678 9.64341 14.0911 9.7523 15.7711L10.1567 22.1955C10.2501 23.7978 11.1134 25.1122 13.2601 25.1122Z"
+            stroke="#EBF0FF"
+            stroke-width="1.33333"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          />
+          <path
+            d="M16.168 14.2227H18.5013"
+            stroke="#EBF0FF"
+            stroke-width="1.33333"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          />
+          <path
+            d="M17.3344 22.0028C18.7266 22.0028 19.8622 20.8673 19.8622 19.475C19.8622 18.0828 18.7266 16.9473 17.3344 16.9473C15.9422 16.9473 14.8066 18.0828 14.8066 19.475C14.8066 20.8673 15.9422 22.0028 17.3344 22.0028Z"
+            stroke="#EBF0FF"
+            stroke-width="1.33333"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          />
+        </svg>
+      </div>
+
+      <input #logoUpload type="file" accept="image/*" name="" class="d-none" />
+      <!-- (change)="onUploadLogo($event)" -->
+    </div>
+
+    <div class="profile-name-container">
+      <h6 class="opt-heading-6 fw-700 mb-0">
+        {{ user?.firstName }}
+        {{ user?.lastName }}
+      </h6>
+
+      <p class="opt-para-1 mb-0">Update your photo and profile details</p>
+    </div>
+  </div>
+
+  <div class="d-flex justify-content-between mb-4">
+    <div class="number-title-container">
+      <div class="number-title">
+        <p class="opt-para-1 fw-600">Phone Number</p>
+        <div class="d-flex">
+          <div>
+            <svg
+              width="20"
+              height="20"
+              viewBox="0 0 20 20"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M18.3077 15.2743C18.3077 15.5743 18.241 15.8827 18.0993 16.1827C17.9577 16.4827 17.7744 16.766 17.5327 17.0327C17.1244 17.4827 16.6743 17.8077 16.166 18.016C15.666 18.2244 15.1244 18.3327 14.541 18.3327C13.691 18.3327 12.7827 18.1327 11.8243 17.7244C10.866 17.316 9.90768 16.766 8.95768 16.0744C7.99935 15.3744 7.09102 14.5993 6.22435 13.741C5.36602 12.8743 4.59102 11.966 3.89935 11.016C3.21602 10.066 2.66602 9.11602 2.26602 8.17435C1.86602 7.22435 1.66602 6.31602 1.66602 5.44935C1.66602 4.88268 1.76602 4.34102 1.96602 3.84102C2.16602 3.33268 2.48268 2.86602 2.92435 2.44935C3.45768 1.92435 4.04102 1.66602 4.65768 1.66602C4.89102 1.66602 5.12435 1.71602 5.33268 1.81602C5.54935 1.91602 5.74102 2.06602 5.89102 2.28268L7.82435 5.00768C7.97435 5.21602 8.08268 5.40768 8.15768 5.59102C8.23268 5.76602 8.27435 5.94102 8.27435 6.09935C8.27435 6.29935 8.21602 6.49935 8.09935 6.69102C7.99102 6.88268 7.83268 7.08268 7.63268 7.28268L6.99935 7.94102C6.90768 8.03268 6.86602 8.14102 6.86602 8.27435C6.86602 8.34102 6.87435 8.39935 6.89102 8.46602C6.91602 8.53268 6.94102 8.58268 6.95768 8.63268C7.10768 8.90768 7.36602 9.26602 7.73268 9.69935C8.10768 10.1327 8.50768 10.5743 8.94102 11.016C9.39102 11.4577 9.82435 11.866 10.266 12.241C10.6993 12.6077 11.0577 12.8577 11.341 13.0077C11.3827 13.0243 11.4327 13.0493 11.491 13.0743C11.5577 13.0993 11.6243 13.1077 11.6993 13.1077C11.841 13.1077 11.9493 13.0577 12.041 12.966L12.6743 12.341C12.8827 12.1327 13.0827 11.9743 13.2743 11.8743C13.466 11.7577 13.6577 11.6993 13.866 11.6993C14.0243 11.6993 14.191 11.7327 14.3743 11.8077C14.5577 11.8827 14.7494 11.991 14.9577 12.1327L17.716 14.091C17.9327 14.241 18.0827 14.416 18.1743 14.6243C18.2577 14.8327 18.3077 15.041 18.3077 15.2743Z"
+                stroke="#00030D"
+                stroke-width="2"
+                stroke-miterlimit="10"
+              />
+            </svg>
+          </div>
+
+          <p class="opt-para-2 fw-600 mb-0 ms-2">{{ user?.phoneNumber }}</p>
+        </div>
+      </div>
+
+      <div class="number-title">
+        <p class="opt-para-1 fw-600">Job Title</p>
+        <div class="d-flex">
+          <div>
+            <svg
+              width="20"
+              height="20"
+              viewBox="0 0 20 20"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M8.54232 17.9167C12.1092 17.9167 15.0007 15.0252 15.0007 11.4583C15.0007 7.89149 12.1092 5 8.54232 5C4.97548 5 2.08398 7.89149 2.08398 11.4583C2.08398 15.0252 4.97548 17.9167 8.54232 17.9167Z"
+                stroke="#00030D"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              />
+              <path
+                d="M17.9173 2.08398L13.334 6.66732"
+                stroke="#292D32"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              />
+              <path
+                d="M12.5 2.08398H17.9167V7.50065"
+                stroke="#292D32"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              />
+            </svg>
+          </div>
+
+          <p class="opt-para-2 fw-600 mb-0 ms-2">{{ user?.jobTitle }}</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="signature-content">
+      <p class="opt-footer mb-0 signature-header">MY SIGNATURE</p>
+      <div class="d-flex align-items-center">
+        <p class="me-2 mb-0 signature" *ngIf="!user?.signature">No signature</p>
+        <div class="image-container">
+          <img
+            *ngIf="user?.signature"
+            [src]="user?.signature"
+            alt="Signature"
+          />
+        </div>
+        <svg
+          (click)="openSignatureModal()"
+          width="17"
+          height="16"
+          viewBox="0 0 17 16"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            d="M9.50657 2.4L4.03323 8.19334C3.82657 8.41334 3.62657 8.84667 3.58657 9.14667L3.3399 11.3067C3.25323 12.0867 3.81323 12.62 4.58657 12.4867L6.73323 12.12C7.03323 12.0667 7.45323 11.8467 7.6599 11.62L13.1332 5.82667C14.0799 4.82667 14.5066 3.68667 13.0332 2.29334C11.5666 0.913335 10.4532 1.4 9.50657 2.4Z"
+            stroke="#0235CD"
+            stroke-miterlimit="10"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          />
+          <path
+            d="M8.59302 3.36667C8.87968 5.20667 10.373 6.61334 12.2264 6.8"
+            stroke="#0235CD"
+            stroke-miterlimit="10"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          />
+          <path
+            d="M2.6665 14.6667H14.6665"
+            stroke="#0235CD"
+            stroke-miterlimit="10"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          />
+        </svg>
+      </div>
+    </div>
+  </div>
+
+  <div class="job-details-section">
+    <div class="job-detail">
+      <p class="opt-para-1 job-detail-title">Role:</p>
+      <p class="opt-para-1 job-detail-value">{{ user?.role?.name }}</p>
+    </div>
+
+    <div class="job-detail-period"></div>
+
+    <div class="job-detail">
+      <p class="opt-para-1 job-detail-title">Department:</p>
+      <p class="opt-para-1 job-detail-value">{{ user?.department?.name }}</p>
+    </div>
+
+    <div class="job-detail-period"></div>
+
+    <div class="job-detail">
+      <p class="opt-para-1 job-detail-title">Division:</p>
+      <p class="opt-para-1 job-detail-value">{{ user?.division?.name }}</p>
+    </div>
+
+    <div class="job-detail-period"></div>
+
+    <div class="job-detail">
+      <p class="opt-para-1 job-detail-title">Unit:</p>
+      <p class="opt-para-1 job-detail-value">{{ user?.unit?.name }}</p>
+    </div>
+
+    <div class="job-detail-period"></div>
+
+    <div class="job-detail">
+      <p class="opt-para-1 job-detail-title">Location:</p>
+      <p class="opt-para-1 job-detail-value">--</p>
+    </div>
+  </div>
+
+  <div class="password-container">
+    <p class="opt-para-2 fw-600 first-para">Password</p>
+    <p class="opt-para-1 second-para">
+      Please enter your current password to change your password.
+    </p>
+    <div class="divider"></div>
+
+    <ng-template #visibleEyeIcon>
+      <svg
+        width="16"
+        height="16"
+        viewBox="0 0 16 16"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <path
+          d="M10.3866 8.00001C10.3866 9.32001 9.31995 10.3867 7.99995 10.3867C6.67995 10.3867 5.61328 9.32001 5.61328 8.00001C5.61328 6.68001 6.67995 5.61334 7.99995 5.61334C9.31995 5.61334 10.3866 6.68001 10.3866 8.00001Z"
+          stroke="var(--opt-primary-color)"
+          stroke-width="1.5"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        />
+        <path
+          d="M7.9999 13.5133C10.3532 13.5133 12.5466 12.1266 14.0732 9.72665C14.6732 8.78665 14.6732 7.20665 14.0732 6.26665C12.5466 3.86665 10.3532 2.47998 7.9999 2.47998C5.64656 2.47998 3.45323 3.86665 1.92656 6.26665C1.32656 7.20665 1.32656 8.78665 1.92656 9.72665C3.45323 12.1266 5.64656 13.5133 7.9999 13.5133Z"
+          stroke="var(--opt-primary-color)"
+          stroke-width="1.5"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        />
+      </svg>
+    </ng-template>
+
+    <ng-template #hiddenEyeIcon>
+      <svg
+        width="16"
+        height="16"
+        viewBox="0 0 16 16"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <path
+          d="M9.68661 6.31334L6.31328 9.68668C5.87995 9.25334 5.61328 8.66001 5.61328 8.00001C5.61328 6.68001 6.67995 5.61334 7.99995 5.61334C8.65995 5.61334 9.25328 5.88001 9.68661 6.31334Z"
+          stroke="var(--opt-primary-color)"
+          stroke-width="1.5"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        />
+        <path
+          d="M11.8799 3.84669C10.7132 2.96669 9.3799 2.48669 7.9999 2.48669C5.64656 2.48669 3.45323 3.87336 1.92656 6.27336C1.32656 7.21336 1.32656 8.79336 1.92656 9.73336C2.45323 10.56 3.06656 11.2734 3.73323 11.8467"
+          stroke="var(--opt-primary-color)"
+          stroke-width="1.5"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        />
+        <path
+          d="M5.61328 13.02C6.37328 13.34 7.17995 13.5133 7.99995 13.5133C10.3533 13.5133 12.5466 12.1267 14.0733 9.72668C14.6733 8.78668 14.6733 7.20668 14.0733 6.26668C13.8533 5.92002 13.6133 5.59335 13.3666 5.28668"
+          stroke="var(--opt-primary-color)"
+          stroke-width="1.5"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        />
+        <path
+          d="M10.34 8.46667C10.1666 9.40668 9.39996 10.1733 8.45996 10.3467"
+          stroke="var(--opt-primary-color)"
+          stroke-width="1.5"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        />
+        <path
+          d="M6.31325 9.68665L1.33325 14.6666"
+          stroke="var(--opt-primary-color)"
+          stroke-width="1.5"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        />
+        <path
+          d="M14.6668 1.33331L9.68677 6.31331"
+          stroke="var(--opt-primary-color)"
+          stroke-width="1.5"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        />
+      </svg>
+    </ng-template>
+
+    <form [formGroup]="changePasswordForm">
+      <div class="input-style1 d-flex">
+        <p class="password-text col-3 mb-0 fw-600">Current Password</p>
+        <div class="col-4">
+          <mat-form-field appearance="outline" [style.width.%]="100">
+            <input
+              [type]="hideCurrentPassword ? 'text' : 'password'"
+              matInput
+              formControlName="current_password"
+            />
+
+            <span
+              matSuffix
+              class="img-fluid"
+              (click)="hideCurrentPassword = !hideCurrentPassword"
+              [attr.aria-label]="'hide password'"
+              [attr.aria-pressed]="hideCurrentPassword"
+            >
+              <ng-container *ngIf="hideCurrentPassword">
+                <ng-container *ngTemplateOutlet="visibleEyeIcon"></ng-container>
+              </ng-container>
+
+              <ng-container *ngIf="!hideCurrentPassword">
+                <ng-container *ngTemplateOutlet="hiddenEyeIcon"></ng-container>
+              </ng-container>
+            </span>
+
+            <mat-error
+              *ngIf="changePasswordFormControls['current_password'].invalid"
+            >
+              <img
+                src="/assets/icons/error.svg"
+                alt=""
+                class="img-fluid error-icon"
+              />
+              {{ getErrorMessage('current_password') }}
+            </mat-error>
+          </mat-form-field>
+        </div>
+      </div>
+      <div class="divider"></div>
+
+      <div class="input-style1 d-flex">
+        <p class="password-text col-3 mb-0 fw-600">New Password</p>
+        <div class="col-4">
+          <mat-form-field appearance="outline" [style.width.%]="100">
+            <input
+              matInput
+              [type]="hidePassword ? 'text' : 'password'"
+              formControlName="new_password"
+            />
+
+            <span
+              matSuffix
+              class="img-fluid"
+              (click)="hidePassword = !hidePassword"
+              [attr.aria-label]="'hide password'"
+              [attr.aria-pressed]="hidePassword"
+            >
+              <ng-container *ngIf="hidePassword">
+                <ng-container *ngTemplateOutlet="visibleEyeIcon"></ng-container>
+              </ng-container>
+
+              <ng-container *ngIf="!hidePassword">
+                <ng-container *ngTemplateOutlet="hiddenEyeIcon"></ng-container>
+              </ng-container>
+            </span>
+
+            <mat-error
+              *ngIf="changePasswordFormControls['new_password'].invalid"
+            >
+              <img
+                src="/assets/icons/error.svg"
+                alt=""
+                class="img-fluid error-icon"
+              />{{ getErrorMessage('new_password') }}
+            </mat-error>
+          </mat-form-field>
+        </div>
+      </div>
+      <div class="divider"></div>
+
+      <div class="input-style1 d-flex">
+        <p class="password-text col-3 mb-0 fw-600">Confirm Password</p>
+        <div class="col-4">
+          <mat-form-field appearance="outline" [style.width.%]="100">
+            <input
+              matInput
+              [type]="hideConfirmPassword ? 'text' : 'password'"
+              formControlName="confirm_password"
+            />
+
+            <span
+              matSuffix
+              class="img-fluid"
+              (click)="hideConfirmPassword = !hideConfirmPassword"
+              [attr.aria-label]="'hide confirm password'"
+              [attr.aria-pressed]="hideConfirmPassword"
+            >
+              <ng-container *ngIf="hideConfirmPassword">
+                <ng-container *ngTemplateOutlet="visibleEyeIcon"></ng-container>
+              </ng-container>
+
+              <ng-container *ngIf="!hideConfirmPassword">
+                <ng-container *ngTemplateOutlet="hiddenEyeIcon"></ng-container>
+              </ng-container>
+            </span>
+
+            <mat-error *ngIf="changePasswordForm.hasError('paswordNotSame')">
+              <img
+                src="/assets/icons/error.svg"
+                alt=""
+                class="img-fluid error-icon"
+              />{{ getErrorMessage('confirm_password') }}
+            </mat-error>
+          </mat-form-field>
+        </div>
+      </div>
+      <div class="divider"></div>
+
+      <div class="d-flex justify-content-end">
+        <button
+          matRipple
+          class="btn opt-btn-primary"
+          type="button"
+          (click)="changePassword()"
+          [disabled]="
+            (isLoading | async) !== false || changePasswordForm.invalid
+          "
+        >
+          Update password
+
+          <ng-container *ngIf="(isLoading | async) !== false">
+            <app-button-loader></app-button-loader>
+          </ng-container>
+        </button>
+      </div>
+    </form>
+
+    <p class="opt-para-2 fw-600 first-para">Where you’re logged in</p>
+    <div class="divider"></div>
+
+    <div class="device-details-container"></div>
+  </div>
+</section>

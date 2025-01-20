@@ -1,0 +1,216 @@
+<div>
+  <div
+    class="d-flex justify-content-between align-items-center border-bottom header"
+  >
+    <p class="fw-bold">ID11223344 : view more</p>
+
+    <div matRipple class="close-icon-container" (click)="dismiss()">
+      <img src="/assets/icons/modal-close-icon.svg" alt="modal close icon" />
+    </div>
+  </div>
+
+  <div class="content">
+    <div class="text-center pt-3">
+      <p class="opt">Outstanding Loan</p>
+
+      <div class="loan-wrapper">
+        <h3 class="m-0">
+          {{ outstandingLoan | currency : 'USD' : 'symbol-narrow' }}
+        </h3>
+      </div>
+
+      <a href="">Repay Loan</a>
+    </div>
+
+    <hr />
+
+    <div class="text-center pt-3">
+      <p class="opt">Outstanding Balance</p>
+
+      <div class="loan-wrapper">
+        <h3 class="m-0">
+          {{ outstandingLoan | currency : 'USD' : 'symbol-narrow' }}
+        </h3>
+      </div>
+
+      <div class="schedule-links">
+        <a
+          href="javasrcipt:void(0)"
+          (click)="createPaymentSchedule = true"
+          *ngIf="!createPaymentSchedule"
+        >
+          Create Payment Schedule
+        </a>
+
+        <a href="javascript:void(0)"> Create Invoice </a>
+
+        <a href="javascript:void(0)" (click)="shouldUploadReceipt = true">
+          Upload Receipt
+        </a>
+      </div>
+    </div>
+
+    <hr />
+
+    <form
+      class="payment-schedule"
+      [formGroup]="paymentScheduleForm"
+      *ngIf="createPaymentSchedule"
+      @fadeInDown
+    >
+      <div class="input-style1">
+        <label class="form-label opt-caption">Total Amount</label>
+
+        <mat-form-field appearance="outline" [style.width.%]="100">
+          <input type="text" matInput formControlName="totalAmount" />
+        </mat-form-field>
+      </div>
+
+      <div class="input-style1">
+        <label class="form-label opt-caption">Payment Duration</label>
+
+        <mat-form-field appearance="outline" [style.width.%]="100">
+          <mat-select formControlName="paymentDuration">
+            <mat-option value="1">1</mat-option>
+            <mat-option value="2">2</mat-option>
+            <mat-option value="3">3</mat-option>
+            <mat-option value="4">4</mat-option>
+            <mat-option value="5">5</mat-option>
+          </mat-select>
+          <span matSuffix>Months</span>
+        </mat-form-field>
+      </div>
+
+      <div class="input-style1">
+        <label class="form-label opt-caption">Frequency per month</label>
+
+        <mat-form-field appearance="outline" [style.width.%]="100">
+          <mat-select formControlName="frequency">
+            <mat-option value="1">1</mat-option>
+            <mat-option value="2">2</mat-option>
+            <mat-option value="3">3</mat-option>
+            <mat-option value="4">4</mat-option>
+            <mat-option value="5">5</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+
+      <div class="input-style1">
+        <label class="form-label opt-caption">Start Date</label>
+
+        <mat-form-field appearance="outline" [style.width.%]="100">
+          <input
+            matInput
+            [matDatepicker]="picker"
+            formControlName="startDate"
+            [min]="minDate"
+            readonly
+          />
+          <mat-datepicker-toggle
+            matSuffix
+            [for]="picker"
+          ></mat-datepicker-toggle>
+          <mat-datepicker #picker></mat-datepicker>
+        </mat-form-field>
+      </div>
+    </form>
+
+    <div>
+      <p class="opt-para-1 fw-semibold">
+        Payment schedule (outstanding balance)
+      </p>
+
+      <div class="summary mb-3 mt-3">
+        <p><span>Total amount</span> <strong>$200,000</strong></p>
+        <p><span>Payment duration</span> <strong>2 Months</strong></p>
+        <p><span>Frequency per month</span> <strong>2</strong></p>
+        <p><span>Start date</span> <strong>02/02/2024</strong></p>
+
+        <div class="action-btns">
+          <button matRipple class="btn opt-btn-neutral">Edit</button>
+
+          <button matRipple class="btn opt-btn-neutral">Download</button>
+        </div>
+      </div>
+    </div>
+
+    <div *ngIf="paymentScheduleForm.valid" @fadeInDown>
+      <p class="opt-para-1 fw-semibold">PAYMENT DETAILS</p>
+      <div class="activity list-wrapper mb-3 mt-3">
+        <section class="ms-2">
+          <ul class="timeline-with-icons">
+            <li class="timeline-item mb-2">
+              <span class="timeline-icon"></span>
+
+              <div class="mb-0">
+                <p class="timeline-text">
+                  <span class="fw-semibold">Heyo</span> 02/02/2024
+                </p>
+              </div>
+
+              <div class="my-2">
+                <span class="timeline-icon"></span>
+
+                <div class="mb-0">
+                  <p class="timeline-text">
+                    <span class="fw-semibold">Heyo</span> 02/02/2024
+                  </p>
+                </div>
+              </div>
+            </li>
+          </ul>
+        </section>
+      </div>
+    </div>
+
+    <div @fadeInDown *ngIf="shouldUploadReceipt">
+      <p class="opt-para-1 fw-semibold">Upload Receipt</p>
+
+      <div class="mt-3">
+        <small>Ensure that Optivia has received this repayment</small>
+        <div class="upload-wrapper" (click)="fileInputRef.click()">
+          <img src="/assets/icons/upload.svg" alt="upload-icon" />
+
+          <p>
+            Click here to upload proof of payment from local storage or
+            <span>drop a file here</span>.
+          </p>
+
+          <input
+            type="file"
+            style="display: none"
+            #fileInputRef
+            (change)="uploadReceipt($event)"
+          />
+        </div>
+      </div>
+
+      <div class="uploaded-wrapper" *ngIf="isFileUploaded">
+        <img src="/assets/icons/document.svg" alt="upload-icon" />
+
+        <p class="fw-600">
+          {{ replacedFile?.name }}
+
+          <br />
+          <small>{{ fileSize }} MB</small>
+        </p>
+
+        <button matRipple class="btn btn-danger border-0">Remove</button>
+      </div>
+    </div>
+
+    <div class="action-btns">
+      <button matRipple class="btn opt-btn-neutral" (click)="dismiss()">
+        Cancel
+      </button>
+
+      <button
+        matRipple
+        class="btn opt-btn-primary"
+        [disabled]="paymentScheduleForm.invalid"
+      >
+        Confirm
+      </button>
+    </div>
+  </div>
+</div>

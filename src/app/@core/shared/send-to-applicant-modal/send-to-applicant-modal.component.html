@@ -1,0 +1,130 @@
+<section id="main">
+  <div class="header">
+    <h6 class="opt-heading-6 fw-600 mb-0">Send to Applicant</h6>
+
+    <div matRipple class="close-icon-container" (click)="closeDialog()">
+      <img src="/assets/icons/modal-close-icon.svg" alt="modal close icon" />
+    </div>
+  </div>
+
+  <div class="mb-3">
+    <div class="opt-para-1 mb-1">
+      Applicant would receive quote via the email address:
+    </div>
+    <div class="mail-list-container opt-para-1">
+      {{ applicant.email }}
+    </div>
+  </div>
+
+  <div class="mb-3">
+    <div class="opt-para-1 mb-1">CC:</div>
+
+    <mat-form-field class="example-chip-list" appearance="outline">
+      <mat-chip-grid #ccChipList aria-label="email list">
+        <mat-chip
+          *ngFor="let email of ccEmails"
+          [selectable]="true"
+          [removable]="true"
+          class="mail-list-container opt-para-1"
+          (removed)="remove(email, 'cc')"
+        >
+          {{ email }}
+          <mat-icon matChipRemove>cancel</mat-icon>
+        </mat-chip>
+        <input
+          placeholder="Enter Email"
+          [formControl]="emailControl"
+          [matChipInputFor]="ccChipList"
+          [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+          (matChipInputTokenEnd)="addEmail($event, 'cc')"
+        />
+        <!-- <button mat-icon-button (click)="addEmailFromInput()">
+          <mat-icon>add</mat-icon>
+        </button> -->
+      </mat-chip-grid>
+    </mat-form-field>
+  </div>
+
+  <div class="mb-3">
+    <div class="opt-para-1 mb-1">BCC:</div>
+
+    <mat-form-field class="example-chip-list" appearance="outline">
+      <mat-chip-grid #bccChipList aria-label="email list">
+        <mat-chip
+          *ngFor="let email of bccEmails"
+          [selectable]="true"
+          [removable]="true"
+          class="mail-list-container opt-para-1"
+          (removed)="remove(email, 'bcc')"
+        >
+          {{ email }}
+          <mat-icon matChipRemove>cancel</mat-icon>
+        </mat-chip>
+        <input
+          placeholder="Enter Email"
+          [formControl]="bccemailControl"
+          [matChipInputFor]="bccChipList"
+          [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+          (matChipInputTokenEnd)="addBccEmail($event)"
+        />
+        <!-- <button mat-icon-button (click)="addEmailFromInput()">
+          <mat-icon>add</mat-icon>
+        </button> -->
+      </mat-chip-grid>
+    </mat-form-field>
+  </div>
+
+  <div class="input-style1 mb-1">
+    <label class="input-label">Add message (Optional)</label>
+
+    <!-- <mat-form-field appearance="outline" [style.width.%]="100">
+      <textarea matInput placeholder="Enter message" rows="7"></textarea>
+    </mat-form-field> -->
+  </div>
+  <quill-editor [formControl]="messageControl">
+    <div quill-editor-toolbar>
+      <span class="ql-formats">
+        <button class="ql-bold" [title]="'Bold'"></button>
+      </span>
+      <span class="ql-formats">
+        <select class="ql-align" [title]="'Aligment'">
+          <option selected></option>
+          <option value="center"></option>
+          <option value="right"></option>
+          <option value="justify"></option>
+        </select>
+        <select class="ql-align" [title]="'Aligment2'">
+          <option selected></option>
+          <option value="center"></option>
+          <option value="right"></option>
+          <option value="justify"></option>
+        </select>
+      </span>
+    </div>
+  </quill-editor>
+
+  <div class="cta-container">
+    <button
+      matRipple
+      type="button"
+      class="btn opt-btn-primary-outline"
+      (click)="closeDialog()"
+    >
+      Cancel
+    </button>
+
+    <button
+      matRipple
+      (click)="sendQuote()"
+      class="btn opt-btn-primary"
+      [disabled]="isSending"
+    >
+      <span *ngIf="type === 'invoice'">Send Invoice</span>
+      <span *ngIf="type === 'quote'">Send Quote</span>
+      <span *ngIf="type === 'Payment Receipt'">Send Payment Receipt</span>
+      <ng-container *ngIf="isSending">
+        <app-button-loader></app-button-loader>
+      </ng-container>
+    </button>
+  </div>
+</section>

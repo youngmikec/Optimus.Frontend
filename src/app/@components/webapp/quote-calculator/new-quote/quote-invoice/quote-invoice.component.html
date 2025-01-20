@@ -1,0 +1,304 @@
+<app-quote-topbar
+  [isQuotePreviewAvailable]="true"
+  [showResend]="true"
+  [selectedCountry]="selectedContry"
+></app-quote-topbar>
+<section class="status-section">
+  <div class="status-container">
+    <div class="status-1">
+      <svg
+        width="25"
+        height="24"
+        viewBox="0 0 25 24"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <rect x="0.5" width="24" height="24" rx="4" fill="#10B981" />
+        <path
+          d="M16.5 9L11 14.5L8.5 12"
+          stroke="white"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        />
+      </svg>
+      <div class="opt-para-1">Quote Confirmation</div>
+    </div>
+    <div class="status-2">
+      <div class="number opt-para-1">2</div>
+      <div class="opt-para-1">Invoice</div>
+    </div>
+    <div class="status-3">
+      <div class="number opt-para-1">3</div>
+      <div class="opt-para-1">All Paid</div>
+    </div>
+  </div>
+</section>
+
+<section class="wrapper">
+  <div class="grid-1">
+    <div class="container">
+      <div class="header-logo mb-2">OPTIMUS</div>
+      <div class="mb-4">
+        <div class="opt-para-2 fw-700">
+          Application Information for Primary Applicant
+          {{ selectedApplicationQuote?.quoteNo }}
+        </div>
+        <div class="text opt-caption fw-500">
+          See all information about the application of this applicant.
+        </div>
+      </div>
+
+      <div class="section-1-content mb-4">
+        <div class="section-1-header mb-3">
+          <div class="text opt-caption fw-500">APPLICANT’S INFORMATION</div>
+          <div class="section-1-divider"></div>
+        </div>
+
+        <div class="content-1 mb-2">
+          <div class="title opt-caption">Applicant Name</div>
+          <!-- <div class="opt-para-1">{{ selectedApplicationQuote?.name }}</div> -->
+          <div class="opt-para-1">
+            {{ selectedApplicationQuote?.application?.applicant?.fullName }}
+          </div>
+        </div>
+
+        <div class="content-1 mb-2">
+          <div class="title opt-caption">Phone Number</div>
+          <div class="opt-para-1">
+            +{{ selectedApplicationQuote?.application?.applicant?.countryCode }}
+            {{ selectedApplicationQuote?.application?.applicant?.mobileNo }}
+          </div>
+        </div>
+        <div class="content-1 mb-2">
+          <div class="title opt-caption">Applicant Address</div>
+          <div class="opt-para-1">
+            <span
+              *ngIf="selectedApplicationQuote?.application?.applicant?.address"
+            >
+              {{
+                selectedApplicationQuote?.application?.applicant?.address + ','
+              }}
+            </span>
+            <span
+              *ngIf="
+                selectedApplicationQuote?.application?.applicant?.city ||
+                selectedApplicationQuote?.application?.applicant?.state
+              "
+            >
+              {{ selectedApplicationQuote?.application?.applicant?.city + ' ' }}
+              {{
+                selectedApplicationQuote?.application?.applicant?.state + ','
+              }}
+            </span>
+            <span
+              class="mx-2"
+              *ngIf="selectedApplicationQuote?.application?.applicant?.country"
+            >
+              {{
+                selectedApplicationQuote?.application?.applicant?.country + '.'
+              }}
+            </span>
+          </div>
+        </div>
+
+        <div class="content-1 mb-2">
+          <div class="title opt-caption">Email Address</div>
+          <div class="opt-para-1">
+            {{ selectedApplicationQuote?.application?.applicant?.email }}
+          </div>
+        </div>
+
+        <div class="content-1 mb-2">
+          <div class="title opt-caption">Quote Date</div>
+          <div class="opt-para-1">
+            {{ selectedApplicationQuote?.createdDate | date }}
+          </div>
+        </div>
+      </div>
+
+      <div class="section-1-content mb-4">
+        <div class="section-1-header mb-3">
+          <div class="text opt-caption fw-500">QUESTIONNAIRE</div>
+          <div class="section-1-divider"></div>
+        </div>
+
+        <div class="table-container">
+          <table>
+            <tr>
+              <td class="text opt-caption fw-500">Select preferred program</td>
+              <td class="opt-caption fw-500">
+                {{
+                  this.selectedApplicationQuote?.application?.migrationRoute
+                    ?.countryName
+                }}
+              </td>
+            </tr>
+            <tr>
+              <td class="text opt-caption fw-500">Select route</td>
+              <td class="opt-caption fw-500">
+                {{
+                  this.selectedApplicationQuote?.application?.migrationRoute
+                    ?.name
+                }}
+              </td>
+            </tr>
+            <tr
+              *ngFor="
+                let item of selectedApplicationQuote?.application
+                  ?.applicationResponses
+              "
+            >
+              <td class="text opt-caption fw-500">
+                {{ item?.routeQuestion?.question }}
+              </td>
+              <td class="opt-caption fw-500">{{ item?.response }}</td>
+            </tr>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="grid-2">
+    <div class="container mb-4">
+      <div class="mb-4">
+        <div class="opt-para-2 fw-700">Quote Summary</div>
+        <div class="text opt-caption fw-500">
+          See details of all fees attached to applicant.
+        </div>
+      </div>
+      <div class="opt-para-2 fw-600">Program Fee</div>
+      <div class="table-responsive">
+        <table mat-table [dataSource]="dataSource" matSort>
+          <ng-container matColumnDef="fees">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>Fees</th>
+            <td mat-cell *matCellDef="let row">
+              <span
+                [matTooltip]="row?.routeFeeName"
+                matTooltipPosition="below"
+                matTooltipClass="custom-tooltip"
+              >
+                {{
+                  row?.routeFeeName.length > 16
+                    ? row?.routeFeeName?.substring(0, 16) + '...'
+                    : row?.routeFeeName
+                }}
+              </span>
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="quantity">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>Qnt</th>
+            <td mat-cell *matCellDef="let row">x{{ row.numberOfPeople }}</td>
+          </ng-container>
+
+          <ng-container matColumnDef="amount">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>
+              Amount ({{ selectedContry?.currency?.currencyCode }})
+            </th>
+            <td mat-cell *matCellDef="let row">
+              <span class="fw-600">{{ row.totalAmount | number }}</span>
+            </td>
+          </ng-container>
+
+          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+          <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+
+          <!-- Row shown when there is no matching data. -->
+          <tr class="mat-row" *matNoDataRow>
+            <td class="mat-cell" colspan="4">No matching data"</td>
+          </tr>
+        </table>
+      </div>
+      <div class="total-container">
+        <p class="btn opt-btn-secondary-outline total mt-4">
+          {{ hasDiscountApplied ? 'Net' : 'Total' }} Program Fees:
+          {{ totalQuoteGenerated | number }}
+          {{ selectedContry?.currency?.currencyCode }}
+        </p>
+      </div>
+
+      <div class="opt-para-2 fw-600">Local Processing Fee</div>
+      <div class="table-responsive">
+        <table mat-table [dataSource]="localFeeDataSource" matSort>
+          <ng-container matColumnDef="fees">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>Fees</th>
+            <td mat-cell *matCellDef="let row">
+              <span
+                [matTooltip]="row?.routeFeeName"
+                matTooltipPosition="below"
+                matTooltipClass="custom-tooltip"
+              >
+                <!-- {{
+                  row?.routeFeeName.length > 16
+                    ? row?.routeFeeName?.substring(0, 16) + '...'
+                    : row?.routeFeeName
+                }} -->
+                {{ row.routeFeeName }}
+              </span>
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="quantity">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>Qnt</th>
+            <td mat-cell *matCellDef="let row">x1</td>
+          </ng-container>
+
+          <ng-container matColumnDef="amount">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>
+              Amount ({{
+                selectedMigrationRouteInvoiceItem?.localCurrencyCode ?? 'NGN'
+              }})
+            </th>
+            <td mat-cell *matCellDef="let row">
+              <span class="fw-600">{{ row.amount | number }}</span>
+            </td>
+          </ng-container>
+
+          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+          <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+
+          <!-- Row shown when there is no matching data. -->
+          <tr class="mat-row" *matNoDataRow>
+            <td class="mat-cell" colspan="4">No matching data"</td>
+          </tr>
+        </table>
+      </div>
+      <div class="total-container">
+        <p class="btn opt-btn-secondary-outline total mt-4">
+          Total Local Processing Fee: {{ localFeeData[0].amount | number }}
+          {{ selectedMigrationRouteInvoiceItem?.localCurrencyCode ?? 'NGN' }}
+        </p>
+      </div>
+
+      <div class="opt-discount-outline" *ngIf="hasDiscountApplied">
+        <div class="title-container">
+          <div>
+            <img src="assets/images/info-circle.svg" alt="info" />
+          </div>
+          <p class="title mt-1">IMPORTANT NOTICE!</p>
+        </div>
+
+        <p class="message">
+          {{ selectedApplicationQuote.discountAppliedMessage || '--' }}
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<ng-container
+  *ngIf="
+    (isLoading | async) !== false ||
+    (isCountryLoading | async) !== false ||
+    (isInvoiceItemsLoading | async) !== false
+  "
+>
+  <div class="general-loader-container webapp-view">
+    <div class="general-loader-backdrop"></div>
+
+    <div class="general-loader-content">
+      <app-general-loader></app-general-loader>
+    </div>
+  </div>
+</ng-container>

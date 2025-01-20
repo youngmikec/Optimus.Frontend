@@ -1,0 +1,124 @@
+@use '../../../../../@core/styles/abstracts' as *;
+
+#main {
+  width: 23rem;
+  position: relative;
+
+  @include opt-media-query-max(opt-sm) {
+    width: fit-content;
+  }
+
+  .header {
+    display: flex;
+    justify-content: space-between;
+    gap: 1.25rem;
+    margin-bottom: 0.3125rem;
+
+    .close-icon-container {
+      position: absolute;
+      right: 0;
+      top: 0;
+    }
+  }
+
+  .amount-container {
+    text-align: center;
+    width: 100%;
+
+    .header {
+      width: fit-content;
+      margin: auto;
+    }
+
+    .content {
+      background-color: $opt-neutral2-50;
+      padding: 0.625rem 0px;
+      color: $opt-primary;
+      font-size: 1.125rem;
+      font-weight: 700;
+    }
+  }
+
+  .cta-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+    gap: 0.625rem;
+    margin-top: 0.625rem;
+  }
+
+  .input-label {
+    font-style: italic;
+  }
+
+  .input-width {
+    width: 20.375rem;
+  }
+
+  .upload-container {
+    display: flex;
+    row-gap: 0.5rem;
+    border-radius: 0.5rem;
+    border: 1px dashed var(--opt-secondary-color);
+    padding: 0.5rem;
+    background-color: var(--opt-secondary-color-50);
+    margin-bottom: 1rem;
+    cursor: pointer;
+
+    p {
+      text-align: center;
+      color: var(--opt-secondary-color-700);
+    }
+  }
+
+  .upload-wrapper {
+    border-radius: 0.5rem;
+    border: 1px dashed var(--opt-neutral2-900);
+    row-gap: 0.5rem;
+    position: relative;
+    padding: 0.5rem;
+
+    .progress-container {
+      display: flex;
+      flex-direction: column;
+      width: 80%;
+      margin-left: 10%;
+
+      p {
+        font-size: 0.75rem;
+      }
+
+      .progressValue {
+        margin-left: 0.5rem;
+      }
+    }
+  }
+
+  .uploaded-document {
+    display: flex;
+    column-gap: 0.5rem;
+    align-items: center;
+
+    p {
+      margin: 0;
+      font-size: 0.75rem;
+    }
+
+    .remove-text {
+      color: $opt-error-500;
+      position: absolute;
+      right: 0.5rem;
+      cursor: pointer;
+    }
+  }
+}
+
+.red-text {
+  color: $opt-secondary;
+}
+
+.blue-text {
+  color: $opt-primary;
+  cursor: pointer;
+}

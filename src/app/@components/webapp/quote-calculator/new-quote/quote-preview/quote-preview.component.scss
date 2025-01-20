@@ -1,0 +1,80 @@
+@use '../../../../../@core/styles/abstracts' as *;
+
+#main-section {
+  padding: 0 0 0 1rem;
+}
+
+#quote-preview {
+  padding: 2rem 0 0 0;
+
+  .quote-image {
+    text-align: center;
+
+    img {
+      margin-top: 7rem;
+    }
+  }
+
+  .total {
+    width: 100%;
+  }
+
+  .opt-btn-secondary-outline {
+    color: $opt-secondary-900;
+    border: 1px dashed $opt-secondary;
+    background-color: $opt-secondary-50;
+
+    &:hover {
+      color: unset;
+    }
+
+    &:focus {
+      color: unset;
+    }
+  }
+
+  .opt-discount-outline {
+    color: $opt-black;
+    border: 1px solid #eb9b00;
+    background-color: #fff1d6;
+    border-radius: 8px;
+    padding: auto 1rem auto 1rem !important;
+
+    .title-container {
+      margin: 0.5rem 1rem;
+      display: flex;
+      justify-content: start;
+      gap: 0.5rem;
+
+      .title {
+        font-size: 16px;
+        font-weight: 600;
+      }
+    }
+
+    .message {
+      margin: 0.4rem 1rem;
+      font-size: 14px;
+    }
+
+    &:hover {
+      color: unset;
+    }
+
+    &:focus {
+      color: unset;
+    }
+  }
+}
+
+::ng-deep .preview {
+  thead {
+    background-color: $opt-primary-50 !important;
+  }
+
+  th.mat-header-cell,
+  td.mat-cell,
+  td.mat-footer-cell {
+    border: unset !important;
+  }
+}

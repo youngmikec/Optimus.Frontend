@@ -1,0 +1,38 @@
+<section id="contact-category">
+  <div class="contact-category-header">
+    <h6 class="opt-heading-6 fw-700 mb-0">Invoices</h6>
+
+    <div class="table-controls">
+      <div class="input-style1 input-no-error">
+        <mat-form-field appearance="outline" [style.width.%]="100">
+          <span matPrefix class="img-fluid">
+            <img src="/assets/icons/search.svg" alt="icon" />
+          </span>
+
+          <input
+            matInput
+            placeholder="Search By Invoice Number"
+            [formControl]="searchCtrl"
+          />
+        </mat-form-field>
+      </div>
+    </div>
+  </div>
+
+  <div class="list-section">
+    <mat-tab-group (selectedTabChange)="onTabChange($event)">
+      <mat-tab label="All Invoices">
+        <app-all-invoice #allInvoices [search]="search"></app-all-invoice>
+      </mat-tab>
+      <mat-tab label="Paid Invoices">
+        <app-paid-invoice #paidInvoices [search]="search"></app-paid-invoice>
+      </mat-tab>
+      <mat-tab label="Outstanding Invoices">
+        <app-outstanding-invoice
+          #outstandingInvoices
+          [search]="search"
+        ></app-outstanding-invoice>
+      </mat-tab>
+    </mat-tab-group>
+  </div>
+</section>

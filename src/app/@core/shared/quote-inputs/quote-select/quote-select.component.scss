@@ -1,0 +1,104 @@
+@use '../../../styles/abstracts' as *;
+
+.radio {
+  display: flex;
+  flex-direction: row;
+  gap: 1.5rem;
+  width: 100%;
+  margin-bottom: 1rem;
+
+  .radio-div {
+    width: 100%;
+  }
+
+  .item {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    text-align: center;
+    justify-content: center;
+    border: 0.06rem solid $opt-neutral-400;
+    height: 8.75rem;
+    border-radius: 0.5rem;
+  }
+
+  .option-items {
+    cursor: pointer;
+  }
+}
+
+.option-container {
+  .option-items1 {
+    border: 0.063rem solid $opt-neutral-200;
+    border-radius: 0.25rem;
+    padding: 0.8rem;
+    margin-bottom: 1rem;
+    width: max-content;
+  }
+}
+
+.item-selected {
+  border-width: 0.15rem !important;
+  // border-color: $opt-neutral2-50 !important;
+  transition: 0.65s all;
+}
+
+.label {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.disabled {
+  pointer-events: none !important;
+  opacity: 0.5;
+}
+
+.disabled-parent {
+  cursor: not-allowed !important;
+}
+
+.truefalse-main-container {
+  .truefalse-container {
+    display: flex;
+    justify-content: flex-start;
+    gap: 2.5rem;
+
+    @include opt-media-query-max(opt-md) {
+      display: block;
+    }
+
+    .truefalse-item {
+      text-align: center;
+      // justify-content: center;
+      border: 0.06rem solid $opt-neutral-400;
+      border-radius: 0.5rem;
+      width: fit-content;
+      padding: 1.438rem 4.016rem;
+      margin-bottom: 1rem;
+      cursor: pointer;
+
+      .icon {
+        margin-bottom: 1rem;
+
+        .filled {
+          fill: $opt-primary-400;
+        }
+
+        .not-filled {
+          fill: none;
+        }
+      }
+    }
+
+    .selected {
+      background-color: $opt-primary-50;
+      border: 0.06rem solid $opt-primary-400;
+    }
+
+    .not-selected {
+      background-color: #ffffff;
+      border: 0.06rem solid $opt-neutral-400;
+    }
+  }
+}

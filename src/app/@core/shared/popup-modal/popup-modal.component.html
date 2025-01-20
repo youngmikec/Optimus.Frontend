@@ -1,0 +1,47 @@
+<div class="card text-center" style="width: 18rem">
+  <div class="card-body">
+    <div>
+      <svg
+        width="52"
+        height="52"
+        viewBox="0 0 52 52"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <g clip-path="url(#clip0_20901_62534)">
+          <rect width="52" height="52" rx="26" fill="#EB9B00" />
+          <path
+            d="M17.3359 17.332C17.3359 15.6081 18.1349 13.9548 19.557 12.7358C20.9792 11.5169 22.908 10.832 24.9193 10.832H27.0859C29.0972 10.832 31.026 11.5169 32.4482 12.7358C33.8703 13.9548 34.6693 15.6081 34.6693 17.332C34.7491 18.7387 34.3696 20.1333 33.588 21.3056C32.8065 22.478 31.6651 23.3646 30.3359 23.832C29.0067 24.4552 27.8654 25.6374 27.0838 27.2005C26.3023 28.7637 25.9228 30.6231 26.0026 32.4987"
+            stroke="#FFF1D6"
+            stroke-width="2.16667"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          />
+          <path
+            d="M26 41.1641V41.1857"
+            stroke="#FFF1D6"
+            stroke-width="2.16667"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          />
+        </g>
+        <defs>
+          <clipPath id="clip0_20901_62534">
+            <rect width="52" height="52" rx="26" fill="white" />
+          </clipPath>
+        </defs>
+      </svg>
+    </div>
+    <h5 class="card-title">{{ headerText }}</h5>
+    <p class="card-text">
+      Are you sure you want to {{ actionType.toLowerCase() }} them?
+    </p>
+    <!-- <a href="#" class="btn btn-primary">Go somewhere</a> -->
+    <div>
+      <button type="button" class="btn btn-danger ml-1">No, Cancel</button>
+      <button type="button" class="btn btn-primary ml-1 custom-color">
+        Yes, {{ actionType }}
+      </button>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,228 @@
+@use '../../../../@core/styles/abstracts' as *;
+
+.topbar {
+  // height: 3rem;
+  width: 100%;
+  border-bottom: 1px solid $opt-neutral-100;
+
+  .content-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    overflow: auto;
+    white-space: nowrap;
+  }
+}
+
+.status-section {
+  width: 100%;
+  margin-top: 1rem;
+
+  .status-container {
+    display: flex;
+    overflow: auto;
+    white-space: nowrap;
+    justify-content: center;
+    align-items: center;
+    gap: 0.5rem;
+
+    @include opt-media-query-max(opt-sm) {
+      justify-content: flex-start;
+    }
+
+    .status-1 {
+      display: flex;
+      gap: 0.5rem;
+      width: fit-content;
+
+      &::after {
+        content: '- - -';
+      }
+
+      @include opt-media-query-max(opt-sm) {
+        &::after {
+          content: '-';
+        }
+      }
+    }
+
+    .status-2 {
+      display: flex;
+      gap: 0.5rem;
+      width: fit-content;
+
+      &::after {
+        content: '- - -';
+      }
+
+      @include opt-media-query-max(opt-sm) {
+        &::after {
+          content: '-';
+        }
+      }
+
+      .number {
+        padding: 0.05rem 0.5rem;
+        border-radius: 0.25rem;
+        background-color: $opt-primary;
+        color: $opt-white;
+      }
+    }
+
+    .status-3 {
+      display: flex;
+      gap: 0.5rem;
+      width: fit-content;
+
+      .number {
+        padding: 0.05rem 0.5rem;
+        border-radius: 0.25rem;
+        background-color: $opt-neutral-100;
+        color: $opt-neutral-600;
+      }
+    }
+  }
+}
+
+.wrapper {
+  // display: grid;
+  // grid-template-columns: 25% auto;
+  padding: 0.5rem;
+
+  @include opt-media-query-max(opt-sm) {
+    display: block;
+    padding: 0.5rem 0rem;
+  }
+
+  .grid-2 {
+    width: 100%;
+    padding: 0.5rem;
+
+    .main-invoice-container {
+      // padding: 2rem 1.5rem;
+      border-radius: 0.5rem;
+      box-shadow: 0px 10px 25px rgba(232, 232, 232, 0.5);
+      // height: 70vh;
+      // overflow-y: scroll;
+      // overflow-x: hidden;
+
+      .section-1 {
+        width: 100%;
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 1.5rem;
+
+        @include opt-media-query-max(opt-sm) {
+          display: block;
+        }
+
+        .item {
+          width: 100%;
+          display: flex;
+          justify-content: flex-start;
+          align-items: center;
+          padding: 1rem;
+          gap: 0.55rem;
+          filter: drop-shadow(0px 0.5rem 1rem rgba(63, 62, 62, 0.5));
+          border-radius: 0.5rem;
+
+          @include opt-media-query-max(opt-sm) {
+            width: 100%;
+            margin-bottom: 1rem;
+          }
+        }
+
+        .colored {
+          background-color: $opt-primary;
+          color: $opt-white;
+
+          .header {
+            font-weight: 700;
+            font-size: 1rem;
+            line-height: 1.75rem;
+          }
+
+          .content {
+            font-size: 0.75rem;
+          }
+        }
+
+        .not-colored {
+          background-color: $opt-white;
+
+          .header {
+            color: #1d1d1d;
+            font-weight: 700;
+            font-size: 1rem;
+            line-height: 1.75rem;
+          }
+
+          .content {
+            font-size: 0.75rem;
+            color: $opt-neutral-500;
+          }
+        }
+      }
+
+      // .section-2 {
+      // }
+    }
+  }
+}
+
+.mark-as-paid-button {
+  cursor: pointer;
+  color: $opt-primary;
+  width: min-content;
+  padding: 0.125rem 0.25rem;
+  border-radius: 5px;
+  border: 1px solid $opt-primary;
+}
+
+.invoice-stage {
+  color: $opt-secondary;
+  background-color: $opt-secondary-50;
+  font-size: 0.75rem;
+  font-weight: 400;
+  border-radius: 0.3125rem;
+  padding: 0.125rem 0.625rem;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+tr.example-detail-row {
+  height: 0;
+}
+
+tr.example-element-row:not(.example-expanded-row):hover {
+  background: whitesmoke;
+}
+
+tr.example-element-row:not(.example-expanded-row):active {
+  background: #efefef;
+}
+
+.example-element-detail {
+  overflow: hidden;
+  display: flex;
+}
+
+.main-expanded-table-container {
+  margin-top: 1.25rem;
+}
+
+.mat-column-resizable {
+  position: relative;
+  cursor: col-resize !important;
+}
+
+.mat-column-resizable .resize-handle {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 5px;
+  height: 100%;
+  cursor: col-resize !important;
+}

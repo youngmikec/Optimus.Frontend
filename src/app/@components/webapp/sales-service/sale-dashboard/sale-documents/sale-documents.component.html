@@ -1,0 +1,38 @@
+<!-- For Document Collation tab sections -->
+
+<ng-container *ngIf="documentPhase.phase === phasesEnum.DOCUMENT_COLLATION">
+  <ng-container [ngSwitch]="activeSection">
+    <app-document-main
+      @fadeInDown
+      (currateList)="activeSection = 'family-details'"
+      *ngSwitchCase="'currate'"
+    ></app-document-main>
+
+    <app-family-form
+      @fadeInDown
+      *ngSwitchCase="'family-details'"
+      (continueEmit)="saveApplicantFamilyMembers($event)"
+    ></app-family-form>
+
+    <app-document-parameters
+      @fadeInDown
+      *ngSwitchCase="'document-question'"
+      (backEmit)="activeSection = 'family-details'"
+      (saveEmit)="saveDocumentParameters($event)"
+      (submitEmit)="submitDocumentParameters($event)"
+    >
+    </app-document-parameters>
+
+    <app-family-folders
+      @fadeInDown
+      *ngSwitchCase="'family-folders'"
+      [documentPhase]="documentPhase"
+    ></app-family-folders>
+  </ng-container>
+</ng-container>
+
+<!-- For other phases -->
+<app-family-folders
+  *ngIf="documentPhase.phase !== phasesEnum.DOCUMENT_COLLATION"
+  [documentPhase]="documentPhase"
+></app-family-folders>

@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-// import { UnathorizedPageComponent } from './@components/unathorized-page/unathorized-page.component';
+import { UnathorizedPageComponent } from './@components/unathorized-page/unathorized-page.component';
 
 const routes: Routes = [
   {
@@ -9,26 +9,26 @@ const routes: Routes = [
     pathMatch: 'full',
   },
 
-  // {
-  //   path: 'site',
-  //   loadChildren: () =>
-  //     import('./@components/website/website.module').then(
-  //       (m) => m.WebsiteModule
-  //     ),
-  // },
+  {
+    path: 'site',
+    loadChildren: () =>
+      import('./@components/website/website.module').then(
+        (m) => m.WebsiteModule
+      ),
+  },
 
-  // {
-  //   path: 'app',
-  //   data: { breadcrumb: 'Webapp' },
-  //   loadChildren: () =>
-  //     import('./@components/webapp/webapp.module').then((m) => m.WebappModule),
-  // },
+  {
+    path: 'app',
+    data: { breadcrumb: 'Webapp' },
+    loadChildren: () =>
+      import('./@components/webapp/webapp.module').then((m) => m.WebappModule),
+  },
 
-  // {
-  //   path: 'unauthorized-page',
-  //   data: { breadcrumb: 'Webapp' },
-  //   component: UnathorizedPageComponent,
-  // },
+  {
+    path: 'unauthorized-page',
+    data: { breadcrumb: 'Webapp' },
+    component: UnathorizedPageComponent,
+  },
 ];
 
 @NgModule({

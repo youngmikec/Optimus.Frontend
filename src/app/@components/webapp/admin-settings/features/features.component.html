@@ -1,0 +1,273 @@
+<ng-container *ngIf="(isLoading | async) !== false">
+  <div class="general-loader-container webapp-view">
+    <div class="general-loader-backdrop"></div>
+
+    <div class="general-loader-content">
+      <app-general-loader></app-general-loader>
+    </div>
+  </div>
+</ng-container>
+
+<section id="feature-config">
+  <div class="header-section">
+    <div class="title-section">
+      <p class="opt-para-3 fw-700 me-4 mb-0">Features List</p>
+      <button
+        matRipple
+        [disabled]="this.permissions1[1] === false"
+        class="btn opt-btn-with-icon new-feature-btn opt-btn-sm"
+        *ngIf="canCreateFeature"
+        (click)="
+          this.permissions1[1] === false
+            ? null
+            : openAddOrEditfeature('add', '')
+        "
+      >
+        <span class="img-fluid"
+          ><img src="/assets/icons/add.svg" alt="filter-icon"
+        /></span>
+
+        Create feature
+      </button>
+    </div>
+
+    <div class="search-container">
+      <div class="input-style1 input-no-error">
+        <mat-form-field appearance="outline" [style.width.%]="100">
+          <span matPrefix class="img-fluid">
+            <svg
+              width="16"
+              height="16"
+              viewBox="0 0 16 16"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <circle
+                cx="6.5"
+                cy="6.5"
+                r="5.75"
+                stroke="#8A8A8A"
+                stroke-width="1.5"
+              />
+              <path
+                d="M11 11L15 15"
+                stroke="#8A8A8A"
+                stroke-width="1.5"
+                stroke-linecap="round"
+              />
+            </svg>
+          </span>
+
+          <input
+            matInput
+            [(ngModel)]="searchInputParam"
+            (ngModelChange)="onInputSearch()"
+            placeholder="Search for a feature or permisson"
+          />
+        </mat-form-field>
+      </div>
+    </div>
+  </div>
+  <div class="feature-container">
+    <div class="feature-list-section">
+      <ul class="list-group feature-list-card">
+        <!-- (mouseover)="showMoreFeatureOption(i)"
+        (mouseout)="removeShowMore(i)" -->
+        <li
+          (click)="loadSelectedFeaturePermission(feature, i)"
+          class="list-group-item"
+          *ngFor="
+            let feature of !this.searchInputParam ? features : selectedFeatures;
+            index as i
+          "
+          [ngClass]="{ 'active-feature': i === selectedFeature }"
+          #featureList
+        >
+          <span class="opt-para-1 name text-truncate">{{ feature.name }}</span>
+          <span class="opt-caption count">{{ feature?.children.length }}</span>
+          <div matRipple class="more-option">
+            <img
+              src="/assets/icons/more-icon.svg"
+              alt="more option"
+              [matMenuTriggerFor]="menu"
+            />
+          </div>
+          <!-- Menu section -->
+          <mat-menu #menu="matMenu" class="feature-menu">
+            <ul class="list-group feature-menu-list">
+              <li class="list-group-item">
+                <div
+                  matRipple
+                  class="item-holder"
+                  *ngIf="canEditFeatures"
+                  (click)="openAddOrEditfeature('edit', feature)"
+                >
+                  <div matRipple class="me-3 image-holder">
+                    <img
+                      src="/assets/icons/edit.svg"
+                      alt="edit feature"
+                      width="16"
+                    />
+                  </div>
+                  <span class="opt-para-1"> Edit feature</span>
+                </div>
+              </li>
+              <li class="list-group-item" (click)="$event.stopPropagation()">
+                <div matRipple class="item-holder" *ngIf="canActivateFeatures">
+                  <mat-slide-toggle
+                    class="me-3"
+                    matTooltipPosition="above"
+                    matTooltipClass="custom-tooltip"
+                    [matTooltip]="
+                      feature.status === 1 ? 'Deactivate' : 'Activate'
+                    "
+                    [checked]="feature.status === 1 ? true : false"
+                    (change)="ToggleFeatureOrPermission(feature)"
+                  >
+                  </mat-slide-toggle>
+
+                  <span class="opt-para-1">
+                    <ng-container
+                      >{{ feature.status === 1 ? 'Deactivate' : 'Activate' }}
+                      feature
+                    </ng-container>
+                  </span>
+                </div>
+              </li>
+              <!-- <li class="list-group-item">
+                <div
+                  matRipple
+                  class="item-holder"
+                  (click)="openDeleteFeature(feature)"
+                >
+                  <div class="me-3 image-holder">
+                    <img
+                      src="/assets/icons/trash.svg"
+                      alt="edit feature"
+                      width="16"
+                    />
+                  </div>
+                  <span class="opt-para-1"> Delete feature</span>
+                </div>
+              </li> -->
+            </ul>
+          </mat-menu>
+        </li>
+      </ul>
+    </div>
+
+    <div class="permission-list-section">
+      <div class="scrollable-container">
+        <div class="permission-container">
+          <div class="permission-header">
+            <div class="d-flex align-items-center">
+              <!-- <mat-checkbox color="primary" class="mb-1"> </mat-checkbox> -->
+              <p class="opt-para-3 fw-500 mb-0">
+                Set Permissions For {{ featureName }}
+              </p>
+            </div>
+            <button
+              matRipple
+              class="btn opt-btn-primary"
+              *ngIf="canCreateFeature"
+              [disabled]="this.permissions1[2] === false"
+              (click)="
+                this.permissions1[2] === false
+                  ? null
+                  : openAddOrEditPermission('create', '')
+              "
+            >
+              Create Permission
+            </button>
+          </div>
+
+          <!-- Empy state -->
+          <div
+            *ngIf="permissions && permissions.length < 1"
+            class="d-flex justify-content-center align-items-center py-5 my-3"
+          >
+            <div class="text-center">
+              <img src="/assets/images/no-products.svg" alt="empty state" />
+
+              <p class="fw-400 opt-caption mb-0 mt-3">
+                You are yet to create any permission for this feature
+              </p>
+            </div>
+          </div>
+
+          <div
+            class="permission-list"
+            *ngIf="permissions && permissions.length >= 1"
+          >
+            <div
+              class="permission-item"
+              *ngFor="let permission of permissions; let i = index"
+            >
+              <div class="d-flex align-items-center">
+                <mat-checkbox color="primary" class="mb-1"> </mat-checkbox>
+                <p class="opt-para-1 ms-2 mb-0">{{ permission.name }}</p>
+              </div>
+
+              <p class="opt-para-1 mb-0 d-flex align-items-center">
+                <ng-component
+                  *ngFor="let user of permission.users; let i = index"
+                >
+                  {{ user }}<span *ngIf="i !== permission.users.length">,</span>
+                </ng-component>
+              </p>
+
+              <div class="icon-section">
+                <!-- <div
+                  (click)="openDeletePermission(permission)"
+                  matRipple
+                  class="trash-container"
+                  matTooltipClass="custom-tooltip"
+                  matTooltipPosition="above"
+                  matTooltip="Delete"
+                >
+                  <img
+                    src="/assets/icons/delete.svg"
+                    width="16"
+                    height="16"
+                    alt="trash-icon"
+                  />
+                </div> -->
+
+                <div
+                  *ngIf="canEditFeatures"
+                  (click)="openAddOrEditPermission('edit', permission)"
+                  matRipple
+                  matTooltipClass="tooltip"
+                  matTooltip="Edit"
+                  matTooltipPosition="above"
+                  matTooltipClass="custom-tooltip"
+                  class="edit-container"
+                >
+                  <img
+                    src="/assets/icons/edit.svg"
+                    width="16"
+                    height="16"
+                    alt="edit-icon"
+                  />
+                </div>
+
+                <ng-container *ngIf="canCreateFeature">
+                  <mat-slide-toggle
+                    matTooltipPosition="above"
+                    matTooltipClass="custom-tooltip"
+                    [matTooltip]="
+                      permission.status === 1 ? 'Deactivate' : 'Activate'
+                    "
+                    [checked]="permission.status === 1 ? true : false"
+                    (change)="ToggleFeatureOrPermission(permission)"
+                  >
+                  </mat-slide-toggle>
+                </ng-container>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

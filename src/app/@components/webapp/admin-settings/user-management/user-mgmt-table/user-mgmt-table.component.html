@@ -1,0 +1,170 @@
+<ng-container
+  *ngIf="tableData !== null && dataSource !== null; else noTableData"
+>
+  <div class="table-responsive">
+    <table mat-table [dataSource]="dataSource!" matSort>
+      <ng-container matColumnDef="select">
+        <th mat-header-cell *matHeaderCellDef>
+          <mat-checkbox
+            color="primary"
+            (change)="$event ? masterToggle() : null"
+            [checked]="selection.hasValue() && isAllSelected()"
+            [indeterminate]="selection.hasValue() && !isAllSelected()"
+            [aria-label]="checkboxLabel()"
+          >
+          </mat-checkbox>
+        </th>
+        <td mat-cell *matCellDef="let row">
+          <mat-checkbox
+            color="primary"
+            (click)="$event.stopPropagation()"
+            (change)="$event ? selection.toggle(row) : null"
+            [checked]="selection.isSelected(row)"
+            [aria-label]="checkboxLabel(row)"
+          >
+          </mat-checkbox>
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="username">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Name</th>
+        <td mat-cell *matCellDef="let row">
+          <span class="d-flex justify-content-start align-items-center">
+            <span>{{ row.firstName }} {{ row.lastName }} </span>
+          </span>
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="email">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Email address</th>
+        <td mat-cell *matCellDef="let row">
+          <span class="d-flex justify-content-start align-items-center">
+            <span>{{ row.email }}</span>
+          </span>
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="dateAdded">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Date added</th>
+        <td mat-cell *matCellDef="let row">
+          <span class="d-flex justify-content-start align-items-center">
+            <span>{{ row.createdDate | date }}</span>
+          </span>
+        </td>
+      </ng-container>
+
+      <!-- <ng-container matColumnDef="department">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Department</th>
+        <td mat-cell *matCellDef="let row">
+          <span
+            class="d-flex justify-content-start align-items-center"
+            [ngClass]="{
+              'ms-3': row.status === userStatus.roleNotAssigned
+            }"
+          >
+            {{
+              row.status === userStatus.roleNotAssigned
+                ? '-'
+                : row.department?.name
+            }}
+          </span>
+        </td>
+      </ng-container> -->
+
+      <ng-container matColumnDef="role">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Role</th>
+        <td mat-cell *matCellDef="let row">
+          <span
+            class="d-flex justify-content-start align-items-center"
+            [ngClass]="{
+              'ms-2': row.status === userStatus.roleNotAssigned
+            }"
+          >
+            {{
+              row.status === userStatus.roleNotAssigned ? '-' : row.role?.name
+            }}
+          </span>
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="status">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Status</th>
+        <td mat-cell *matCellDef="let row">
+          <span class="status-active" *ngIf="row.status === userStatus.active"
+            >Active</span
+          >
+          <span
+            class="status-inactive"
+            *ngIf="row?.status === userStatus.inActive"
+          >
+            Inactive
+          </span>
+          <span
+            class="status-pending"
+            *ngIf="row.status === userStatus.roleNotAssigned"
+            >Pending</span
+          >
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="actions">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Actions</th>
+        <td mat-cell *matCellDef="let row">
+          <div class="table-cta-container">
+            <!-- <div
+              class="cta-container"
+              matRipple
+              matTooltipPosition="above"
+              matTooltipClass="custom-tooltip"
+              [matTooltip]="currentTab === 'Pending assignment' ? '' : 'Edit'"
+              (click)="onEditUser(row)"
+            >
+              <a>
+                <img src="/assets/images/table-edit-icon.svg" alt="edit-icon" />
+              </a>
+              <span>
+                <ng-container *ngIf="currentTab === 'Pending assignment'"
+                  >Assign</ng-container
+                >
+              </span>
+            </div> -->
+
+            <a>
+              <img src="/assets/icons/delete.svg" alt="edit-icon" />
+            </a>
+
+            <div class="toggle-container">
+              <mat-slide-toggle
+                matTooltipPosition="above"
+                matTooltipClass="custom-tooltip"
+                [matTooltip]="row.status === 1 ? 'Deactivate' : 'Activate'"
+                [checked]="row.status === 1 ? 'true' : 'false'"
+              >
+              </mat-slide-toggle>
+            </div>
+          </div>
+        </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+
+      <!-- Row shown when there is no matching data. -->
+      <tr class="mat-row" *matNoDataRow>
+        <td class="mat-cell" colspan="4">No matching data"</td>
+      </tr>
+    </table>
+  </div>
+  <mat-paginator
+    [pageSize]="10"
+    [length]="totalRecords"
+    [pageSizeOptions]="[5, 10, 15, 20, 25, 30]"
+    (page)="onPaginationChange($event)"
+    showFirstLastButtons
+  >
+  </mat-paginator>
+</ng-container>
+
+<ng-template #noTableData>
+  <app-table-loader></app-table-loader>
+</ng-template>

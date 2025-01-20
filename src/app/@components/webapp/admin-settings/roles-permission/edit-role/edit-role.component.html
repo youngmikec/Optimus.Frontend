@@ -1,0 +1,228 @@
+<!-- <ng-container *ngIf="(isLoading | async) !== false">
+    <div class="spinner">
+      <app-general-loader></app-general-loader>
+    </div>
+  </ng-container> -->
+
+<section id="create-role">
+  <div class="container-fluid">
+    <!-- <div class="header-container">
+        <h1 class="header">Create User Role</h1>
+      </div> -->
+
+    <div class="">
+      <form [formGroup]="editRoleForm">
+        <div class="row">
+          <div class="input-button">
+            <div class="input-input">
+              <div class="input-style1 input-width">
+                <label class="input-label">Role</label>
+
+                <mat-form-field appearance="outline" [style.width.%]="100">
+                  <input
+                    type="text"
+                    inputmode="text"
+                    matInput
+                    formControlName="role"
+                  />
+                  <mat-error *ngIf="editRoleFormControls['role'].invalid">
+                    <img
+                      src="/assets/icons/error.svg"
+                      alt=""
+                      class="img-fluid error-icon"
+                    />
+                    {{ getErrorMessage('role') }}
+                  </mat-error>
+                </mat-form-field>
+              </div>
+
+              <div class="input-style1 input-width">
+                <label class="input-label">Access Level</label>
+
+                <mat-form-field appearance="outline" [style.width.%]="100">
+                  <mat-select
+                    formControlName="access_level"
+                    (selectionChange)="getPermissionsByAccessLevel($event)"
+                  >
+                    <mat-option
+                      *ngFor="let accessLevel of accessLevels"
+                      [value]="accessLevel.value"
+                    >
+                      {{ accessLevel.name }}
+                    </mat-option>
+                  </mat-select>
+
+                  <mat-error
+                    *ngIf="editRoleFormControls['access_level'].invalid"
+                  >
+                    <img
+                      src="/assets/icons/error.svg"
+                      alt=""
+                      class="img-fluid error-icon"
+                    />
+                    {{ getErrorMessage('access_level') }}
+                  </mat-error>
+                </mat-form-field>
+              </div>
+            </div>
+
+            <div class="cta-container">
+              <a
+                routerLink="/app/admin-settings/roles-permission"
+                matRipple
+                class="btn opt-btn-primary-outline back-btn"
+              >
+                Cancel
+              </a>
+
+              <button
+                matRipple
+                class="btn opt-btn-primary save-btn"
+                type="button"
+                [disabled]="(isLoading | async) !== false"
+                (click)="editRole()"
+              >
+                Save
+                <ng-container *ngIf="(isLoading | async) !== false">
+                  <app-button-loader></app-button-loader>
+                </ng-container>
+              </button>
+            </div>
+          </div>
+        </div>
+      </form>
+
+      <section class="feature-permission-container">
+        <div class="d-flex mb-3">
+          <h6 class="opt-heading-6 fw-700 mb-0">Feature List</h6>
+
+          <div class="search-container ms-auto">
+            <div class="input-style1 input-no-error w-100">
+              <mat-form-field appearance="outline" [style.width.%]="100">
+                <span matPrefix class="img-fluid">
+                  <svg
+                    width="16"
+                    height="16"
+                    viewBox="0 0 16 16"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <circle
+                      cx="6.5"
+                      cy="6.5"
+                      r="5.75"
+                      stroke="#8A8A8A"
+                      stroke-width="1.5"
+                    />
+                    <path
+                      d="M11 11L15 15"
+                      stroke="#8A8A8A"
+                      stroke-width="1.5"
+                      stroke-linecap="round"
+                    />
+                  </svg>
+                </span>
+
+                <input
+                  matInput
+                  [(ngModel)]="searchInputParam"
+                  (ngModelChange)="onInputSearch()"
+                  placeholder="Search for a feature or permisson"
+                />
+              </mat-form-field>
+            </div>
+          </div>
+        </div>
+
+        <div class="feature-container">
+          <div class="feature-list-section">
+            <ul class="list-group feature-list-card">
+              <li
+                (click)="loadSelectedFeaturePermission(feature, i)"
+                class="list-group-item"
+                *ngFor="
+                  let feature of !this.searchInputParam
+                    ? features
+                    : selectedFeatures;
+                  index as i
+                "
+                [ngClass]="{ 'active-feature': i === selectedFeature }"
+              >
+                <span class="opt-para-1 name text-truncate">{{
+                  feature.name
+                }}</span>
+                <ng-container
+                  *ngIf="feature.children?.length !== 0; else noChild"
+                >
+                  <p class="opt-caption count mb-0">
+                    {{
+                      startedEditing === false
+                        ? feature?.checkedCount2
+                        : feature?.checkedCount
+                    }}/{{ feature?.children?.length }}
+                  </p>
+                </ng-container>
+                <ng-template #noChild>
+                  <p class="opt-caption count mb-0">0/0</p>
+                </ng-template>
+              </li>
+            </ul>
+          </div>
+
+          <div class="permission-list-section">
+            <div class="scrollable-container">
+              <div class="permission-container">
+                <div class="permission-header">
+                  <p
+                    class="opt-para-2 fw-500 ms-2 mb-0 d-flex align-items-center"
+                  >
+                    Set Permissions For {{ featureName }}
+                  </p>
+
+                  <div class="d-flex align-items-center">
+                    <p class="opt-para-2 fw-500 me-2 mb-0">Select all</p>
+                    <mat-checkbox
+                      color="primary"
+                      class="mb-1"
+                      (change)="$event ? onSelectAllPermissions() : null"
+                      [(ngModel)]="masterChecked"
+                      [ngModelOptions]="{ standalone: true }"
+                      [(indeterminate)]="masterIndeterminate"
+                    >
+                    </mat-checkbox>
+                  </div>
+                </div>
+
+                <div
+                  class="permission-list"
+                  *ngIf="permissions && permissions.length >= 1"
+                >
+                  <div
+                    class="permission-item"
+                    *ngFor="let permission of permissions; let i = index"
+                  >
+                    <p class="opt-para-1 ms-2 mb-0 d-flex align-items-center">
+                      {{ permission.name }}
+                    </p>
+
+                    <mat-checkbox
+                      #permissionCheckbox
+                      color="primary"
+                      [(ngModel)]="permission.isChecked"
+                      [ngModelOptions]="{ standalone: true }"
+                      (change)="updatePermissionCheckList(permission)"
+                      [checked]="permission.isChecked"
+                      class="mb-1"
+                    >
+                    </mat-checkbox>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+      <!-- </form> -->
+    </div>
+  </div>
+</section>

@@ -1,0 +1,28 @@
+@use '../../../../@core/styles/abstracts/media-query' as *;
+
+#user-management {
+  .user-management-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    flex-wrap: wrap;
+    gap: 1.25rem;
+    margin-bottom: 0.5rem;
+
+    @include opt-media-query-max(opt-xsm) {
+      margin-bottom: 1.25rem;
+    }
+
+    .table-controls {
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+    }
+  }
+
+  .mat-row:hover {
+    background-color: #fdfdfd;
+    cursor: pointer;
+  }
+}

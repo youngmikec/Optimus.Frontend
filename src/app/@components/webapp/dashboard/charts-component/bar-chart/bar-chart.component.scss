@@ -1,0 +1,19 @@
+::ng-deep {
+  .apexcharts-bar-area:hover {
+    fill: #00736e !important;
+    opacity: 1 !important;
+    -webkit-filter: unset !important;
+    filter: unset !important;
+  }
+
+  .apexcharts-bar-area {
+    // fill: #FFE680 !important;
+  }
+
+  .apexcharts-title-text {
+    font-family: inherit !important;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 1.188rem;
+  }
+}

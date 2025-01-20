@@ -1,0 +1,147 @@
+@use '../../../../../@core/styles/abstracts/media-query' as *;
+@use '../../../../../@core/styles/abstracts' as *;
+
+#manage-contact-category {
+  position: relative;
+  height: 92vh;
+
+  .manage-contact-category-header {
+    display: flex;
+    justify-content: space-between;
+    gap: 1.25rem;
+    margin-bottom: 1.25rem;
+  }
+
+  .section-1 {
+    width: 100%;
+    display: grid;
+    place-items: center;
+
+    .profile-picture-container {
+      max-width: 5.75rem;
+
+      img {
+        width: 100%;
+      }
+    }
+
+    .content {
+      text-align: center;
+
+      div {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.5rem;
+      }
+    }
+  }
+
+  .section-2 {
+    .content-container {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+
+      .left {
+        width: 45%;
+        background-color: $opt-secondary-50;
+        padding: 0.3125rem 0.625rem;
+        color: #8a8a8a;
+        border-radius: 0.25rem;
+
+        span {
+          color: #80171a;
+        }
+      }
+
+      .left1 {
+        width: 45%;
+        background-color: #ebf0ff;
+        padding: 0.3125rem 0.625rem;
+        color: #8a8a8a;
+        border-radius: 0.25rem;
+
+        span {
+          color: #0235cd;
+        }
+      }
+
+      .right {
+        width: 45%;
+        background-color: $opt-secondary-50;
+        padding: 0.625rem;
+        color: #8a8a8a;
+        border-radius: 0.25rem;
+
+        span {
+          color: #80171a;
+        }
+      }
+    }
+  }
+
+  .section-3 {
+    .container {
+      height: 10rem;
+      overflow-y: scroll;
+      overflow-x: hidden;
+
+      .item {
+        height: 3.125rem;
+        width: 100%;
+        padding: 0 0.625rem;
+        border-bottom: 1px solid #d0d5dd;
+        cursor: pointer;
+        transition-duration: 0.4s;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 1rem;
+
+        .left {
+          display: flex;
+          align-items: center;
+          gap: 1rem;
+        }
+
+        .right {
+          color: #80171a;
+          visibility: hidden;
+        }
+
+        &:hover {
+          //   background-color: #ebf0ff;
+
+          .right {
+            visibility: visible;
+          }
+        }
+      }
+    }
+  }
+
+  .section-4 {
+    .container {
+      .button1 {
+        button {
+          width: 100%;
+          background-color: #80171a;
+          color: #ffffff;
+          border: 1px solid #80171a;
+          padding: 0.6rem;
+        }
+      }
+
+      .button2 {
+        button {
+          width: 100%;
+          background-color: #ffffff;
+          color: #80171a;
+          border: 1px solid #80171a;
+          padding: 0.6rem;
+        }
+      }
+    }
+  }
+}

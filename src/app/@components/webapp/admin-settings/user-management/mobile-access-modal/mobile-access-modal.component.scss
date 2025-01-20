@@ -1,0 +1,18 @@
+#manage-contact-category {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  max-width: 23rem;
+
+  .main {
+    text-align: center;
+  }
+
+  .cta-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 0.625rem;
+    margin-top: 0.625rem;
+  }
+}

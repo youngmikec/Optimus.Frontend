@@ -1,0 +1,89 @@
+@use '../../../../../@core/styles/abstracts/media-query' as *;
+
+#create-currency {
+  .create-currency-header {
+    display: flex;
+    justify-content: space-between;
+    gap: 1.25rem;
+    margin-bottom: 1.25rem;
+
+    p {
+      color: var(--opt-neutral-900);
+    }
+  }
+
+  .cta-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+    gap: 0.625rem;
+    margin-top: 1.25rem;
+  }
+
+  .rates-content {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+
+    .rate {
+      .rate-container {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+
+        .equals {
+          padding-bottom: 1.34375em;
+        }
+
+        .rate-border {
+          display: flex;
+          // border: 1px solid var(--opt-neutral-200);
+          background-color: var(--opt-neutral-100);
+          width: 9.438rem;
+          // border-radius: 0.25rem;
+
+          @include opt-media-query-max(opt-sm) {
+            width: auto;
+          }
+
+          p {
+            color: var(--opt-neutral-400);
+            margin-bottom: 0rem;
+            padding: 0.5rem 1rem;
+            width: auto;
+          }
+
+          .amount {
+            width: 70%;
+          }
+
+          .currency {
+            border-left: 1px solid var(--opt-neutral-200);
+          }
+        }
+      }
+    }
+  }
+
+  .period-selection-row {
+    display: flex;
+    align-items: center;
+    gap: 1.2rem;
+    width: -webkit-fit-content;
+    width: -moz-fit-content;
+    width: fit-content;
+
+    .input-group1 {
+      width: 9.438rem;
+
+      .mat-form-field-wrapper {
+        padding-bottom: 0px !important;
+      }
+    }
+  }
+
+  // .row > * {
+  //   width: 0;
+  // }
+}

@@ -1,0 +1,156 @@
+<!-- <button mat-icon-button [matMenuTriggerFor]="notificationMenu">
+    <mat-icon>notifications</mat-icon>
+    <span class="notification-badge" *ngIf="unreadCount > 0">{{ unreadCount }}</span>
+    <div class="position-relative my-auto">
+        <img
+          src="/assets/icons/notification.svg"
+          width="20"
+          height="20"
+          alt="avatar"
+        />
+        <span
+          class="position-absolute top-0 start-100 translate-middle badge rounded-pill badge-notification bg-danger"
+          > </span
+        >
+      </div>
+</button>
+  
+<mat-menu #notificationMenu="matMenu" [overlapTrigger]="false" [class]="'custom-menu'">
+    <ng-container *ngIf="notifications.length > 0; else noNotifications">
+        <div style="width: 400px;" class="container">
+            <mat-tab-group>
+                <mat-tab label="Unread" (click)="$event.stopPropagation();">
+                    <mat-card *ngFor="let notification of notifications" class="notification-item">
+                        <mat-card-title>{{ notification.title }}</mat-card-title>
+                        <mat-card-content>{{ notification.message }}</mat-card-content>
+                        <mat-card-actions>
+                            <button mat-button (click)="markAsRead(notification)">Mark as Read</button>
+                        </mat-card-actions>
+                    </mat-card>
+                </mat-tab>
+                <mat-tab label="Read" (click)="$event.stopPropagation();">
+                    <mat-card *ngFor="let notification of notifications" class="notification-item">
+                        <mat-card-title>{{ notification.title }}</mat-card-title>
+                        <mat-card-content>{{ notification.message }}</mat-card-content>
+                        <mat-card-actions>
+                            <button mat-button (click)="markAsRead(notification)">Mark as Read</button>
+                        </mat-card-actions>
+                    </mat-card>
+                </mat-tab>
+            </mat-tab-group>
+            
+        </div>
+    </ng-container>
+    
+    <ng-template #noNotifications>
+        <mat-card class="empty-notification">
+        <mat-card-content>No new notifications</mat-card-content>
+        </mat-card>
+    </ng-template>
+</mat-menu> -->
+
+<div class="">
+  <div
+    #triggerRef
+    (click)="toggleMenu()"
+    class="cursor-pointer position-relative"
+  >
+    <img
+      src="/assets/icons/notification.svg"
+      width="20"
+      height="20"
+      alt="avatar"
+    />
+    <!-- <app-svg class="me-4" src="assets/webapp/svg/bell_2.svg"></app-svg> -->
+    <!-- <div class="dot" *ngIf="unreadCount > 0"></div> -->
+    <span class="notification-badge" *ngIf="numOfUnreadNotifications > 0">
+      {{ numOfUnreadNotifications }}
+    </span>
+  </div>
+
+  <div
+    #notificationMenu
+    class="notification-menu py-4"
+    [ngClass]="{ show: showNotifications, hide: !showNotifications }"
+  >
+    <div class="d-grid gap-5 overflow-auto" style="max-height: '85vh'">
+      <div class="d-flex justify-content-between px-2">
+        <p class="fw-bold mb-0">Notifications</p>
+        <div class="d-flex align-items-center gap-3">
+          <img
+            src="/assets/icons/modal-close-icon.svg"
+            alt="close icon"
+            class="cursor-pointer"
+            (click)="closeMenu()"
+          />
+        </div>
+      </div>
+
+      <!-- <div class="px-3">
+        <div class="button-tab-group">
+          <button
+            class="button-tab"
+            [ngClass]="{ active: activeTab === 1 }"
+            (click)="setActiveTab(1)"
+          >
+            Unread
+          </button>
+
+          <button
+            class="button-tab"
+            [ngClass]="{ active: activeTab === 2 }"
+            (click)="setActiveTab(2)"
+          >
+            Read
+          </button>
+        </div>
+      </div> -->
+
+      <!--Loading spinner-->
+      <!-- <div
+        class="spinner-border text-primary d-grid mx-auto mt-auto mb-auto"
+        role="status"
+        *ngIf="(isLoading$ | async) === true"
+      >
+        <span class="visually-hidden">Loading...</span>
+      </div> -->
+      <!--Loading spinner-->
+
+      <div class="d-grid gap-2">
+        <div
+          class="px-3 py-1 mb-5 d-flex justify-content-between gap-3 cursor-pointer"
+          [ngStyle]="{
+            backgroundColor: item.status === 1 ? '#fff' : '#FDF5F5'
+          }"
+          *ngFor="let item of notifications"
+          (click)="markAsRead(item)"
+        >
+          <div class="d-flex justify-content-start gap-1">
+            <div>
+              <img src="/assets/images/male-avatar.svg" alt="male avatar" />
+            </div>
+            <p class="mb-0" [innerHTML]="item.message"></p>
+          </div>
+          <p
+            class="mb-0"
+            style="color: '#64748B'; font-size: 0.7rem; width: 8rem"
+          >
+            {{ item.createdDate | timeAgo }}
+          </p>
+        </div>
+        <div
+          style="width: '50%'; margin-left: 'auto'; margin-right: 'auto'"
+          *ngIf="hasMore"
+        >
+          <button
+            matRipple
+            class="btn w-100 zns-btn-neutral"
+            (click)="loadMore()"
+          >
+            See more
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,77 @@
+<div class="card text-center">
+  <div class="card-body">
+    <div class="mb-3 close-icon" (click)="closeDialog()">
+      <svg
+        width="24"
+        height="24"
+        viewBox="0 0 24 24"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <path
+          d="M18.0207 18.0208L6.70696 6.70711"
+          stroke="#64748B"
+          stroke-linecap="round"
+        />
+        <path
+          d="M18.0206 6.70711L6.70688 18.0208"
+          stroke="#64748B"
+          stroke-linecap="round"
+        />
+      </svg>
+    </div>
+    <div>
+      <svg
+        width="52"
+        height="52"
+        viewBox="0 0 52 52"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <g clip-path="url(#clip0_20901_62534)">
+          <rect width="52" height="52" rx="26" fill="#EB9B00" />
+          <path
+            d="M17.3359 17.332C17.3359 15.6081 18.1349 13.9548 19.557 12.7358C20.9792 11.5169 22.908 10.832 24.9193 10.832H27.0859C29.0972 10.832 31.026 11.5169 32.4482 12.7358C33.8703 13.9548 34.6693 15.6081 34.6693 17.332C34.7491 18.7387 34.3696 20.1333 33.588 21.3056C32.8065 22.478 31.6651 23.3646 30.3359 23.832C29.0067 24.4552 27.8654 25.6374 27.0838 27.2005C26.3023 28.7637 25.9228 30.6231 26.0026 32.4987"
+            stroke="#FFF1D6"
+            stroke-width="2.16667"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          />
+          <path
+            d="M26 41.1641V41.1857"
+            stroke="#FFF1D6"
+            stroke-width="2.16667"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          />
+        </g>
+        <defs>
+          <clipPath id="clip0_20901_62534">
+            <rect width="52" height="52" rx="26" fill="white" />
+          </clipPath>
+        </defs>
+      </svg>
+    </div>
+    <h6 class="card-title mt-4 fw-bold">{{ modalInfo.headerText }}</h6>
+    <p class="card-text">
+      Are you sure you want to {{ modalInfo.actionType.toLowerCase() }} them?
+    </p>
+
+    <div class="d-flex justify-content-between mt-4">
+      <button
+        type="button"
+        class="btn btn-danger ml-1 custom-cancel"
+        (click)="closeDialog()"
+      >
+        No, Cancel
+      </button>
+      <button
+        type="button"
+        class="btn btn-primary ml-1 custom-color"
+        (click)="changeMultiplePartnerStatus()"
+      >
+        Yes, {{ modalInfo.actionType }}
+      </button>
+    </div>
+  </div>
+</div>

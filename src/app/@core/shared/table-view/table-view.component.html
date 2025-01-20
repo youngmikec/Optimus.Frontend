@@ -1,0 +1,84 @@
+<!--Loading spinner-->
+<div
+  class="spinner-border text-primary d-grid mx-auto mt-auto mb-auto"
+  role="status"
+  *ngIf="isLoading"
+>
+  <span class="visually-hidden">Loading...</span>
+</div>
+<!--Loading spinner-->
+
+<section id="table-view-container" *ngIf="!isLoading">
+  <div
+    style="
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+      padding: 0, 0.32rem;
+    "
+  >
+    <div>
+      <p class="opt-heading-4 fw-600">{{ title }}</p>
+    </div>
+
+    <div matRipple class="close-icon-container" (click)="closeDialog()">
+      <img src="/assets/icons/modal-close-icon.svg" alt="modal close icon" />
+    </div>
+  </div>
+
+  <main class="main">
+    <div class="mt-3 mb-3">
+      <p class="description">{{ description }}</p>
+    </div>
+
+    <div class="mt-3 mb-3">
+      <form [formGroup]="tableViewsForm">
+        <div class="mt-2 mb-1" *ngFor="let column of columns">
+          <mat-checkbox
+            class="example-margin"
+            color="primary"
+            formControlName="{{ column.propertyName }}"
+            [checked]="column.isSelected"
+            (change)="handleCheckedChange($event, column)"
+          >
+            {{ column.name }}
+          </mat-checkbox>
+        </div>
+        <!-- <div class="mt-1 mb-1">
+                    <mat-checkbox class="example-margin">Check me!</mat-checkbox>
+                </div>
+                <div class="mt-1 mb-1">
+                    <mat-checkbox class="example-margin">Check me!</mat-checkbox>
+                </div>
+                <div class="mt-1 mb-1">
+                    <mat-checkbox class="example-margin">Check me!</mat-checkbox>
+                </div> -->
+      </form>
+    </div>
+
+    <div class="button-section">
+      <div class="btn-container">
+        <button
+          [disabled]="isApplying"
+          matRipple
+          class="btn opt-btn-primary"
+          (click)="onSubmit()"
+        >
+          Apply
+          <ng-container *ngIf="isApplying">
+            <app-button-loader></app-button-loader>
+          </ng-container>
+        </button>
+
+        <button
+          matRipple
+          type="button"
+          class="btn opt-btn-primary-outline"
+          (click)="closeDialog()"
+        >
+          Cancel
+        </button>
+      </div>
+    </div>
+  </main>
+</section>

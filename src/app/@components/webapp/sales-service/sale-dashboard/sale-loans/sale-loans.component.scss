@@ -1,0 +1,147 @@
+.status {
+  background-color: var(--opt-secondary2-color-250);
+  color: var(--opt-secondary2-color-650);
+}
+
+#loans {
+  .card {
+    border: none;
+    box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
+    border-radius: 0.5rem;
+
+    &__first {
+      background-color: var(--opt-primary-color-400);
+      color: #fff;
+    }
+
+    &__text {
+      color: var(--opt-neutral2-500);
+    }
+  }
+
+  .request-loan {
+    & h3 {
+      font-weight: 600;
+    }
+
+    & button {
+      background-color: var(--opt-primary-color-400);
+      border-radius: 0.5rem;
+    }
+  }
+
+  th,
+  td {
+    padding: 0.5rem;
+    text-align: left;
+
+    & .status {
+      color: var(--opt-success-100);
+      background-color: #effdec;
+      padding: 0.4rem;
+      border-radius: 0.5rem;
+    }
+
+    & div {
+      color: var(--opt-primary-color-400);
+      font-size: 0.875rem;
+      font-weight: 600;
+      cursor: pointer;
+    }
+  }
+
+  th {
+    background-color: #f5f5f5;
+  }
+
+  tr:nth-child(even) {
+    background-color: #f9f9f9;
+  }
+
+  .active {
+    color: var(--opt-primary-color-400);
+    background-color: var(--opt-primary-color-50);
+    border-radius: 0.5rem;
+  }
+
+  .inactive {
+    color: var(--opt-neutral-500);
+    background-color: var(--opt-neutral-100);
+    border-radius: 0.5rem;
+  }
+
+  .no-pointer {
+    cursor: default !important;
+  }
+
+  .loan-btn {
+    border: none;
+    color: var(--opt-primary-color);
+    background: transparent;
+    font-weight: 600;
+
+    &:disabled {
+      opacity: 0.3;
+      cursor: not-allowed;
+    }
+  }
+
+  .action-text {
+    color: var(--opt-primary-color-400);
+    margin-right: 3rem;
+
+    &.disabled {
+      color: var(--opt-neutral-500);
+      cursor: not-allowed;
+      pointer-events: none;
+    }
+  }
+}
+
+:host ::ng-deep {
+  .mat-tab-label-active {
+    border-bottom: 2px solid var(--opt-primary-color) !important;
+    border-color: var(--opt-primary-color) !important;
+    color: var(--opt-primary-color) !important;
+    font-weight: 800;
+    background-color: #ffffff;
+  }
+
+  .mat-tab-header {
+    margin-block: 1rem;
+    margin-bottom: 1rem;
+  }
+
+  .mat-tab-group.mat-primary .mat-ink-bar,
+  .mat-tab-nav-bar.mat-primary .mat-ink-bar {
+    background-color: transparent !important;
+  }
+
+  .mat-tab-label {
+    padding: 10px 22px !important;
+    border-radius: 30px;
+    border-color: #e7eaee;
+    color: #64748b;
+    border-width: 1px;
+  }
+
+  .mat-tab-label {
+    padding: 10px 22px !important;
+    border-radius: 30px;
+    border-style: solid;
+    border-color: #e7eaee;
+    color: #64748b;
+    border-width: 1px;
+  }
+
+  .mat-tab-body-content {
+    overflow: hidden;
+  }
+}
+
+/* Large devices downwards (laptops/desktops, 992px and down) */
+@media only screen and (max-width: 1300px) {
+  .mat-tab-body.mat-tab-body-active {
+    border-top: 1px solid #dfdfdfc4 !important;
+  }
+}

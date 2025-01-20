@@ -1,0 +1,38 @@
+#manage-contact-category {
+  .manage-contact-category-header {
+    display: flex;
+    justify-content: space-between;
+    gap: 1.25rem;
+    margin-bottom: 1.25rem;
+  }
+
+  .access-level {
+    display: grid;
+    grid-template-columns: auto auto;
+    justify-content: space-between;
+    margin-bottom: 3.5rem;
+  }
+
+  .cta-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+    gap: 0.625rem;
+    margin-top: 0.625rem;
+  }
+
+  .currency-input-container {
+    display: flex;
+    justify-content: space-between;
+
+    .currency-input {
+      width: 5.938rem;
+    }
+  }
+
+  .toggle-container {
+    display: flex;
+    gap: 0.5rem;
+  }
+}

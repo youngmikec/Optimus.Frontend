@@ -1,0 +1,683 @@
+<ng-container *ngIf="isLoading$ | async">
+  <div class="general-loader-container webapp-view">
+    <div class="general-loader-backdrop"></div>
+    <div class="general-loader-content">
+      <app-general-loader></app-general-loader>
+    </div>
+  </div>
+</ng-container>
+
+<div id="document-questions" class="container-fluid border border-1 rounded">
+  <div class="row pt-3">
+    <div class="col col-sm-4 col-xl-3">
+      <div class="position-sticky pt-3 px-2">
+        <div
+          class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pb-2 mb-3"
+        >
+          <div class="d-flex align-items-center">
+            <p class="opt-para-3 fw-700 me-4 mb-0">All Questions</p>
+          </div>
+          <button
+            matRipple
+            class="btn opt-btn-primary pt-btn-with-icon new-feature-btn opt-btn-sm"
+            (click)="resetQuestionsForm()"
+          >
+            <span class="img-fluid"
+              ><img src="/assets/icons/add.svg" alt="filter-icon"
+            /></span>
+          </button>
+        </div>
+
+        <ul class="nav flex-column feature-container">
+          <div class="docuntent-list-section">
+            <ul class="list-group feature-list-card">
+              <li
+                (click)="loadSelectedDocumentConfiguration(document, i)"
+                class="list-group-item"
+                *ngFor="
+                  let document of documentConfigurations$ | async;
+                  let i = index
+                "
+                [ngClass]="{
+                  'active-document': i === selectedDocumentConfigurationIndex
+                }"
+              >
+                <span class="opt-para-1 name text-capitalize truncate">
+                  {{ document.configurationQuestion }}</span
+                >
+                <!-- <div matRipple class="more-option" [matMenuTriggerFor]="menu">
+                  <img src="/assets/icons/more-icon.svg" alt="more option" />
+                </div>
+                <mat-menu #menu="matMenu" class="feature-menu">
+                    <ul class="list-group feature-menu-list">
+                      <li class="list-group-item">
+                        <div
+                          matRipple
+                          class="item-holder">
+                          <div matRipple class="me-3 image-holder">
+                            <img
+                              src="/assets/icons/edit.svg"
+                              alt="edit feature"
+                              width="16"
+                            />
+                          </div>
+                          <span class="opt-para-1"> Edit feature</span>
+                        </div>
+                      </li>
+                      <li class="list-group-item" (click)="$event.stopPropagation()">
+                        <div matRipple class="item-holder">
+                          <mat-slide-toggle
+                            class="me-3"
+                            matTooltipPosition="above"
+                            matTooltipClass="custom-tooltip"
+                            [checked]="document.status === 1 ? true : false"
+                          >
+                          </mat-slide-toggle>
+  
+                          <span class="opt-para-1">
+                            <ng-container>
+                              feature
+                            </ng-container>
+                          </span>
+                        </div>
+                      </li>
+                    </ul>
+                  </mat-menu> -->
+              </li>
+            </ul>
+          </div>
+        </ul>
+      </div>
+    </div>
+
+    <div class="col border-start">
+      <div
+        class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3"
+      >
+        <div class="d-flex align-items-center">
+          <button
+            matRipple
+            class="btn opt-btn-with-icon new-feature-btn opt-btn-sm"
+            (click)="goBack()"
+          >
+            <span class="img-fluid"
+              ><img src="/assets/icons/arrow_back.svg" alt="filter-icon"
+            /></span>
+          </button>
+          <div>Back</div>
+        </div>
+        <div class="btn-toolbar mb-2 mb-md-0">
+          <button
+            matRipple
+            class="btn opt-btn-primary"
+            (click)="createUpdateDocumentConfiguration()"
+          >
+            {{ actionState === 'add' ? 'Save' : 'Update' }}
+          </button>
+        </div>
+      </div>
+
+      <!-- FORM SECTION -->
+      <div class="bg-white p-4 rounded">
+        <form [formGroup]="documentConfigurationForm">
+          <div class="input-style1">
+            <label class="form-label">Question</label>
+            <mat-form-field appearance="outline" [style.width.%]="100">
+              <textarea
+                type="text"
+                matInput
+                rows="4"
+                formControlName="configurationQuestion"
+                placeholder="Add a question"
+              ></textarea>
+              <!-- <mat-error *ngIf="newUserFormControls['firstName'].invalid">
+                <img
+                  src="/assets/icons/error.svg"
+                  alt=""
+                  class="img-fluid error-icon"
+                />
+                {{ getErrorMessage('firstName') }}
+              </mat-error> -->
+            </mat-form-field>
+          </div>
+
+          <div class="input-style1">
+            <label class="form-label">Country</label>
+            <mat-form-field appearance="outline" [style.width.%]="100">
+              <mat-chip-grid #chipList aria-label="Country selection">
+                <mat-chip
+                  *ngFor="let country of countries"
+                  (removed)="removeCountry(country)"
+                >
+                  {{ country }}
+                  <button matChipRemove>
+                    <svg
+                      width="16"
+                      height="16"
+                      viewBox="0 0 16 16"
+                      fill="none"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        d="M12.0139 12.0139L4.47147 4.4714"
+                        stroke="#64748B"
+                        stroke-linecap="round"
+                      />
+                      <path
+                        d="M12.0139 4.4714L4.47141 12.0139"
+                        stroke="#64748B"
+                        stroke-linecap="round"
+                      />
+                    </svg>
+                  </button>
+                </mat-chip>
+                <svg
+                  width="16"
+                  height="16"
+                  viewBox="0 0 16 16"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M4 8H12"
+                    stroke="#64748B"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  />
+                  <path
+                    d="M8 12V4"
+                    stroke="#64748B"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  />
+                </svg>
+                <input
+                  placeholder="Add country"
+                  #countryInput
+                  formControlName="countriesFormControl"
+                  [matAutocomplete]="auto"
+                  [matChipInputFor]="chipList"
+                  [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+                />
+              </mat-chip-grid>
+              <mat-autocomplete
+                #auto="matAutocomplete"
+                (optionSelected)="selected($event)"
+              >
+                <mat-option
+                  *ngFor="let country of filteredCountries | async"
+                  [value]="country"
+                >
+                  {{ country }}
+                </mat-option>
+              </mat-autocomplete>
+            </mat-form-field>
+          </div>
+
+          <div class="input-style1">
+            <label class="form-label">Migration Route</label>
+            <mat-form-field appearance="outline" [style.width.%]="100">
+              <mat-select
+                [compareWith]="compareMigrationRoutes"
+                multiple="true"
+                [(ngModel)]="selectedMigrationRoutes"
+                [ngModelOptions]="{ standalone: true }"
+                (selectionChange)="migrationRouteChanged($event)"
+              >
+                <mat-optgroup
+                  *ngFor="let group of migrationRouteGroups"
+                  [label]="group.country"
+                >
+                  <mat-option
+                    *ngFor="let route of group.routes"
+                    [value]="route"
+                  >
+                    {{ route.name }}
+                  </mat-option>
+                </mat-optgroup>
+              </mat-select>
+            </mat-form-field>
+          </div>
+
+          <div class="input-style1">
+            <label class="form-label">Family Member</label>
+            <mat-form-field appearance="outline" [style.width.%]="100">
+              <mat-select
+                [compareWith]="compareFamilyMembers"
+                multiple="true"
+                [(ngModel)]="selectedFamilyMembers"
+                [ngModelOptions]="{ standalone: true }"
+                (selectionChange)="familyMembersChanged($event)"
+              >
+                <mat-optgroup
+                  *ngFor="let group of familyMembersGroups"
+                  [label]="group.country"
+                >
+                  <mat-option
+                    *ngFor="let member of group.members"
+                    [value]="member"
+                  >
+                    {{ member.name }}
+                  </mat-option>
+                </mat-optgroup>
+              </mat-select>
+            </mat-form-field>
+          </div>
+
+          <div
+            class="d-flex align-items-center pb-3 pb-lg-3 me-lg-auto border-top pt-4 mt-1"
+          >
+            <svg
+              width="16"
+              height="16"
+              viewBox="0 0 16 16"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M7.99992 14.6663C11.6666 14.6663 14.6666 11.6663 14.6666 7.99967C14.6666 4.33301 11.6666 1.33301 7.99992 1.33301C4.33325 1.33301 1.33325 4.33301 1.33325 7.99967C1.33325 11.6663 4.33325 14.6663 7.99992 14.6663Z"
+                stroke="#292D32"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              />
+              <path
+                d="M8 5.33301V8.66634"
+                stroke="#292D32"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              />
+              <path
+                d="M7.99634 10.667H8.00233"
+                stroke="#292D32"
+                stroke-width="1.33333"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              />
+            </svg>
+
+            <span class="mx-2">When response is Yes</span>
+          </div>
+
+          <div class="input-style1">
+            <label class="form-label">Document Name</label>
+            <mat-form-field appearance="outline" [style.width.%]="100">
+              <mat-chip-grid #yesDocChipList aria-label="Enter document name">
+                <mat-chip
+                  *ngFor="let docName of yesDocumentNamesList"
+                  (removed)="removeDocumentName(docName, 'yes-document')"
+                >
+                  {{ docName.name }}
+                  <button matChipRemove>
+                    <svg
+                      width="16"
+                      height="16"
+                      viewBox="0 0 16 16"
+                      fill="none"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        d="M12.0139 12.0139L4.47147 4.4714"
+                        stroke="#64748B"
+                        stroke-linecap="round"
+                      />
+                      <path
+                        d="M12.0139 4.4714L4.47141 12.0139"
+                        stroke="#64748B"
+                        stroke-linecap="round"
+                      />
+                    </svg>
+                  </button>
+                </mat-chip>
+                <svg
+                  width="16"
+                  height="16"
+                  viewBox="0 0 16 16"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M4 8H12"
+                    stroke="#64748B"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  />
+                  <path
+                    d="M8 12V4"
+                    stroke="#64748B"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  />
+                </svg>
+                <input
+                  placeholder="Add document name"
+                  [matChipInputFor]="yesDocChipList"
+                  [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+                  [matChipInputAddOnBlur]="true"
+                  (matChipInputTokenEnd)="
+                    addDocumentName($event, 'yes-document')
+                  "
+                />
+              </mat-chip-grid>
+            </mat-form-field>
+          </div>
+
+          <div class="input-style1">
+            <label class="form-label">Alternative Document Document</label>
+            <mat-form-field appearance="outline" [style.width.%]="100">
+              <mat-chip-grid
+                #yesDocAltChipList
+                aria-label="Enter alternative document name"
+              >
+                <mat-chip
+                  *ngFor="let docName of yesAlternativeDocumentList"
+                  (removed)="
+                    removeDocumentName(docName, 'yes-alternative-document')
+                  "
+                >
+                  {{ docName.name }}
+                  <button matChipRemove>
+                    <svg
+                      width="16"
+                      height="16"
+                      viewBox="0 0 16 16"
+                      fill="none"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        d="M12.0139 12.0139L4.47147 4.4714"
+                        stroke="#64748B"
+                        stroke-linecap="round"
+                      />
+                      <path
+                        d="M12.0139 4.4714L4.47141 12.0139"
+                        stroke="#64748B"
+                        stroke-linecap="round"
+                      />
+                    </svg>
+                  </button>
+                </mat-chip>
+                <svg
+                  width="16"
+                  height="16"
+                  viewBox="0 0 16 16"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M4 8H12"
+                    stroke="#64748B"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  />
+                  <path
+                    d="M8 12V4"
+                    stroke="#64748B"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  />
+                </svg>
+                <input
+                  placeholder="Add document name"
+                  [matChipInputFor]="yesDocAltChipList"
+                  [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+                  [matChipInputAddOnBlur]="true"
+                  (matChipInputTokenEnd)="
+                    addDocumentName($event, 'yes-alternative-document')
+                  "
+                />
+              </mat-chip-grid>
+            </mat-form-field>
+          </div>
+
+          <div class="input-style1">
+            <label class="form-label">Activity</label>
+            <mat-form-field appearance="outline" [style.width.%]="100">
+              <input
+                type="text"
+                matInput
+                formControlName="yesDocumentActivity"
+                placeholder="Enter activity"
+              />
+            </mat-form-field>
+          </div>
+
+          <div
+            class="d-flex align-items-center pb-3 pb-lg-3 me-lg-auto border-top pt-4 mt-1"
+          >
+            <svg
+              width="16"
+              height="16"
+              viewBox="0 0 16 16"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M7.99992 14.6663C11.6666 14.6663 14.6666 11.6663 14.6666 7.99967C14.6666 4.33301 11.6666 1.33301 7.99992 1.33301C4.33325 1.33301 1.33325 4.33301 1.33325 7.99967C1.33325 11.6663 4.33325 14.6663 7.99992 14.6663Z"
+                stroke="#292D32"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              />
+              <path
+                d="M8 5.33301V8.66634"
+                stroke="#292D32"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              />
+              <path
+                d="M7.99634 10.667H8.00233"
+                stroke="#292D32"
+                stroke-width="1.33333"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              />
+            </svg>
+
+            <span class="mx-2">When response is No</span>
+          </div>
+
+          <div class="input-style1">
+            <label class="form-label">Document Name</label>
+            <mat-form-field appearance="outline" [style.width.%]="100">
+              <mat-chip-grid #noDocChipList aria-label="Enter document name">
+                <mat-chip
+                  *ngFor="let docName of noDocumentNamesList"
+                  (removed)="removeDocumentName(docName, 'no-document')"
+                >
+                  {{ docName.name }}
+                  <button matChipRemove>
+                    <svg
+                      width="16"
+                      height="16"
+                      viewBox="0 0 16 16"
+                      fill="none"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        d="M12.0139 12.0139L4.47147 4.4714"
+                        stroke="#64748B"
+                        stroke-linecap="round"
+                      />
+                      <path
+                        d="M12.0139 4.4714L4.47141 12.0139"
+                        stroke="#64748B"
+                        stroke-linecap="round"
+                      />
+                    </svg>
+                  </button>
+                </mat-chip>
+                <svg
+                  width="16"
+                  height="16"
+                  viewBox="0 0 16 16"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M4 8H12"
+                    stroke="#64748B"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  />
+                  <path
+                    d="M8 12V4"
+                    stroke="#64748B"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  />
+                </svg>
+                <input
+                  placeholder="Add document name"
+                  [matChipInputFor]="noDocChipList"
+                  [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+                  [matChipInputAddOnBlur]="true"
+                  (matChipInputTokenEnd)="
+                    addDocumentName($event, 'no-document')
+                  "
+                />
+              </mat-chip-grid>
+            </mat-form-field>
+          </div>
+
+          <div class="input-style1">
+            <label class="form-label">Alternative Document Name</label>
+            <mat-form-field appearance="outline" [style.width.%]="100">
+              <mat-chip-grid
+                #noAltDocChipList
+                aria-label="Enter alternamtive document name"
+              >
+                <mat-chip
+                  *ngFor="let docName of noAlternativeDocumentList"
+                  (removed)="
+                    removeDocumentName(docName, 'no-alternative-document')
+                  "
+                >
+                  {{ docName.name }}
+                  <button matChipRemove>
+                    <svg
+                      width="16"
+                      height="16"
+                      viewBox="0 0 16 16"
+                      fill="none"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        d="M12.0139 12.0139L4.47147 4.4714"
+                        stroke="#64748B"
+                        stroke-linecap="round"
+                      />
+                      <path
+                        d="M12.0139 4.4714L4.47141 12.0139"
+                        stroke="#64748B"
+                        stroke-linecap="round"
+                      />
+                    </svg>
+                  </button>
+                </mat-chip>
+                <svg
+                  width="16"
+                  height="16"
+                  viewBox="0 0 16 16"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M4 8H12"
+                    stroke="#64748B"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  />
+                  <path
+                    d="M8 12V4"
+                    stroke="#64748B"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  />
+                </svg>
+                <input
+                  placeholder="Add document name"
+                  [matChipInputFor]="noAltDocChipList"
+                  [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+                  [matChipInputAddOnBlur]="true"
+                  (matChipInputTokenEnd)="
+                    addDocumentName($event, 'no-alternative-document')
+                  "
+                />
+              </mat-chip-grid>
+            </mat-form-field>
+          </div>
+
+          <div class="input-style1">
+            <label class="form-label">Activity</label>
+            <mat-form-field appearance="outline" [style.width.%]="100">
+              <input
+                type="text"
+                matInput
+                formControlName="noDocumentActivity"
+                placeholder="Enter activity"
+              />
+            </mat-form-field>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <mat-menu
+    #migrationRouteMenu="matMenu"
+    class="migrationRouteMenu"
+    yPosition="above"
+    (click)="$event.stopPropagation(); $event.preventDefault()"
+  >
+    <div class="container">
+      <div class="row">
+        <div class="col-5 col-sm-5 col-md-5 col-lg-5 col-xl-5">
+          <div
+            (click)="$event.stopPropagation()"
+            (keydown)="$event.stopPropagation()"
+            class="d-flex align-items-center avatar-holder"
+          >
+            <div class="mx-3">
+              <p class="fw-400 afxm-caption mb-0 text-truncate email">
+                useremail
+              </p>
+            </div>
+          </div>
+        </div>
+        <div class="col-7 col-sm-7 col-md-7 col-lg-7 col-xl-7 border-light">
+          <div
+            class="description-section"
+            (click)="$event.stopPropagation()"
+            (keydown)="$event.stopPropagation()"
+          >
+            <div class="list-item mb-3">
+              <p class="opt-para-1 fw-500 mb-0">userrolename</p>
+              <i>ROLE</i>
+            </div>
+
+            <div class="list-item mb-3">
+              <p class="opt-para-1 fw-500 mb-0">userdepartmentname</p>
+              <i>DEPARTMENT</i>
+            </div>
+
+            <div class="list-item mb-3">
+              <p class="opt-para-1 fw-500 mb-0">userdivisionname</p>
+              <i>DIVISION</i>
+            </div>
+
+            <div class="list-item mb-3">
+              <p class="opt-para-1 fw-500 mb-0">userunitname</p>
+              <i>UNIT</i>
+            </div>
+
+            <div class="list-item mb-3">
+              <p class="opt-para-1 fw-500 mb-0">userjobTitle</p>
+              <i>JOBTITLE</i>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="border"></div>
+  </mat-menu>
+</div>

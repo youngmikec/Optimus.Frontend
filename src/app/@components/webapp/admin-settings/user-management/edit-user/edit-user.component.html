@@ -1,0 +1,648 @@
+<section id="new-user-category">
+  <div class="new-user-category-header">
+    <h6 class="opt-heading-6 fw-600 mb-0">Edit User</h6>
+
+    <div class="button-container">
+      <a
+        routerLink="/app/admin-settings/user-management"
+        matRipple
+        class="btn opt-btn-primary-outline back-btn"
+      >
+        Cancel
+      </a>
+
+      <button
+        matRipple
+        type="submit"
+        class="btn opt-btn-primary opt-btn-md"
+        [disabled]="addEditUserForm.invalid || (isLoading | async) !== false"
+        (click)="editUser()"
+      >
+        Save
+        <ng-container *ngIf="(isLoading | async) !== false">
+          <app-button-loader></app-button-loader>
+        </ng-container>
+      </button>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-12 col-md-4">
+      <p class="opt-para-1 fw-600">Basic Information</p>
+      <p class="opt-caption fw-400 content-text">
+        Basic information about a user includes their name, email address,
+        contact number, role, department, division...
+      </p>
+    </div>
+    <div class="col-12 col-md-8">
+      <form [formGroup]="addEditUserForm">
+        <div class="row">
+          <div class="col-md-6">
+            <div class="input-style1">
+              <label class="input-label input-required">First Name</label>
+
+              <mat-form-field appearance="outline" [style.width.%]="100">
+                <input
+                  type="text"
+                  matInput
+                  formControlName="firstName"
+                  placeholder="Enter first name"
+                />
+
+                <mat-error *ngIf="newUserFormControls['firstName'].invalid">
+                  <img
+                    src="/assets/icons/error.svg"
+                    alt=""
+                    class="img-fluid error-icon"
+                  />
+                  {{ getErrorMessage('firstName') }}
+                </mat-error>
+              </mat-form-field>
+            </div>
+          </div>
+
+          <div class="col-md-6">
+            <div class="input-style1">
+              <label class="input-label">Last Name</label>
+
+              <mat-form-field appearance="outline" [style.width.%]="100">
+                <input
+                  type="text"
+                  matInput
+                  formControlName="lastName"
+                  placeholder="Enter last name"
+                />
+
+                <mat-error *ngIf="newUserFormControls['lastName'].invalid">
+                  <img
+                    src="/assets/icons/error.svg"
+                    alt=""
+                    class="img-fluid error-icon"
+                  />
+                  {{ getErrorMessage('lastName') }}
+                </mat-error>
+              </mat-form-field>
+            </div>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-md-6">
+            <div class="input-style1">
+              <label class="input-label input-required">Email address</label>
+
+              <mat-form-field appearance="outline" [style.width.%]="100">
+                <input
+                  matInput
+                  placeholder="Enter email address"
+                  formControlName="email"
+                />
+
+                <mat-error *ngIf="newUserFormControls['email'].invalid">
+                  <img
+                    src="/assets/icons/error.svg"
+                    alt=""
+                    class="img-fluid error-icon"
+                  />
+                  {{ getErrorMessage('email') }}
+                </mat-error>
+              </mat-form-field>
+            </div>
+          </div>
+
+          <div class="col-md-6">
+            <div class="input-style1">
+              <label class="input-label input-required">Contact Number</label>
+
+              <div class="select-input-style">
+                <mat-form-field
+                  appearance="outline"
+                  [style.width.%]="100"
+                  class="select-field"
+                >
+                  <input
+                    #countryCode
+                    type="text"
+                    matInput
+                    placeholder="234"
+                    formControlName="countryCode"
+                    [matAutocomplete]="forCountryCode"
+                    (input)="onFilterCountryCode(countryCode.value)"
+                  />
+
+                  <mat-autocomplete
+                    class="country-code"
+                    autoActiveFirstOption
+                    #forCountryCode="matAutocomplete"
+                  >
+                    <ng-container
+                      *ngIf="
+                        (allFilteredCountryCodes | async) !== null;
+                        else noCountryCodes
+                      "
+                    >
+                      <mat-option
+                        *ngFor="
+                          let countryCode of allFilteredCountryCodes | async
+                        "
+                        class="country-code"
+                        value="{{ countryCode.dialCode }}"
+                      >
+                        <div class="country-code-container">
+                          <img [src]="countryCode.flag" alt="" class="flag" />
+
+                          <p class="country">
+                            {{ countryCode.name }} <span></span>
+                          </p>
+
+                          <p class="code">({{ countryCode.dialCode }})</p>
+                        </div>
+                      </mat-option>
+                    </ng-container>
+
+                    <ng-template #noCountryCodes>
+                      <mat-option disabled>Loading Country Codes...</mat-option>
+                    </ng-template>
+                  </mat-autocomplete>
+                  <mat-error *ngIf="newUserFormControls['countryCode'].invalid">
+                    <img
+                      src="/assets/icons/error.svg"
+                      alt=""
+                      class="img-fluid error-icon"
+                    />
+                    {{ getErrorMessage('countryCode') }}
+                  </mat-error>
+                </mat-form-field>
+                <mat-form-field appearance="outline" [style.width.%]="100">
+                  <input
+                    matInput
+                    type="tel"
+                    placeholder="123456"
+                    formControlName="phoneNumber"
+                  />
+                </mat-form-field>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-md-6">
+            <div class="input-style1">
+              <label class="input-label input-required">Role</label>
+
+              <mat-form-field appearance="outline" [style.width.%]="100">
+                <mat-select formControlName="roleId" placeholder="Select role">
+                  <ng-container
+                    *ngIf="
+                      allActiveRoles !== null && allActiveRoles?.length !== 0;
+                      else noRolesByEmail
+                    "
+                  >
+                    <ng-container *ngFor="let role of allActiveRoles?.roleList">
+                      <mat-option [value]="role.id">
+                        {{ role?.name }}
+                      </mat-option>
+                    </ng-container>
+                  </ng-container>
+
+                  <ng-template #noRolesByEmail>
+                    <ng-container *ngIf="allActiveRoles === null">
+                      <mat-option disabled> Loading roles...</mat-option>
+                    </ng-container>
+
+                    <ng-container *ngIf="allActiveRoles?.length === 0">
+                      <mat-option disabled> No role is available</mat-option>
+                    </ng-container>
+                  </ng-template>
+                </mat-select>
+
+                <mat-error *ngIf="newUserFormControls['roleId'].invalid">
+                  <img
+                    src="/assets/icons/error.svg"
+                    alt=""
+                    class="img-fluid error-icon"
+                  />
+                  {{ getErrorMessage('feature_name') }}
+                </mat-error>
+              </mat-form-field>
+            </div>
+          </div>
+
+          <div class="col-md-6">
+            <div class="input-style1">
+              <label class="input-label input-required">Division</label>
+
+              <mat-form-field appearance="outline" [style.width.%]="100">
+                <mat-select
+                  formControlName="division"
+                  placeholder="Select division"
+                  (selectionChange)="getDepartmentByDivisionId($event)"
+                >
+                  <ng-container
+                    *ngIf="
+                      allDivisions !== null && allDivisions?.length !== 0;
+                      else noDivision
+                    "
+                  >
+                    <ng-container *ngFor="let division of allDivisions?.entity">
+                      <mat-option [value]="division.id">
+                        {{ division?.name }}
+                      </mat-option>
+                    </ng-container>
+                  </ng-container>
+
+                  <ng-template #noDivision>
+                    <ng-container *ngIf="allDivisions === null">
+                      <mat-option disabled> Loading division...</mat-option>
+                    </ng-container>
+
+                    <ng-container *ngIf="allActiveRoles?.length === 0">
+                      <mat-option disabled>
+                        No division is available</mat-option
+                      >
+                    </ng-container>
+                  </ng-template>
+                </mat-select>
+
+                <mat-error *ngIf="newUserFormControls['division'].invalid">
+                  <img
+                    src="/assets/icons/error.svg"
+                    alt=""
+                    class="img-fluid error-icon"
+                  />
+                  {{ getErrorMessage('division') }}
+                </mat-error>
+              </mat-form-field>
+            </div>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-md-6">
+            <div class="input-style1">
+              <label class="input-label input-required">Department</label>
+
+              <mat-form-field appearance="outline" [style.width.%]="100">
+                <mat-select
+                  formControlName="department"
+                  placeholder="Select department"
+                  (selectionChange)="getUnitByDepartmentId($event)"
+                >
+                  <ng-container
+                    *ngIf="
+                      allDepartments !== null && allDepartments?.length !== 0;
+                      else noDepartment
+                    "
+                  >
+                    <ng-container
+                      *ngFor="let department of allDepartments?.entity"
+                    >
+                      <mat-option [value]="department.id">
+                        {{ department?.name }}
+                      </mat-option>
+                    </ng-container>
+                  </ng-container>
+
+                  <ng-template #noDepartment>
+                    <ng-container *ngIf="allDepartments === null">
+                      <mat-option disabled> Loading department...</mat-option>
+                    </ng-container>
+
+                    <ng-container *ngIf="allDepartments?.length === 0">
+                      <mat-option disabled>
+                        No department is available</mat-option
+                      >
+                    </ng-container>
+                  </ng-template>
+                </mat-select>
+
+                <mat-error *ngIf="newUserFormControls['department'].invalid">
+                  <img
+                    src="/assets/icons/error.svg"
+                    alt=""
+                    class="img-fluid error-icon"
+                  />
+                  {{ getErrorMessage('department') }}
+
+                  <span *ngIf="!allUnits">
+                    {{ getErrorMessage('unitId') }}
+                  </span>
+
+                  <span *ngIf="allUnits?.length === 0">
+                    There is no Unit for this Division please create
+                    <a
+                      class="create-division-button"
+                      role="button"
+                      (click)="onCreateEditDivision()"
+                      >here
+                    </a>
+                  </span>
+                </mat-error>
+              </mat-form-field>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="input-style1">
+              <label class="input-label">Unit</label>
+
+              <mat-form-field appearance="outline" [style.width.%]="100">
+                <mat-select formControlName="unitId" placeholder="Select unit">
+                  <ng-container
+                    *ngIf="
+                      allUnits !== null && allUnits?.length !== 0;
+                      else noUnit
+                    "
+                  >
+                    <ng-container *ngFor="let unit of allUnits">
+                      <mat-option [value]="unit.id">
+                        {{ unit?.name }}
+                      </mat-option>
+                    </ng-container>
+                  </ng-container>
+
+                  <ng-template #noUnit>
+                    <ng-container *ngIf="allUnits === null">
+                      <mat-option disabled> Loading units...</mat-option>
+                    </ng-container>
+
+                    <ng-container *ngIf="allUnits?.length === 0">
+                      <mat-option disabled> No unit is available</mat-option>
+                    </ng-container>
+                  </ng-template>
+                </mat-select>
+
+                <mat-error *ngIf="newUserFormControls['unitId'].invalid">
+                  <img
+                    src="/assets/icons/error.svg"
+                    alt=""
+                    class="img-fluid error-icon"
+                  />
+                  <span *ngIf="!allUnits">
+                    {{ getErrorMessage('unitId') }}
+                  </span>
+
+                  <span *ngIf="allUnits?.length === 0">
+                    There is no Unit for this Division please create
+                    <a
+                      class="create-division-button"
+                      role="button"
+                      (click)="onCreateEditUnit()"
+                      >here</a
+                    >
+                  </span>
+                </mat-error>
+              </mat-form-field>
+            </div>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-md-6">
+            <div class="input-style1">
+              <label class="input-label input-required">Location</label>
+
+              <mat-form-field appearance="outline" [style.width.%]="100">
+                <mat-select
+                  formControlName="location"
+                  placeholder="Select location"
+                >
+                  <ng-container
+                    *ngIf="
+                      allLocation !== null && allLocation?.length !== 0;
+                      else noLocation
+                    "
+                  >
+                    <ng-container *ngFor="let location of allLocation?.entity">
+                      <mat-option [value]="location.id">
+                        {{ location?.name }}
+                      </mat-option>
+                    </ng-container>
+                  </ng-container>
+
+                  <ng-template #noLocation>
+                    <ng-container *ngIf="allLocation === null">
+                      <mat-option disabled> Loading location...</mat-option>
+                    </ng-container>
+
+                    <ng-container *ngIf="allLocation?.length === 0">
+                      <mat-option disabled>
+                        No location is available</mat-option
+                      >
+                    </ng-container>
+                  </ng-template>
+                </mat-select>
+
+                <mat-error *ngIf="newUserFormControls['location'].invalid">
+                  <img
+                    src="/assets/icons/error.svg"
+                    alt=""
+                    class="img-fluid error-icon"
+                  />
+                  {{ getErrorMessage('location') }}
+                </mat-error>
+              </mat-form-field>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="input-style1">
+              <label class="input-label input-required">Job Title</label>
+
+              <mat-form-field appearance="outline" [style.width.%]="100">
+                <mat-select
+                  formControlName="jobTitle"
+                  placeholder="Select Job Title"
+                >
+                  <mat-option
+                    [value]="title.id"
+                    *ngFor="let title of jobTitles$ | async"
+                  >
+                    {{ title?.name }}
+                  </mat-option>
+                </mat-select>
+
+                <mat-error *ngIf="newUserFormControls['jobTitle'].invalid">
+                  <img
+                    src="/assets/icons/error.svg"
+                    alt=""
+                    class="img-fluid error-icon"
+                  />
+                  {{ getErrorMessage('jobTitle') }}
+                </mat-error>
+              </mat-form-field>
+            </div>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <div class="border mb-4"></div>
+
+  <div class="row">
+    <div class="col-12 col-md-4">
+      <p class="opt-para-1 fw-600">Device Access</p>
+      <p class="opt-caption content-text">
+        Set the devices that this user may be allowed to access their account.
+      </p>
+    </div>
+
+    <div class="col-12 col-md-8">
+      <form [formGroup]="addEditUserForm" class="toggle-section">
+        <div class="toggle-container">
+          <mat-slide-toggle
+            matTooltipPosition="above"
+            matTooltipClass="custom-tooltip"
+            matInput
+            formControlName="allowWebAccess"
+            [checked]="allowWebAccess"
+            (change)="toggleChanges($event)"
+          >
+            Allow web access
+          </mat-slide-toggle>
+        </div>
+
+        <!-- <div class="border"></div> -->
+
+        <div class="toggle-container">
+          <mat-slide-toggle
+            matTooltipPosition="above"
+            matTooltipClass="custom-tooltip"
+            matInput
+            formControlName="allowMobileAccess"
+            (change)="toggleChangeMultipleDev($event)"
+          >
+            Allow mobile devices?
+          </mat-slide-toggle>
+        </div>
+
+        <div class="border mb-4"></div>
+
+        <div class="device-main-container">
+          <div class="mb-2">Mobile devices you are logged in</div>
+          <div class="row">
+            <div class="col-md-6">
+              <div class="container mb-2" *ngFor="let item of userDeviceList">
+                <ng-container *ngIf="item.deviceName">
+                  <div class="item">
+                    <div class="left">
+                      <svg
+                        width="32"
+                        height="32"
+                        viewBox="0 0 32 32"
+                        fill="none"
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <circle cx="16" cy="16" r="16" fill="#F7F8F9" />
+                        <g clip-path="url(#clip0_10488_300830)">
+                          <path
+                            d="M19.333 9.33398H12.6663C12.2061 9.33398 11.833 9.70708 11.833 10.1673V21.834C11.833 22.2942 12.2061 22.6673 12.6663 22.6673H19.333C19.7932 22.6673 20.1663 22.2942 20.1663 21.834V10.1673C20.1663 9.70708 19.7932 9.33398 19.333 9.33398Z"
+                            stroke="#0235CD"
+                            stroke-width="1.25"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                          />
+                          <path
+                            d="M15.167 10.166H16.8337"
+                            stroke="#0235CD"
+                            stroke-width="1.25"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                          />
+                          <path
+                            d="M16 20.166V20.1743"
+                            stroke="#0235CD"
+                            stroke-width="1.25"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                          />
+                        </g>
+                        <defs>
+                          <clipPath id="clip0_10488_300830">
+                            <rect
+                              width="20"
+                              height="20"
+                              fill="white"
+                              transform="translate(6 6)"
+                            />
+                          </clipPath>
+                        </defs>
+                      </svg>
+                      <div>
+                        <div class="text1 mb-1">
+                          {{ item?.deviceName || item?.name }}
+                        </div>
+                        <div class="text2">
+                          Last attempt:
+                          {{ item?.createdDate || item?.createdDate | date }}
+                        </div>
+                      </div>
+                    </div>
+                    <div class="right">
+                      <ng-container
+                        *ngIf="
+                          !item.status || item.status === 2 || item.status === 3
+                        "
+                      >
+                        <div>
+                          <svg
+                            (click)="openDeviceApproveModal(false, item)"
+                            width="32"
+                            height="32"
+                            viewBox="0 0 32 32"
+                            fill="none"
+                            xmlns="http://www.w3.org/2000/svg"
+                          >
+                            <circle
+                              cx="16.0003"
+                              cy="15.9993"
+                              r="13.3333"
+                              fill="#D1292D"
+                            />
+                            <path
+                              d="M16.0003 2.66602C8.65366 2.66602 2.66699 8.65268 2.66699 15.9993C2.66699 23.346 8.65366 29.3327 16.0003 29.3327C23.347 29.3327 29.3337 23.346 29.3337 15.9993C29.3337 8.65268 23.347 2.66602 16.0003 2.66602ZM20.4803 19.066C20.867 19.4527 20.867 20.0927 20.4803 20.4793C20.2803 20.6793 20.027 20.7727 19.7737 20.7727C19.5203 20.7727 19.267 20.6793 19.067 20.4793L16.0003 17.4127L12.9337 20.4793C12.7337 20.6793 12.4803 20.7727 12.227 20.7727C11.9737 20.7727 11.7203 20.6793 11.5203 20.4793C11.1337 20.0927 11.1337 19.4527 11.5203 19.066L14.587 15.9993L11.5203 12.9327C11.1337 12.546 11.1337 11.906 11.5203 11.5194C11.907 11.1327 12.547 11.1327 12.9337 11.5194L16.0003 14.586L19.067 11.5194C19.4537 11.1327 20.0937 11.1327 20.4803 11.5194C20.867 11.906 20.867 12.546 20.4803 12.9327L17.4137 15.9993L20.4803 19.066Z"
+                              fill="#FBE9EA"
+                            />
+                          </svg>
+                        </div>
+                        <div>
+                          <svg
+                            (click)="openDeviceApproveModal(true, item)"
+                            width="32"
+                            height="32"
+                            viewBox="0 0 32 32"
+                            fill="none"
+                            xmlns="http://www.w3.org/2000/svg"
+                          >
+                            <circle
+                              cx="16.0003"
+                              cy="15.9993"
+                              r="13.3333"
+                              fill="#10B981"
+                            />
+                            <path
+                              d="M16.0003 2.66602C8.65366 2.66602 2.66699 8.65268 2.66699 15.9993C2.66699 23.346 8.65366 29.3327 16.0003 29.3327C23.347 29.3327 29.3337 23.346 29.3337 15.9993C29.3337 8.65268 23.347 2.66602 16.0003 2.66602ZM22.3737 12.9327L14.8137 20.4927C14.627 20.6793 14.3737 20.786 14.107 20.786C13.8403 20.786 13.587 20.6793 13.4003 20.4927L9.62699 16.7193C9.24033 16.3327 9.24033 15.6927 9.62699 15.306C10.0137 14.9193 10.6537 14.9193 11.0403 15.306L14.107 18.3727L20.9603 11.5194C21.347 11.1327 21.987 11.1327 22.3737 11.5194C22.7603 11.906 22.7603 12.5327 22.3737 12.9327Z"
+                              fill="#ECFDF5"
+                            />
+                          </svg>
+                        </div>
+                      </ng-container>
+                      <ng-container *ngIf="item.status === 1">
+                        <div
+                          (click)="openDeviceApproveModal(false, item)"
+                          class="remove-button"
+                        >
+                          Remove
+                        </div>
+                      </ng-container>
+                    </div>
+                  </div>
+                </ng-container>
+              </div>
+            </div>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</section>

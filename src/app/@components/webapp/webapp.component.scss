@@ -1,0 +1,105 @@
+@use '../../@core/styles/abstracts/media-query' as *;
+
+#webapp {
+  $navbarHeight: 3.75rem;
+  $sidebarWidth: 12.5rem;
+
+  display: flex;
+  min-height: 100vh;
+  max-height: 100vh;
+  overflow: hidden;
+  width: 100%;
+
+  main {
+    position: relative;
+    background: var(--opt-white);
+    min-height: 100vh;
+    overflow: auto;
+    width: 100%;
+
+    @include opt-media-query-max(opt-md) {
+      width: 100%;
+    }
+
+    transition: width 0.25s ease-in-out;
+
+    .main-content {
+      position: relative;
+      padding: 1.25rem 1rem;
+      margin-top: $navbarHeight;
+      min-height: calc(100vh - $navbarHeight);
+      max-height: calc(100vh - $navbarHeight);
+      overflow: auto;
+
+      .subscription-notification-banner {
+        position: absolute;
+        top: 0rem;
+        left: 0rem;
+        right: 0rem;
+        display: grid;
+        grid-template-columns: auto 2rem;
+        align-items: center;
+        grid-gap: 2rem;
+        gap: 2rem;
+        padding: 0.625rem;
+        background: var(--opt-neutral-100);
+        z-index: 999;
+        width: 100%;
+        -webkit-animation: slideDown 0.5s linear;
+        animation: slideDown 0.5s linear;
+
+        .subscription-notification-banner-content {
+          display: flex;
+          flex-wrap: wrap;
+          align-items: center;
+          justify-content: space-between;
+          gap: 1rem;
+        }
+
+        .cancel {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+
+          .close-icon-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 1.5rem;
+            height: 1.5rem;
+            border-radius: 0.3125rem;
+            cursor: pointer;
+
+            img {
+              -webkit-user-drag: none;
+            }
+          }
+        }
+
+        @-webkit-keyframes slideDown {
+          0% {
+            opacity: 0;
+            transform: translateY(-3.125rem);
+          }
+
+          100% {
+            opacity: 1;
+            transform: translateY(0rem);
+          }
+        }
+
+        @keyframes slideDown {
+          0% {
+            opacity: 0;
+            transform: translateY(-50px);
+          }
+
+          100% {
+            opacity: 1;
+            transform: translateY(0px);
+          }
+        }
+      }
+    }
+  }
+}

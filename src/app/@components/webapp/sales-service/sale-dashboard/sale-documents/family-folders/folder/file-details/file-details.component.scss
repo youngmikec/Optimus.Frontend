@@ -1,0 +1,48 @@
+.file-wrapper {
+  border-left: 0.0625rem solid var(--opt-neutral-100);
+
+  .file-actions {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 1em;
+
+    div {
+      display: grid;
+      place-items: center;
+    }
+
+    .img-fluid {
+      background-color: #ebf0ff;
+      border: 1px solid var(--opt-primary-color);
+      border-radius: 50%;
+      width: 3rem;
+      height: 3rem;
+      display: grid;
+      place-content: center;
+    }
+
+    p {
+      font-size: 0.75rem;
+      font-weight: 600;
+      text-align: center;
+      margin: 0;
+    }
+  }
+
+  .file-info {
+    p {
+      font-size: 0.8rem;
+      display: flex;
+      justify-content: space-between;
+    }
+
+    .value {
+      color: #64748b;
+      text-align: end;
+    }
+
+    .label {
+      font-weight: 600;
+    }
+  }
+}

@@ -1,0 +1,476 @@
+<section id="new-user-category">
+  <form [formGroup]="addEditPartnerForm">
+    <div class="new-user-category-header">
+      <h6 class="opt-heading-6 fw-600 mb-0">Create New Partner</h6>
+
+      <div class="button-container">
+        <a
+          routerLink="/app/admin-settings/partner-management"
+          matRipple
+          class="btn opt-btn-primary-outline back-btn"
+        >
+          Cancel
+        </a>
+
+        <button
+          matRipple
+          type="submit"
+          class="btn opt-btn-primary opt-btn-md"
+          (click)="createPartner()"
+          [disabled]="
+            addEditPartnerForm['invalid'] || (isLoading | async) !== false
+          "
+        >
+          Create
+          <ng-container *ngIf="(isLoading | async) !== false">
+            <app-button-loader></app-button-loader>
+          </ng-container>
+        </button>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-4">
+        <p class="opt-para-1 fw-600">Basic Information</p>
+        <p class="opt-caption fw-400 content-text">
+          Basic information about a partner includes their name, email address,
+          contact number, company name, country...
+        </p>
+      </div>
+      <div class="col-8">
+        <!-- <form [formGroup]="addEditUserForm"> -->
+        <div class="row">
+          <div class="col-md-6">
+            <div class="input-style1">
+              <label class="input-label input-required">First Name</label>
+
+              <mat-form-field appearance="outline" [style.width.%]="100">
+                <input
+                  type="text"
+                  matInput
+                  formControlName="firstName"
+                  placeholder="Enter first name"
+                />
+
+                <mat-error *ngIf="newPartnerFormControls['firstName'].invalid">
+                  <img
+                    src="/assets/icons/error.svg"
+                    alt=""
+                    class="img-fluid error-icon"
+                  />
+                  {{ getErrorMessage('firstName') }}
+                </mat-error>
+              </mat-form-field>
+            </div>
+          </div>
+
+          <div class="col-md-6">
+            <div class="input-style1">
+              <label class="input-label input-required">Last Name</label>
+
+              <mat-form-field appearance="outline" [style.width.%]="100">
+                <input
+                  type="text"
+                  matInput
+                  formControlName="lastName"
+                  placeholder="Enter last name"
+                />
+
+                <mat-error *ngIf="newPartnerFormControls['lastName'].invalid">
+                  <img
+                    src="/assets/icons/error.svg"
+                    alt=""
+                    class="img-fluid error-icon"
+                  />
+                  {{ getErrorMessage('lastName') }}
+                </mat-error>
+              </mat-form-field>
+            </div>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-md-6">
+            <div class="input-style1">
+              <label class="input-label input-required">Email Address</label>
+
+              <mat-form-field appearance="outline" [style.width.%]="100">
+                <input
+                  type="text"
+                  matInput
+                  formControlName="email"
+                  placeholder="Enter email address"
+                />
+
+                <mat-error *ngIf="newPartnerFormControls['email'].invalid">
+                  <img
+                    src="/assets/icons/error.svg"
+                    alt=""
+                    class="img-fluid error-icon"
+                  />
+                  {{ getErrorMessage('email') }}
+                </mat-error>
+              </mat-form-field>
+            </div>
+          </div>
+
+          <div class="col-md-6">
+            <div class="input-style1">
+              <label class="input-label input-required">Company Name</label>
+
+              <mat-form-field appearance="outline" [style.width.%]="100">
+                <input
+                  type="text"
+                  matInput
+                  formControlName="companyName"
+                  placeholder="Enter company name"
+                />
+
+                <mat-error
+                  *ngIf="newPartnerFormControls['companyName'].invalid"
+                >
+                  <img
+                    src="/assets/icons/error.svg"
+                    alt=""
+                    class="img-fluid error-icon"
+                  />
+                  {{ getErrorMessage('companyName') }}
+                </mat-error>
+              </mat-form-field>
+            </div>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-md-6">
+            <div class="input-style1">
+              <label class="input-label input-required">Contact Number</label>
+
+              <div class="select-input-style">
+                <mat-form-field
+                  appearance="outline"
+                  [style.width.%]="100"
+                  class="select-field"
+                >
+                  <input
+                    #countryCode
+                    type="text"
+                    matInput
+                    placeholder="234"
+                    formControlName="countryCode"
+                    [matAutocomplete]="forCountryCode"
+                    (input)="onFilterCountryCode(countryCode.value)"
+                  />
+
+                  <mat-autocomplete
+                    class="country-code"
+                    autoActiveFirstOption
+                    #forCountryCode="matAutocomplete"
+                  >
+                    <ng-container
+                      *ngIf="
+                        (allFilteredCountryCodes | async) !== null;
+                        else noCountryCodes
+                      "
+                    >
+                      <mat-option
+                        *ngFor="
+                          let countryCode of allFilteredCountryCodes | async
+                        "
+                        class="country-code"
+                        value="{{ countryCode.dialCode }}"
+                      >
+                        <div class="country-code-container">
+                          <!-- <img [src]="countryCode.flag" alt="" class="flag" /> -->
+
+                          <p class="country fw-600">
+                            {{ countryCode.name }} <span></span>
+                          </p>
+
+                          <p class="code fw-600">
+                            ({{ countryCode.dialCode }})
+                          </p>
+                        </div>
+                      </mat-option>
+                    </ng-container>
+
+                    <ng-template #noCountryCodes>
+                      <mat-option disabled>Loading Country Codes...</mat-option>
+                    </ng-template>
+                  </mat-autocomplete>
+                </mat-form-field>
+                <mat-form-field appearance="outline" [style.width.%]="100">
+                  <input
+                    matInput
+                    type="number"
+                    placeholder="123456"
+                    formControlName="phoneNumber"
+                  />
+
+                  <mat-error
+                    *ngIf="newPartnerFormControls['phoneNumber'].invalid"
+                  >
+                    <img
+                      src="/assets/icons/error.svg"
+                      alt=""
+                      class="img-fluid error-icon"
+                    />
+                    {{ getErrorMessage('phoneNumber') }}
+                  </mat-error>
+                </mat-form-field>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-md-6">
+            <div class="input-style1">
+              <label class="input-label">Alternative Contact Number</label>
+
+              <div class="select-input-style">
+                <mat-form-field
+                  appearance="outline"
+                  [style.width.%]="100"
+                  class="select-field"
+                >
+                  <input
+                    #countryCode
+                    type="text"
+                    matInput
+                    placeholder="234"
+                    formControlName="countryCode"
+                    [matAutocomplete]="forCountryCode"
+                    (input)="onFilterCountryCode(countryCode.value)"
+                  />
+
+                  <mat-autocomplete
+                    class="country-code"
+                    autoActiveFirstOption
+                    #forCountryCode="matAutocomplete"
+                  >
+                    <ng-container
+                      *ngIf="
+                        (allFilteredCountryCodes | async) !== null;
+                        else noCountryCodes
+                      "
+                    >
+                      <mat-option
+                        *ngFor="
+                          let countryCode of allFilteredCountryCodes | async
+                        "
+                        class="country-code"
+                        value="{{ countryCode.dialCode }}"
+                      >
+                        <div class="country-code-container">
+                          <!-- <img [src]="countryCode.flag" alt="" class="flag" /> -->
+
+                          <p class="country">
+                            {{ countryCode.name }} <span></span>
+                          </p>
+
+                          <p class="code">({{ countryCode.dialCode }})</p>
+                        </div>
+                      </mat-option>
+                    </ng-container>
+
+                    <ng-template #noCountryCodes>
+                      <mat-option disabled>Loading Country Codes...</mat-option>
+                    </ng-template>
+                  </mat-autocomplete>
+                </mat-form-field>
+                <mat-form-field appearance="outline" [style.width.%]="100">
+                  <input
+                    matInput
+                    type="number"
+                    placeholder="123456"
+                    formControlName="alternatePhoneNumber"
+                  />
+
+                  <mat-error
+                    *ngIf="newPartnerFormControls['phoneNumber'].invalid"
+                  >
+                    <img
+                      src="/assets/icons/error.svg"
+                      alt=""
+                      class="img-fluid error-icon"
+                    />
+                    {{ getErrorMessage('phoneNumber') }}
+                  </mat-error>
+                </mat-form-field>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-md-6">
+            <div class="input-style1">
+              <label class="input-label">Location</label>
+
+              <mat-form-field appearance="outline" [style.width.%]="100">
+                <mat-select formControlName="location" placeholder="Country">
+                  <ng-container
+                    *ngIf="
+                      allLocation !== null && allLocation?.length !== 0;
+                      else noLocation
+                    "
+                  >
+                    <ng-container *ngFor="let location of allLocation">
+                      <mat-option [value]="location.name">
+                        {{ location?.name }}
+                      </mat-option>
+                    </ng-container>
+                  </ng-container>
+
+                  <ng-template #noLocation>
+                    <ng-container *ngIf="allLocation === null">
+                      <mat-option disabled> Loading location...</mat-option>
+                    </ng-container>
+
+                    <ng-container *ngIf="allLocation?.length === 0">
+                      <mat-option disabled>
+                        No location is available</mat-option
+                      >
+                    </ng-container>
+                  </ng-template>
+                </mat-select>
+
+                <mat-error *ngIf="newPartnerFormControls['location'].invalid">
+                  <img
+                    src="/assets/icons/error.svg"
+                    alt=""
+                    class="img-fluid error-icon"
+                  />
+                  {{ getErrorMessage('location') }}
+                </mat-error>
+              </mat-form-field>
+            </div>
+          </div>
+
+          <div class="col-md-6 custom-margin">
+            <div class="input-style1">
+              <label class="input-label"></label>
+
+              <mat-form-field appearance="outline" [style.width.%]="100">
+                <input
+                  type="text"
+                  matInput
+                  formControlName="street"
+                  placeholder="Street"
+                />
+
+                <mat-error *ngIf="newPartnerFormControls['street'].invalid">
+                  <img
+                    src="/assets/icons/error.svg"
+                    alt=""
+                    class="img-fluid error-icon"
+                  />
+                  {{ getErrorMessage('street') }}
+                </mat-error>
+              </mat-form-field>
+            </div>
+          </div>
+        </div>
+
+        <div class="row mt-3">
+          <div class="col-md-6">
+            <div class="input-style1">
+              <label class="input-label"></label>
+
+              <mat-form-field appearance="outline" [style.width.%]="100">
+                <input
+                  type="text"
+                  matInput
+                  formControlName="state"
+                  placeholder="State"
+                />
+
+                <mat-error *ngIf="newPartnerFormControls['state'].invalid">
+                  <img
+                    src="/assets/icons/error.svg"
+                    alt=""
+                    class="img-fluid error-icon"
+                  />
+                  {{ getErrorMessage('state') }}
+                </mat-error>
+              </mat-form-field>
+            </div>
+          </div>
+
+          <div class="col-md-6">
+            <div class="input-style1">
+              <label class="input-label"></label>
+
+              <mat-form-field appearance="outline" [style.width.%]="100">
+                <input
+                  type="text"
+                  matInput
+                  formControlName="building"
+                  placeholder="Building"
+                />
+
+                <mat-error *ngIf="newPartnerFormControls['building'].invalid">
+                  <img
+                    src="/assets/icons/error.svg"
+                    alt=""
+                    class="img-fluid error-icon"
+                  />
+                  {{ getErrorMessage('building') }}
+                </mat-error>
+              </mat-form-field>
+            </div>
+          </div>
+        </div>
+
+        <div class="row mt-3">
+          <div class="col-md-6">
+            <div class="input-style1">
+              <label class="input-label"></label>
+
+              <mat-form-field appearance="outline" [style.width.%]="100">
+                <input
+                  type="text"
+                  matInput
+                  formControlName="area"
+                  placeholder="Area"
+                />
+
+                <mat-error *ngIf="newPartnerFormControls['area'].invalid">
+                  <img
+                    src="/assets/icons/error.svg"
+                    alt=""
+                    class="img-fluid error-icon"
+                  />
+                  {{ getErrorMessage('area') }}
+                </mat-error>
+              </mat-form-field>
+            </div>
+          </div>
+
+          <div class="col-md-6">
+            <div class="input-style1">
+              <label class="input-label"></label>
+
+              <mat-form-field appearance="outline" [style.width.%]="100">
+                <input
+                  type="text"
+                  matInput
+                  formControlName="postalCode"
+                  placeholder="Zip Code"
+                />
+
+                <mat-error *ngIf="newPartnerFormControls['postalCode'].invalid">
+                  <img
+                    src="/assets/icons/error.svg"
+                    alt=""
+                    class="img-fluid error-icon"
+                  />
+                  {{ getErrorMessage('postalCode') }}
+                </mat-error>
+              </mat-form-field>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </form>
+</section>

@@ -1,0 +1,33 @@
+#breadcrumb {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+
+  h6 {
+    font-size: 1.2rem;
+    margin: 0;
+
+    &.applicant-name {
+      color: var(--opt-neutral-400);
+    }
+  }
+}
+
+.folder-status {
+  & span {
+    border-radius: 0.2rem;
+    color: #fff;
+    font-weight: 600;
+    width: 60%;
+    padding: 0.25rem 0.5rem;
+    font-size: 0.8rem;
+  }
+
+  & .corresponding {
+    background-color: #eb5c7b;
+  }
+
+  & .alternate {
+    background-color: #a01fe4;
+  }
+}

@@ -1,0 +1,44 @@
+.folder-section ::ng-deep.mat-tab-label {
+  display: block;
+}
+
+.folder-section ::ng-deep.mat-tab-labels {
+  border-bottom: var(--bs-border-width) var(--bs-border-style)
+    var(--bs-border-color) !important;
+}
+
+.folder-section ::ng-deep.mat-tab-label {
+  border: none;
+  border-radius: 0;
+  background-color: transparent;
+  font-weight: 500;
+  color: #64748b;
+}
+
+.folder-section ::ng-deep.mat-tab-label-active {
+}
+
+@media only screen and (min-width: 1300px) {
+  .folder-section::ng-deep.mat-tab-body {
+    margin-top: 4.5rem;
+  }
+
+  .folder-section ::ng-deep.mat-tab-label-container {
+    margin-top: 1rem;
+  }
+}
+
+.folder-titles {
+  display: flex;
+  gap: 1rem;
+  list-style: none;
+  padding: 0;
+  font-size: 0.8rem;
+
+  & .active {
+    border-bottom: 3px solid var(--opt-primary-color) !important;
+    color: var(--opt-primary-color) !important;
+    font-weight: 800;
+    transition: all;
+  }
+}

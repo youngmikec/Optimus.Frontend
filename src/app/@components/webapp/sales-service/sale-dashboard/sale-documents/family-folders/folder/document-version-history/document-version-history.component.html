@@ -1,0 +1,47 @@
+<div>
+  <div
+    class="d-flex justify-content-between align-items-center border-bottom header"
+  >
+    <p class="fw-bold">Version History: {{ documentName }}</p>
+
+    <div matRipple class="close-icon-container" (click)="close()">
+      <img src="/assets/icons/modal-close-icon.svg" alt="modal close icon" />
+    </div>
+  </div>
+
+  <div class="history list-wrapper mb-3 pb-2 px-4 pt-3">
+    <section class="pt-3 ms-2">
+      <ul class="timeline-with-icons">
+        <li
+          class="timeline-item mb-2"
+          *ngFor="let history of versionHistories$ | async"
+        >
+          <div class="d-flex justify-content-between align-items-center">
+            <div>
+              <span class="timeline-icon">
+                <i class="fas fa-rocket text-primary fa-sm fa-fw"></i>
+              </span>
+
+              <div class="mb-0">
+                <span class="fw-semibold">{{ history.documentName }}</span>
+              </div>
+              <p class="rounded-pill badge text-dark bg-light">
+                {{ history.createdDate | date : 'd/M/yy' }}
+              </p>
+            </div>
+
+            <button
+              matRipple
+              class="btn opt-btn-neutral review-btn"
+              (click)="viewDocument(history)"
+            >
+              <span class="img-fluid">
+                <img src="/assets/icons/eye.svg" alt="print-icon" />
+              </span>
+            </button>
+          </div>
+        </li>
+      </ul>
+    </section>
+  </div>
+</div>

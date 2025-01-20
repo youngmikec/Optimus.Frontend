@@ -1,0 +1,27 @@
+<section id="receipt">
+  <div style="display: flex; justify-content: flex-end; gap: 10px">
+    <a
+      class="btn btn-outline-primary"
+      href="javascript:void(0)"
+      title="Download pdf"
+      (click)="downloadPdf(paymentReceiptDocUrl)"
+      *ngIf="paymentReceiptDocUrl"
+    >
+      <span class="img-fluid">
+        <img src="/assets/icons/download-blue.svg" alt="download-icon" />
+      </span>
+    </a>
+
+    <div matRipple class="close-icon-container" (click)="closeDialog()">
+      <img src="/assets/icons/modal-close-icon.svg" alt="modal close icon" />
+    </div>
+  </div>
+
+  <iframe
+    *ngIf="paymentReceiptDocUrl"
+    [src]="paymentReceiptDocUrl | safe : 'resourceUrl'"
+    style="width: 100%; height: 100vh"
+    frameborder="0"
+  >
+  </iframe>
+</section>

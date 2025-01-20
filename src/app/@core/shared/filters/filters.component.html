@@ -1,0 +1,29 @@
+<div class="input-style1 input-no-error filter">
+  <h4>{{ data.description }}</h4>
+  <mat-form-field
+    appearance="outline"
+    [style.width.%]="100"
+    [style.float]="'right'"
+  >
+    <mat-select
+      [(value)]="selectedOption"
+      (selectionChange)="onOptionChange($event)"
+    >
+      <mat-option value=""> All </mat-option>
+      <mat-option
+        *ngFor="let option of usableData.options"
+        [value]="option.value"
+      >
+        {{ option.label }}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+  <button
+    class="mt-4"
+    mat-raised-button
+    color="primary"
+    (click)="submitAndClose()"
+  >
+    Apply
+  </button>
+</div>

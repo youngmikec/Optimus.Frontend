@@ -1,0 +1,148 @@
+<ng-container *ngIf="type === 'SELECT'">
+  <div class="row option-container">
+    <div class="col-md-6" *ngFor="let items of options; let i = index">
+      <div class="option-items1">
+        <mat-radio-group
+          class="opt-radio-group"
+          [(ngModel)]="_selectedOption"
+          (change)="onMigrationRouteChange()"
+        >
+          <mat-radio-button [value]="items" class="opt-radio-btn">
+            <span class="mat-radio-label-content">{{ items.name }}</span>
+          </mat-radio-button>
+        </mat-radio-group>
+      </div>
+    </div>
+  </div>
+</ng-container>
+
+<ng-container *ngIf="type === 'SingleSelection'">
+  <div class="row option-container">
+    <div class="col-md-6" *ngFor="let items of options; let i = index">
+      <div class="option-items1">
+        <mat-radio-group
+          class="opt-radio-group"
+          [(ngModel)]="_selectedOption"
+          (change)="onMigrationRouteChange()"
+        >
+          <mat-radio-button [value]="items" class="opt-radio-btn">
+            <span class="mat-radio-label-content">{{ items.name }}</span>
+          </mat-radio-button>
+        </mat-radio-group>
+      </div>
+    </div>
+  </div>
+</ng-container>
+
+<ng-container *ngIf="type === 'RealEstateInvestmentType'">
+  <div class="row option-container">
+    <div class="col-md-6" *ngFor="let items of options; let i = index">
+      <div class="option-items1">
+        <mat-radio-group
+          class="opt-radio-group"
+          [(ngModel)]="_selectedOption"
+          (change)="onMigrationRouteChange()"
+        >
+          <mat-radio-button [value]="items" class="opt-radio-btn">
+            <span class="mat-radio-label-content">{{ items.name }}</span>
+          </mat-radio-button>
+        </mat-radio-group>
+      </div>
+    </div>
+  </div>
+</ng-container>
+
+<ng-container *ngIf="type === 'SELECT2'">
+  <div class="row option-container">
+    <div class="col-md-4" *ngFor="let items of options; let i = index">
+      <div class="option-items1">
+        <!-- <mat-radio-group
+          class="opt-radio-group"
+          [(ngModel)]="_selectedOption"
+          (change)="onMigrationRouteChange()"
+        >
+          <mat-radio-button [value]="items" class="opt-radio-btn">
+            <span class="mat-radio-label-content">{{ items.name }}</span>
+          </mat-radio-button>
+        </mat-radio-group> -->
+        <mat-checkbox
+          color="primary"
+          [(ngModel)]="items.checked"
+          (change)="onCheckboxChange(options)"
+          >{{ items.name }}</mat-checkbox
+        >
+      </div>
+    </div>
+  </div>
+</ng-container>
+
+<ng-container *ngIf="type === 'TRUEFALSE'">
+  <div class="truefalse-main-container">
+    <div class="truefalse-container">
+      <div
+        class="truefalse-item"
+        (click)="selectTrueFalse('yes')"
+        [ngClass]="trueFalseSelect1 === true ? 'selected' : 'not-selected'"
+      >
+        <div class="icon">
+          <svg
+            width="45"
+            height="45"
+            viewBox="0 0 48 48"
+            [ngClass]="trueFalseSelect1 === true ? 'filled' : 'not-filled'"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M31.0061 1.01274L31.0245 1.01081L31.0428 1.00819C31.2271 0.981869 31.3191 1.00857 31.7044 1.12043C31.7614 1.13696 31.8247 1.15536 31.8957 1.17571C32.4849 1.39394 32.9683 1.82975 33.246 2.39379C33.528 2.96659 33.5756 3.62662 33.3787 4.2339L33.3764 4.24095L33.3743 4.24804C33.0967 5.14972 32.2879 7.88516 31.5478 10.6122C31.1778 11.9754 30.8226 13.3452 30.5592 14.4867C30.307 15.5793 30.1071 16.5895 30.1071 17.1546C30.1071 19.382 32.0257 21.5818 34.5357 21.5818H44.8214C46.1895 21.5818 47.25 22.6425 47.25 24.0091C47.25 24.002 47.25 24.0273 47.2397 24.1C47.2301 24.1675 47.2144 24.2567 47.1912 24.3695C47.1447 24.5955 47.074 24.8882 46.9799 25.2437C46.7919 25.9533 46.5206 26.875 46.1911 27.9398C45.5328 30.0673 44.6532 32.731 43.7712 35.3418C42.8897 37.951 42.0079 40.5011 41.3464 42.3993C41.0157 43.3483 40.7401 44.1341 40.5473 44.6825C40.4508 44.9567 40.3751 45.1716 40.3235 45.3178L40.2646 45.4845L40.2585 45.5017C39.8513 46.3844 38.9675 47 37.9643 47H14.9643V21.5296C16.7206 21.3426 18.3294 20.6484 19.6084 19.3698C19.864 19.1143 20.1654 18.6683 20.4639 18.1911C20.7824 17.6819 21.1587 17.0358 21.5692 16.3041C22.3913 14.839 23.3698 12.9966 24.3315 11.1469C26.1063 7.73326 27.8369 4.26939 28.4441 3.05398C28.4928 2.95643 28.5343 2.87336 28.568 2.80597C29.1209 1.7623 30.0821 1.10996 31.0061 1.01274ZM6.10714 47H1.25V21.5818H6.10714V47Z"
+              stroke="#0235CD"
+              stroke-width="2"
+            />
+          </svg>
+        </div>
+        <div class="label">
+          <label class="opt-para-1 fw-600">Yes</label>
+        </div>
+      </div>
+
+      <div
+        class="truefalse-item"
+        [ngClass]="trueFalseSelect2 === true ? 'selected' : 'not-selected'"
+        (click)="selectTrueFalse('no')"
+      >
+        <div class="icon">
+          <svg
+            width="45"
+            height="45"
+            viewBox="0 0 48 48"
+            [ngClass]="trueFalseSelect2 === true ? 'filled' : 'not-filled'"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M17.2439 46.9873L17.2255 46.9892L17.2072 46.9918C17.0229 47.0181 16.9309 46.9914 16.5456 46.8796C16.4886 46.863 16.4253 46.8446 16.3543 46.8243C15.7651 46.6061 15.2817 46.1702 15.004 45.6062C14.722 45.0334 14.6744 44.3734 14.8713 43.7661L14.8736 43.759L14.8757 43.752C15.1533 42.8503 15.9621 40.1148 16.7022 37.3878C17.0722 36.0246 17.4274 34.6548 17.6908 33.5133C17.943 32.4207 18.1429 31.4105 18.1429 30.8454C18.1429 28.618 16.2243 26.4182 13.7143 26.4182H3.42857C2.06049 26.4182 0.999996 25.3575 0.999996 23.9909C0.999996 23.998 0.999981 23.9727 1.01031 23.9C1.0199 23.8325 1.0356 23.7433 1.05882 23.6305C1.10529 23.4045 1.17599 23.1118 1.27014 22.7563C1.45812 22.0467 1.7294 21.125 2.05888 20.0602C2.71721 17.9327 3.59683 15.269 4.47882 12.6582C5.36032 10.049 6.24206 7.49887 6.90358 5.60065C7.2343 4.65167 7.50988 3.8659 7.70274 3.31749C7.79917 3.04329 7.87491 2.82844 7.92652 2.68222L7.98541 2.5155L7.99147 2.49836C8.39869 1.6156 9.28251 0.999996 10.2857 0.999996H33.2857V26.4704C31.5294 26.6574 29.9206 27.3516 28.6416 28.6302C28.386 28.8857 28.0846 29.3317 27.7861 29.8089C27.4676 30.3181 27.0913 30.9642 26.6808 31.6959C25.8587 33.161 24.8802 35.0034 23.9185 36.8531C22.1438 40.2665 20.4134 43.7301 19.8061 44.9458C19.7573 45.0434 19.7157 45.1266 19.682 45.1941C19.1291 46.2377 18.1679 46.89 17.2439 46.9873ZM42.1429 0.999996H47V26.4182H42.1429V0.999996Z"
+              stroke="#0235CD"
+              stroke-width="2"
+            />
+          </svg>
+        </div>
+        <div class="label">
+          <label class="opt-para-1 fw-600">No</label>
+        </div>
+      </div>
+    </div>
+  </div>
+</ng-container>
+
+<ng-container *ngIf="type === 'RADIO'">
+  <div class="radio">
+    <div class="radio-div" *ngFor="let items of options; let i = index">
+      <div class="item option-items" (click)="select(items, i)">
+        <div class="icon">
+          <img [src]="items?.icon || ''" alt="option_icon" />
+        </div>
+        <div class="label">
+          <label class="opt-para-1 fw-600">{{ items?.name }}</label>
+        </div>
+      </div>
+    </div>
+  </div>
+</ng-container>

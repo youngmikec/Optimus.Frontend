@@ -1,0 +1,133 @@
+<section class="topbar">
+  <div class="content-container">
+    <div class="content-left">
+      <button
+        (click)="goBack()"
+        matRipple
+        matTooltip="Back"
+        matTooltipClass="custom-tooltip"
+        class="btn topbar-buttons1"
+      >
+        <span class="img-fluid"
+          ><img src="/assets/icons/return-icon.svg" alt=""
+        /></span>
+      </button>
+      <span class="opt-para-1 fw-600">{{ this.quoteData?.quoteNo }}</span>
+    </div>
+    <div class="content-right">
+      <button
+        (click)="openInvoiceDialog()"
+        matRipple
+        matTooltip="View quote"
+        matTooltipClass="custom-tooltip"
+        class="btn topbar-buttons"
+        [disabled]="!isQuotePreviewAvailable"
+      >
+        <span class="img-fluid"
+          ><img src="/assets/icons/eye.svg" alt=""
+        /></span>
+      </button>
+
+      <button
+        (click)="downloadPdf()"
+        matRipple
+        matTooltip="Download quote"
+        matTooltipClass="custom-tooltip"
+        class="btn topbar-buttons"
+        [disabled]="!isQuotePreviewAvailable"
+      >
+        <span class="img-fluid"
+          ><img src="/assets/icons/import.svg" alt=""
+        /></span>
+      </button>
+
+      <button
+        (click)="printPdf()"
+        matRipple
+        matTooltip="Print quote"
+        matTooltipClass="custom-tooltip"
+        class="btn topbar-buttons"
+        [disabled]="!isQuotePreviewAvailable"
+      >
+        <span class="img-fluid"
+          ><img src="/assets/icons/printer.svg" alt=""
+        /></span>
+      </button>
+
+      <button
+        *ngIf="showResend === false"
+        matRipple
+        matTooltip="Send quote"
+        matTooltipClass="custom-tooltip"
+        class="btn topbar-buttons"
+        (click)="openSendToApplicantModal()"
+        [disabled]="!isQuotePreviewAvailable || (isLoading | async) !== false"
+      >
+        <span class="text">Send</span>
+        <span class="img-fluid" *ngIf="(isLoading | async) !== true"
+          ><img src="/assets/icons/send.svg" alt=""
+        /></span>
+        <ng-container *ngIf="(isLoading | async) !== false">
+          <app-button-loader></app-button-loader>
+        </ng-container>
+      </button>
+
+      <button
+        *ngIf="showResend === true"
+        matRipple
+        matTooltip="Send quote"
+        matTooltipClass="custom-tooltip"
+        class="btn topbar-buttons"
+        (click)="openSendToApplicantModal()"
+        [disabled]="(isLoading | async) !== false"
+      >
+        <!-- <span class="text">Resend Quote</span> -->
+        <span class="text">Send Quote</span>
+        <span class="img-fluid" *ngIf="(isLoading | async) !== true"
+          ><img src="/assets/icons/send.svg" alt=""
+        /></span>
+        <ng-container *ngIf="(isLoading | async) !== false">
+          <app-button-loader></app-button-loader>
+        </ng-container>
+      </button>
+
+      <button
+        *ngIf="showResend === false"
+        matRipple
+        matTooltip="Confirm Quote"
+        matTooltipClass="custom-tooltip"
+        class="btn opt-btn-primary"
+        (click)="confirmQuote()"
+        [disabled]="!isQuotePreviewAvailable"
+      >
+        Confirm Quote
+      </button>
+
+      <ng-container *ngIf="quoteData?.quoteStatus !== 5; else showViewInvoice">
+        <button
+          *ngIf="showResend === true"
+          (click)="openProceedToPaymentModal()"
+          matRipple
+          matTooltip="Generate Invoice"
+          matTooltipClass="custom-tooltip"
+          class="btn opt-btn-primary"
+        >
+          Generate Invoice
+        </button>
+      </ng-container>
+
+      <ng-template #showViewInvoice>
+        <button
+          *ngIf="showResend === true"
+          (click)="goToCreateNewInvoice()"
+          matRipple
+          matTooltip="View Invoice"
+          matTooltipClass="custom-tooltip"
+          class="btn opt-btn-primary"
+        >
+          View Invoice
+        </button>
+      </ng-template>
+    </div>
+  </div>
+</section>

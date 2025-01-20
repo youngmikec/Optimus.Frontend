@@ -1,0 +1,168 @@
+<section id="org-settings">
+  <div class="content">
+    <div class="profile-org-settings row">
+      <div class="user-profile col-12 col-md-4 col-lg-4">
+        <div class="img-name">
+          <!-- <div class="img-container">
+            <img src="/assets/images/female-avatar.svg" alt="avater/svg" />
+          </div> -->
+
+          <div class="profile-picture-section">
+            <div class="profile-picture-container">
+              <img
+                *ngIf="user?.profilePicture"
+                [src]="user?.profilePicture"
+                alt="Profile Picture"
+              />
+            </div>
+          </div>
+
+          <h6 class="opt-heading-6 fw-700">
+            {{ loggedInUser?.FirstName }} {{ loggedInUser?.LastName }}
+          </h6>
+        </div>
+
+        <div class="user-desc">
+          <div class="coloured-container">
+            <div class="coloured-bg">
+              <p class="opt-para-1">
+                Roles: <span>{{ user?.role?.name }}</span>
+              </p>
+            </div>
+
+            <div class="rectangle-img">
+              <img src="/assets/icons/rectangle.svg" alt="" />
+            </div>
+
+            <div class="coloured-bg">
+              <p class="opt-para-1">
+                Division: <span>{{ user?.division?.name }}</span>
+              </p>
+            </div>
+          </div>
+
+          <div class="coloured-container">
+            <div class="coloured-bg">
+              <p class="opt-para-1">
+                Department: <span>{{ user?.department?.name }}</span>
+              </p>
+            </div>
+
+            <div class="rectangle-img">
+              <img src="/assets/icons/rectangle.svg" alt="" />
+            </div>
+
+            <div class="coloured-bg">
+              <p class="opt-para-1">
+                Unit: <span>{{ user?.unit?.name }}</span>
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <div class="go-back" routerLink="/app">
+          <img src="/assets/icons/arrow-left.svg" alt="arrow-left/svg" />
+          <p class="opt-para-1 fw-700">Go Back to Admin Settings</p>
+        </div>
+      </div>
+      <div class="org-settings-wrapper col-12 col-md-8 col-lg-8">
+        <div
+          matRipple
+          class="account-setting"
+          routerLink="division"
+          *ngIf="canViewDivision === true"
+        >
+          <div class="account-setting-content">
+            <div class="text-icon">
+              <h6 class="opt-heading-6 fw-700">Division</h6>
+
+              <div class="org-setting-count">
+                <h5 class="fw-700">{{ allDivisionsCount }}</h5>
+              </div>
+            </div>
+
+            <p class="opt-para-1">Configure division within departments</p>
+          </div>
+        </div>
+
+        <div
+          matRipple
+          class="account-setting"
+          routerLink="department"
+          *ngIf="canViewDepartment === true"
+        >
+          <div class="account-setting-content">
+            <div class="text-icon">
+              <h6 class="opt-heading-6 fw-700">Department</h6>
+
+              <div class="org-setting-count">
+                <h5 class="fw-700">{{ allDepartmentsCount }}</h5>
+              </div>
+            </div>
+
+            <p class="opt-para-1">Configure department within organization</p>
+          </div>
+        </div>
+
+        <div
+          matRipple
+          class="account-setting"
+          routerLink="units"
+          *ngIf="canViewUnit === true"
+        >
+          <div class="account-setting-content">
+            <div class="text-icon">
+              <h6 class="opt-heading-6 fw-700">Unit</h6>
+
+              <div class="org-setting-count">
+                <h5 class="fw-700">{{ allUnitsCount }}</h5>
+              </div>
+            </div>
+
+            <p class="opt-para-1">Configure unit within division</p>
+          </div>
+        </div>
+
+        <div
+          matRipple
+          class="account-setting"
+          routerLink="branch"
+          *ngIf="canViewCompanyProfile === true"
+        >
+          <div class="account-setting-content">
+            <div class="text-icon">
+              <h6 class="opt-heading-6 fw-700">Company Profile</h6>
+
+              <div class="org-setting-count">
+                <h5 class="fw-700">{{ allLocationCount }}</h5>
+              </div>
+            </div>
+
+            <p class="opt-para-1">Configure branch within organization</p>
+          </div>
+        </div>
+
+        <div
+          matRipple
+          class="account-setting"
+          routerLink="job-title"
+          *ngIf="canViewJobTitle"
+        >
+          <div class="account-setting-content">
+            <div class="text-icon">
+              <h6 class="opt-heading-6 fw-700">Job Title</h6>
+
+              <div class="org-setting-count">
+                <h5 class="fw-700">{{ allJobsCount }}</h5>
+              </div>
+            </div>
+
+            <p class="opt-para-1">
+              Configure job description within organization
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

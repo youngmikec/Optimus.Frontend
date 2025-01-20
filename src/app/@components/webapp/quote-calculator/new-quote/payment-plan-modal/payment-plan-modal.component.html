@@ -1,0 +1,244 @@
+<!-- <form [formGroup]="schedulePaymentForm" class="positive-relative h-100"> -->
+<form
+  [formGroup]="schedulePaymentForm"
+  class="positive-relative d-flex flex-column"
+>
+  <div class="d-flex justify-content-between align-items-center header">
+    <div class="d-flex align-items-center">
+      <span class="fw-bold opt-para-1 pe-1">
+        ID{{ loan.applicationQuoteId }}:
+      </span>
+      <p class="opt-para-1 m-0">Payment Schedule</p>
+    </div>
+    <div class="icons-container">
+      <div matRipple class="close-icon-container" (click)="closeTray()">
+        <img src="/assets/icons/modal-close-icon.svg" alt="modal close icon" />
+      </div>
+    </div>
+  </div>
+
+  <div class="position-relative form-contents">
+    <p class="opt-para-1">Set your payment schedule</p>
+    <div class="d-flex flex-column">
+      <label for=""><span class="opt-caption">Loan Amount</span></label>
+      <div class="input-group mb-3">
+        <input
+          type="text"
+          class="form-control"
+          placeholder="Loan Amount"
+          [value]="loan.amount | number"
+          [disabled]="true"
+        />
+        <span class="input-group-text">
+          {{ loan.currencyCode }}
+        </span>
+      </div>
+    </div>
+
+    <div class="d-flex flex-column">
+      <label for=""><span class="opt-caption">Repayment Duration</span></label>
+      <div class="input-group mb-3">
+        <select class="form-select" formControlName="repaymentDuration">
+          <option
+            *ngFor="let duration of paymentDuration"
+            [value]="duration.value"
+          >
+            {{ duration.label }}
+          </option>
+        </select>
+        <label class="input-group-text">Months</label>
+      </div>
+    </div>
+
+    <div class="d-flex flex-column">
+      <label for=""
+        ><span class="opt-caption">Frequency Per Month </span></label
+      >
+      <div class="input-group mb-3">
+        <select class="form-select" formControlName="frequencyPerMonth">
+          <option
+            *ngFor="let freq of frequencyList"
+            [value]="freq.value"
+            selected
+          >
+            {{ freq.label }}
+          </option>
+        </select>
+      </div>
+    </div>
+
+    <div class="d-flex flex-column">
+      <label for=""><span class="opt-caption">Interest </span></label>
+      <div class="input-group mb-3">
+        <input
+          type="number"
+          class="form-control"
+          placeholder="Interest"
+          formControlName="interest"
+        />
+        <span class="input-group-text">%</span>
+      </div>
+    </div>
+
+    <!-- <div class="input-style1 switch-container input-width mb-2">
+      <mat-slide-toggle
+        formControlName="allowInterestOveride"
+      ></mat-slide-toggle>
+      <span class="switch-label opt-caption"> Override interest rate</span>
+    </div>
+
+    <ng-container
+      *ngIf="this.schedulePaymentForm.controls['allowInterestOveride'].value"
+    >
+      <div class="d-flex flex-column">
+        <label for=""><span class="opt-caption">New Interest </span></label>
+        <div class="input-group mb-3">
+          <input
+            type="number"
+            class="form-control"
+            placeholder="0.0"
+            formControlName="newInterestRate"
+          />
+          <span class="input-group-text">%</span>
+        </div>
+      </div>
+
+      <div
+        class="interest-change-requester"
+        *ngIf="this.schedulePaymentForm.controls['allowInterestOveride'].value"
+      >
+        <div matRipple>
+          <img src="/assets/icons/info-circle.svg" alt="info circle" />
+        </div>
+        <div class="d-flex flex-column requester-form">
+          <h5 class="opt-caption">
+            Request approval to override interest rate.
+          </h5>
+          <textarea
+            type="number"
+            class="form-control"
+            placeholder="Enter a message"
+            formControlName="changeRequestMessage"
+          ></textarea>
+          <p class="opt-caption" (click)="requestInterestOverride()">
+            Request approval
+          </p>
+        </div>
+        <div matRipple class="close-interest-change-requester-container">
+          <img
+            src="/assets/icons/modal-close-icon.svg"
+            alt="modal close icon"
+          />
+        </div>
+      </div>
+
+      <div
+        class="interest-requester-success"
+        *ngIf="this.schedulePaymentForm.controls['allowInterestOveride'].value"
+      >
+        <div matRipple>
+          <img src="/assets/icons/success-check.svg" alt="info circle" />
+        </div>
+        <h5 class="opt-caption m-0">
+          A request has been sent to override interest rate.
+        </h5>
+        <div matRipple class="close-interest-change-requester-container">
+          <img
+            src="/assets/icons/modal-close-icon.svg"
+            alt="modal close icon"
+          />
+        </div>
+      </div>
+    </ng-container> -->
+
+    <div class="d-flex flex-column">
+      <label for=""><span class="opt-caption">Interest amount</span></label>
+      <div class="input-group mb-3">
+        <input
+          type="text"
+          class="form-control"
+          [value]="(interestRateToUse / 100) * loan.amount | number"
+          readonly
+        />
+        <span class="input-group-text">
+          {{ loan.currencyCode }}
+        </span>
+      </div>
+    </div>
+
+    <div>
+      <div class="d-flex flex-column">
+        <label for=""
+          ><span class="opt-caption">Total Amount to be Paid</span></label
+        >
+        <div class="input-group mb-3">
+          <input
+            type="text"
+            class="form-control"
+            [disabled]="true"
+            placeholder="10,000"
+            [value]="
+              (interestRateToUse / 100) * loan.amount + loan.amount | number
+            "
+          />
+          <span class="input-group-text">
+            {{ loan.currencyCode }}
+          </span>
+        </div>
+      </div>
+
+      <!-- {{  }} -->
+
+      <div class="d-flex flex-column">
+        <label for=""><span class="opt-caption">Start Date </span></label>
+        <div class="input-group mb-3">
+          <input type="date" class="form-control" formControlName="startDate" />
+        </div>
+      </div>
+
+      <div class="d-flex flex-column border-top payment-details-container">
+        <label for=""><span class="opt-caption">PAYMENT DETAILS </span></label>
+        <ul class="timeline-with-icons opt-caption">
+          <li *ngFor="let item of paymentPlanList" class="timeline-item mb-2">
+            <div class="d-flex justify-content-between align-items-center">
+              <div class="d-flex justify-content-center">
+                <span class="timeline-icon">
+                  <img
+                    src="/assets/icons/blue-border-circle.svg"
+                    alt="Timeline Icon"
+                  />
+                </span>
+                <span>{{ item.amount | currency : loan.currencyCode }}</span>
+              </div>
+              <span class="opt-time-txt">{{ item.paymentDate | date }}</span>
+            </div>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="action-container">
+    <button
+      matRipple
+      type="button"
+      class="btn opt-btn-primary-light opt-btn-lg"
+      (click)="closeTray()"
+    >
+      Cancel
+    </button>
+
+    <button
+      type="button"
+      (click)="save()"
+      matRipple
+      class="btn opt-btn-primary opt-btn-lg"
+      [disabled]="schedulePaymentForm.invalid || (isLoading | async) !== false"
+    >
+      Save
+      <ng-container *ngIf="(isLoading | async) !== false">
+        <app-button-loader></app-button-loader>
+      </ng-container>
+    </button>
+  </div>
+</form>

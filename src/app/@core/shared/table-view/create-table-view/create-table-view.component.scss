@@ -1,0 +1,122 @@
+@use '../../../../@core/styles/abstracts' as *;
+
+#main-container {
+  // max-width: 23.4375rem;
+  width: 100%;
+
+  .main-header {
+    display: flex;
+    justify-content: space-between;
+    gap: 1.25rem;
+    margin-bottom: 0.25rem;
+  }
+
+  .cta-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+    gap: 0.625rem;
+    margin-top: 0.625rem;
+  }
+
+  .main-content {
+    display: block;
+    margin: 1rem auto;
+    text-align: center;
+
+    .invoice-details-container {
+      width: 100%;
+      background-color: #f7f8f9;
+      padding: 1rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 0.25rem;
+      margin-bottom: 0.25rem;
+    }
+
+    .amount-container {
+      // max-width: 23.4rem;
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      // align-items: center;
+      justify-content: center;
+      // gap: 0.5rem;
+      margin-bottom: 0.25rem;
+
+      .custom-input {
+        width: 100%;
+
+        input {
+          width: 100%;
+          background-color: #c3d2fe;
+          color: #0235cd;
+          padding: 0.3125rem 0.625rem;
+          border: none;
+          outline: none;
+          border-radius: 0.25rem;
+          // text-align: center;
+          text-align: left;
+          font-weight: 700 !important;
+          font-size: 1.25rem !important;
+        }
+
+        input:focus {
+          border: none;
+          outline: none;
+        }
+      }
+    }
+
+    .input-style1 {
+      text-align: left;
+    }
+
+    .upload-container {
+      width: 100%;
+      margin: 0 auto 1rem;
+      cursor: pointer;
+      // background-color: #fcf0f0;
+      // border: 0.0625rem dashed #80171a;
+      padding: 1.125rem;
+      border-radius: 0.5rem;
+
+      &.default {
+        background-color: #fcf0f0;
+        border: 0.0625rem dashed #80171a;
+      }
+
+      &.success {
+        color: #10b981 !important;
+        background-color: #ddffef !important;
+        border: 0.0625rem dashed #10b981 !important;
+      }
+
+      div {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 1rem;
+
+        span {
+          max-width: 20rem;
+        }
+      }
+
+      input {
+        display: none;
+      }
+    }
+
+    .currency-details-container {
+      background-color: #ebf0ff;
+      width: 100%;
+      margin-bottom: 1rem;
+      text-align: left;
+      padding: 0.625rem;
+    }
+  }
+}

@@ -1,0 +1,137 @@
+<div
+  class="row metrics"
+  *ngIf="
+    (documentPhase.phase === phasesEnum.DOCUMENT_PROCESSING ||
+      documentPhase.phase === phasesEnum.DOCUMENT_AUDIT) &&
+    !viewFolderFiles
+  "
+>
+  <div class="card card-max-height col-3">
+    <div class="card-body d-flex align-items-center flex-row">
+      <div class="p-2">
+        <img src="/assets/icons/approved-documents.svg" alt="avater" />
+      </div>
+
+      <div class="d-flex flex-column">
+        <div class="card-subtitle fw-700 mt-2">Approved Documents</div>
+        <div class="fw-bolder opt-sub-heading my-1">
+          {{ (documentAnalytics$ | async)?.approvedCount }}
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card card-max-height col-3">
+    <div class="card-body d-flex align-items-center flex-row">
+      <div class="p-2">
+        <img src="/assets/icons/rejected-documents.svg" alt="avater" />
+      </div>
+
+      <div class="d-flex flex-column">
+        <div class="card-subtitle fw-700 mt-2">Rejected Documents</div>
+        <div class="fw-bolder opt-sub-heading my-1">
+          {{ (documentAnalytics$ | async)?.rejectCount }}
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card card-max-height col-3">
+    <div class="card-body d-flex align-items-center flex-row">
+      <div class="p-2">
+        <img src="/assets/icons/uploaded-documents.svg" alt="avater" />
+      </div>
+
+      <div class="d-flex flex-column">
+        <div class="card-subtitle fw-700 mt-2">Uploaded Documents</div>
+        <div class="fw-bolder opt-sub-heading my-1">
+          {{ (documentAnalytics$ | async)?.completedCount }}
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card card-max-height col-3">
+    <div class="card-body d-flex align-items-center flex-row">
+      <div class="p-2">
+        <img src="/assets/icons/awaiting-approval-document.svg" alt="avater" />
+      </div>
+
+      <div class="d-flex flex-column">
+        <div class="card-subtitle fw-700 mt-2">Documents Awaiting Approval</div>
+        <div class="fw-bolder opt-sub-heading my-1">
+          {{ (documentAnalytics$ | async)?.pendingCount }}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="row" *ngIf="!viewFolderFiles">
+  <mat-card-content>
+    <div class="card-container" *ngIf="familyFolders.length > 0">
+      <mat-accordion class="example-headers-align" multi>
+        <mat-expansion-panel
+          *ngFor="let member of familyFolders; let i = index"
+          (opened)="getMemberFolders(member)"
+        >
+          <mat-expansion-panel-header>
+            <mat-panel-title>
+              {{ member.name }}
+            </mat-panel-title>
+          </mat-expansion-panel-header>
+
+          <div class="row">
+            <p
+              class="text-danger"
+              *ngIf="member.folders.length < 1; else folders"
+            >
+              No Folder(s)
+            </p>
+
+            <ng-template #folders>
+              <div class="col-md-3" *ngFor="let folder of member?.folders">
+                <!-- Corresponding Folder -->
+                <div
+                  class="card"
+                  (click)="getFolderFiles(folder)"
+                  *ngIf="folder?.isCorresponding"
+                >
+                  <img src="assets/icons/folder.svg" alt="folder" />
+                  <p class="my-2 card--p">{{ folder?.folderName }}</p>
+
+                  <div class="folder-status">
+                    <p class="corresponding">Corresponding</p>
+                  </div>
+                </div>
+
+                <!-- Alternative folder -->
+                <div
+                  class="card"
+                  (click)="getFolderFiles(folder)"
+                  *ngIf="!folder?.isCorresponding"
+                >
+                  <img src="assets/icons/folder.svg" alt="folder" />
+                  <p class="my-2 card--p">{{ folder?.folderName }}</p>
+
+                  <div class="folder-status">
+                    <p class="alternate">Alternative</p>
+                  </div>
+                </div>
+              </div>
+            </ng-template>
+          </div>
+        </mat-expansion-panel>
+      </mat-accordion>
+    </div>
+  </mat-card-content>
+</div>
+
+<!-- Files in Folder -->
+<div class="row" *ngIf="viewFolderFiles">
+  <app-folder
+    [documentPhase]="documentPhase"
+    [folderData]="selectedFolder"
+    (back)="viewFolderFiles = false"
+  ></app-folder>
+</div>

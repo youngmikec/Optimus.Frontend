@@ -1,0 +1,14 @@
+@use '../../../@core/styles/abstracts/media-query' as *;
+
+.title-wrapper {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  flex-wrap: wrap;
+  gap: 1.25rem;
+  margin-bottom: 0.5rem;
+
+  @include opt-media-query-max(opt-xsm) {
+    margin-bottom: 1.25rem;
+  }
+}

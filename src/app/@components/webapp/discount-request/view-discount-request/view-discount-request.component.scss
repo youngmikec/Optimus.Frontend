@@ -1,0 +1,35 @@
+@use '../../../../@core/styles/abstracts' as *;
+
+#view-content-wrapper {
+  .view-content-header {
+    display: flex;
+    justify-content: space-between;
+    gap: 1.25rem;
+    margin-bottom: 1.25rem;
+  }
+
+  .access-level {
+    display: grid;
+    grid-template-columns: auto auto;
+    justify-content: space-between;
+    margin-bottom: 3.5rem;
+  }
+
+  .cta-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+    gap: 0.625rem;
+    margin-top: 0.625rem;
+
+    .topbar-buttons1 {
+      background-color: #ebf0ff !important;
+      border: 1px solid #c3d2fe !important;
+    }
+  }
+
+  .text-gray {
+    color: #8a8a8a !important;
+  }
+}

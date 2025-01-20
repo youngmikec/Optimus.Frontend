@@ -1,0 +1,318 @@
+<section id="user-management">
+  <div class="user-management-header">
+    <h6 class="opt-heading-6 fw-700 mb-0">Users</h6>
+
+    <div class="table-controls">
+      <div class="input-style1 input-no-error">
+        <mat-form-field appearance="outline" [style.width.%]="100">
+          <span matPrefix class="img-fluid">
+            <img src="/assets/icons/search.svg" alt="icon" />
+          </span>
+
+          <input
+            [(ngModel)]="searchInputParam"
+            (ngModelChange)="onInputSearch()"
+            matInput
+            placeholder="Search users' list"
+          />
+        </mat-form-field>
+      </div>
+
+      <button
+        matRipple
+        [matMenuTriggerFor]="filter"
+        class="btn opt-btn-neutral opt-btn-with-icon"
+      >
+        <span class="img-fluid"
+          ><img src="/assets/icons/filter-icon.svg" alt="filter-icon"
+        /></span>
+        Filters
+      </button>
+
+      <mat-menu #filter="matMenu" class="opt-table-filter">
+        <div class="opt-table-filter-body" (click)="$event.stopPropagation()">
+          <p class="opt-caption mb-0 opt-table-filter-body-title">
+            Filter products by:
+          </p>
+
+          <ng-container *ngIf="filterResult && filterResult?.length !== 0">
+            <div class="opt-table-filter-items">
+              <ng-container *ngFor="let item of filterResult">
+                <mat-checkbox
+                  color="primary"
+                  [name]="item.name"
+                  (change)="onClickFilterOption()"
+                  [(ngModel)]="item.selected"
+                  [ngModelOptions]="{ standalone: true }"
+                >
+                  {{ item?.column }}
+                </mat-checkbox>
+              </ng-container>
+            </div>
+          </ng-container>
+
+          <div class="opt-table-filter-body-cta-container">
+            <button
+              matRipple
+              class="btn opt-btn-accent-outline"
+              (click)="clearFilterSelection()"
+            >
+              Clear selection
+            </button>
+          </div>
+        </div>
+      </mat-menu>
+
+      <button
+        matRipple
+        class="btn opt-btn-primary opt-btn-sm"
+        [disabled]="!this.permissions[1]"
+        *ngIf="this.permissions[1]"
+        routerLink="create"
+      >
+        Create New User
+      </button>
+    </div>
+  </div>
+
+  <mat-tab-group>
+    <mat-tab label="All Users">
+      <ng-container *ngIf="dataSource !== null; else noTableData">
+        <div class="table-responsive">
+          <table mat-table [dataSource]="dataSource!" matSort>
+            <ng-container matColumnDef="username">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header>Name</th>
+              <td
+                mat-cell
+                *matCellDef="let row"
+                matRipple
+                (click)="openViewUserDialog(row)"
+              >
+                <span class="d-flex justify-content-start align-items-center">
+                  <span>{{ row.firstName }} {{ row.lastName }} </span>
+                </span>
+              </td>
+            </ng-container>
+
+            <ng-container matColumnDef="role">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header>Role</th>
+              <td
+                mat-cell
+                *matCellDef="let row"
+                matRipple
+                (click)="openViewUserDialog(row)"
+              >
+                {{ row?.role?.name }}
+              </td>
+            </ng-container>
+
+            <ng-container matColumnDef="jobTitle">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                Job Title
+              </th>
+              <td
+                mat-cell
+                *matCellDef="let row"
+                matRipple
+                (click)="openViewUserDialog(row)"
+              >
+                {{ row?.jobTitle?.name }}
+              </td>
+            </ng-container>
+
+            <ng-container matColumnDef="dateAdded">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                Created Date
+              </th>
+              <td
+                mat-cell
+                *matCellDef="let row"
+                matRipple
+                (click)="openViewUserDialog(row)"
+              >
+                <span class="d-flex justify-content-start align-items-center">
+                  <span>{{ row.createdDate | date }}</span>
+                </span>
+              </td>
+            </ng-container>
+
+            <ng-container matColumnDef="createdBy">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                Created By
+              </th>
+              <td
+                mat-cell
+                *matCellDef="let row"
+                matRipple
+                (click)="openViewUserDialog(row)"
+              >
+                <!-- <span class="d-flex justify-content-start align-items-center">
+                  <span>{{ row.createdByEmail }}</span>
+                </span> -->
+                <span
+                  *ngIf="row.createdByEmail"
+                  [matTooltip]="row?.createdByEmail"
+                  matTooltipPosition="below"
+                  matTooltipClass="custom-tooltip"
+                >
+                  {{
+                    row.createdByEmail.substring(0, 16) +
+                      (row.createdByEmail.length > 16 ? '...' : '')
+                  }}
+                </span>
+              </td>
+            </ng-container>
+
+            <ng-container matColumnDef="modifiedDate">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                Last Modified Date
+              </th>
+              <td
+                mat-cell
+                *matCellDef="let row"
+                matRipple
+                (click)="openViewUserDialog(row)"
+              >
+                <span class="d-flex justify-content-start align-items-center">
+                  <span>{{
+                    row.lastModifiedDate !== 0
+                      ? (row.lastModifiedDate | date)
+                      : ''
+                  }}</span>
+                </span>
+              </td>
+            </ng-container>
+
+            <ng-container matColumnDef="modifiedDBy">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                Last Modified By
+              </th>
+              <td
+                mat-cell
+                *matCellDef="let row"
+                matRipple
+                (click)="openViewUserDialog(row)"
+              >
+                <!-- <span class="d-flex justify-content-start align-items-center">
+                  <span>{{ row.lastModifiedByEmail }}</span>
+                </span> -->
+                <span
+                  *ngIf="row.lastModifiedByEmail"
+                  [matTooltip]="row?.lastModifiedByEmail"
+                  matTooltipPosition="below"
+                  matTooltipClass="custom-tooltip"
+                >
+                  {{
+                    row.lastModifiedByEmail.substring(0, 16) +
+                      (row.lastModifiedByEmail.length > 16 ? '...' : '')
+                  }}
+                </span>
+              </td>
+            </ng-container>
+
+            <ng-container matColumnDef="status">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header>Status</th>
+              <td
+                mat-cell
+                *matCellDef="let row"
+                matRipple
+                (click)="openViewUserDialog(row)"
+              >
+                <span
+                  [ngClass]="{
+                    'status-active': row.statusDesc === 'Active',
+                    'status-inactive': row.statusDesc === 'Inactive'
+                  }"
+                >
+                  {{ row.statusDesc }}
+                </span>
+              </td>
+            </ng-container>
+
+            <ng-container matColumnDef="actions">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header>Actions</th>
+              <td mat-cell *matCellDef="let row">
+                <div class="table-cta-container">
+                  <div
+                    class="cta-container"
+                    matRipple
+                    matTooltip="Edit"
+                    matTooltipPosition="above"
+                    matTooltipClass="custom-tooltip"
+                    *ngIf="canEditUser"
+                    [routerLink]="
+                      this.permissions[2] === false
+                        ? null
+                        : 'edit/' + row.userId
+                    "
+                  >
+                    <img src="/assets/icons/edit.svg" alt="view icon" />
+                  </div>
+
+                  <div class="toggle-container" *ngIf="canChangeUserStatus">
+                    <mat-slide-toggle
+                      matTooltipPosition="above"
+                      matTooltipClass="custom-tooltip"
+                      *ngIf="this.permissions[3]"
+                      [matTooltip]="
+                        row.status === 1 ? 'Deactivate' : 'Activate'
+                      "
+                      [checked]="row.status === 1 ? 'true' : 'false'"
+                      (toggleChange)="onToggle(row.userId, row.status)"
+                    >
+                    </mat-slide-toggle>
+                  </div>
+
+                  <div>
+                    <span class="ml-4">
+                      <img
+                        alt="More"
+                        src="assets/icons/more-icon.svg"
+                        [matMenuTriggerFor]="menu"
+                      />
+                      <mat-menu #menu="matMenu">
+                        <ng-container>
+                          <button
+                            mat-menu-item
+                            [disabled]=""
+                            (click)="openDeleteModal(row)"
+                          >
+                            Delete User
+                          </button>
+                        </ng-container>
+                      </mat-menu>
+                    </span>
+                  </div>
+                </div>
+              </td>
+            </ng-container>
+
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+
+            <!-- Row shown when there is no matching data. -->
+            <tr class="mat-row" *matNoDataRow>
+              <td class="mat-cell" colspan="4">No matching data"</td>
+            </tr>
+          </table>
+        </div>
+        <mat-paginator
+          [pageSizeOptions]="[
+            10, 20, 25, 30, 35, 40, 45, 50, 55, 60, 65, 70, 75, 80, 85, 90, 95,
+            100
+          ]"
+          showFirstLastButtons
+          [pageSize]="pageSize"
+          [hidePageSize]="false"
+          [length]="totalRecords"
+          (page)="onPaginationChange($event)"
+        >
+        </mat-paginator>
+      </ng-container>
+
+      <ng-template #noTableData>
+        <app-table-loader></app-table-loader>
+      </ng-template>
+    </mat-tab>
+  </mat-tab-group>
+</section>

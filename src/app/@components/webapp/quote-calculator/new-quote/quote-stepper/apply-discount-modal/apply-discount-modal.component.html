@@ -1,0 +1,56 @@
+<section id="main">
+  <div class="header">
+    <div
+      class="d-flex justify-items-center align-items-center flex-column w-100 mt-4"
+    >
+      <img src="assets/images/warning-2.png" alt="warning" />
+      <h6 class="opt-heading-6 fw-600 mb-0 mt-2">Apply Discount</h6>
+    </div>
+
+    <div matRipple class="close-icon-container" (click)="closeDialog()">
+      <img src="/assets/icons/modal-close-icon.svg" alt="modal close icon" />
+    </div>
+  </div>
+
+  <ng-container>
+    <div class="amount-container mb-3">
+      <div class="opt-para-1 mb-1 d-flex flex-column">
+        <p>
+          A
+          {{
+            discount.discountType === 1
+              ? discount.discountPercentage + '%'
+              : (discount.flatAmount
+                | currency : discount.flatAmountCurrencyCode)
+          }}
+          discount will be added to this {{ selectedCountry.name }}
+          {{ selectedMigrationRoute.name }} route. Do you want to apply
+          discount?
+        </p>
+      </div>
+    </div>
+  </ng-container>
+
+  <div class="cta-container">
+    <button
+      matRipple
+      type="button"
+      class="btn topbar-buttons1 opt-btn-primary-outline"
+      (click)="applyDiscount('no')"
+    >
+      <ng-container> No</ng-container>
+    </button>
+
+    <button
+      (click)="applyDiscount('yes')"
+      matRipple
+      class="btn opt-btn-primary"
+    >
+      <ng-container> Yes </ng-container>
+
+      <!-- <ng-container *ngIf="isLoading | async">
+          <app-button-loader></app-button-loader>
+        </ng-container> -->
+    </button>
+  </div>
+</section>

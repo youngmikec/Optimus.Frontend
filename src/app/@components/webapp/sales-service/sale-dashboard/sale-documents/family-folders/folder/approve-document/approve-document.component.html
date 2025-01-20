@@ -1,0 +1,17 @@
+<img src="/assets/icons/tick-circle.svg" alt="filter-icon" />
+
+<p class="opt-heading-6 fw-700">Approve Document</p>
+<p class="fw-500">Are you sure you want to approve this document?</p>
+
+<div class="d-flex justify-content-between mt-3">
+  <button matRipple class="btn opt-btn-primary-outline" (click)="cancel()">
+    Cancel
+  </button>
+
+  <button matRipple class="btn btn-primary" (click)="approve()">
+    Confirm
+    <ng-container *ngIf="buttonLoading | async">
+      <app-button-loader></app-button-loader>
+    </ng-container>
+  </button>
+</div>

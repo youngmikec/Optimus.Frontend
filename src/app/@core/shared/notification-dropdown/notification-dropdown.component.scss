@@ -1,0 +1,140 @@
+@use '../../../@core/styles/abstracts' as *;
+
+.notification-badge {
+  background-color: #80171a;
+  color: white;
+  font-size: 8px;
+  border-radius: 50%;
+  padding: 1px 2px;
+  position: absolute;
+  top: 0;
+  right: -3px;
+  border: 2px solid #fff;
+}
+
+.button-tab-group {
+  background-color: #e8e8e880;
+  border: 1px solid #f0f0f0;
+  border-radius: 5px;
+  padding: 0.12rem;
+  display: flex;
+  width: max-content;
+
+  .button-tab {
+    color: #64748b;
+    padding: 0.25rem 0.82rem;
+    text-align: center;
+    border: none;
+
+    &.active {
+      background-color: $opt-primary;
+      border-radius: 4px;
+      color: #fff;
+      transition: opacity 0.5s ease-in-out;
+    }
+  }
+}
+
+// .custom-menu {
+//     .mat-menu-panel {
+//       width: 350px; /* Increase width */
+//       max-height: 400px; /* Adjust height as needed */
+//     }
+
+//     .cdk-overlay-pane {
+//       transform-origin: top right !important; /* Ensure the dropdown aligns to the top-right */
+//     }
+// }
+
+// .notification-menu .mat-menu-panel {
+//     padding: 0; /* Remove default padding */
+//     width: 650px; /* Set the desired width */
+// }
+
+// .notification-item {
+//     margin: 5px;
+// }
+
+// .empty-notification {
+//     text-align: center;
+//     padding: 20px;
+// }
+
+// .custom-menu .mat-menu-panel {
+//     width: 550px; /* Set menu width */
+//     background-color: #ffffff; /* Change background */
+//     border-radius: 8px; /* Add rounded corners */
+//     box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1); /* Add shadow */
+//     padding: 0; /* Remove extra padding */
+//   }
+
+// .cdk-overlay-pane.custom-menu {
+//     transform-origin: top right !important; /* Ensure top-right alignment */
+// }
+
+// .mat-tab-group {
+//     display: inline-flex;
+//     gap: 8px; /* Add spacing between tabs */
+//     background: none; /* Remove default background */
+//     box-shadow: none; /* Remove shadow if any */
+// }
+
+// .mat-tab-header {
+//     display: none; /* Hide default header styles if necessary */
+// }
+
+// .mat-tab-label {
+//     display: inline-flex !important; /* Align text and icon */
+//     justify-content: center !important; /* Center content */
+//     align-items: center !important; /* Center vertically */
+//     background-color: $opt-primary !important; /* Button background color */
+//     color: #fff !important; /* Button text color */
+//     padding: 8px 16px !important; /* Padding for button */
+//     border-radius: 4px !important; /* Rounded corners */
+//     border: 1px solid transparent !important; /* Optional: Add border */
+//     transition: background-color 0.3s ease, transform 0.2s ease !important; /* Add hover effects */
+//     cursor: pointer !important;
+// }
+
+// .mat-tab-label:hover {
+//     background-color: $opt-primary; /* Darker blue on hover */
+//     transform: scale(1.05); /* Slight zoom effect */
+//   }
+
+// .mat-tab-label.mat-tab-label-active {
+//     // background-color: $opt-primary;; /* Active tab background color */
+//     font-weight: bold; /* Highlight active tab */
+//     border-bottom: 1px solid $opt-primary;; /* Add active border color */
+// }
+
+.notification-menu {
+  position: fixed;
+  background: #ffffff;
+  z-index: 1200;
+  height: 90vh;
+  top: 60px;
+  // display: none;
+  right: 0;
+  width: 500px;
+  -webkit-box-shadow: 0px 1px 3px 0px rgba(231, 234, 238, 1) !important;
+  -moz-box-shadow: 0px 1px 3px 0px rgba(231, 234, 238, 1) !important;
+  box-shadow: 0px 1px 3px 0px rgba(231, 234, 238, 1) !important;
+  clip-path: none; // Ensure it's not clipped
+  transition: opacity 0.3s ease-in-out;
+}
+
+.notification-menu.show {
+  display: block;
+}
+
+.notification-menu.hide {
+  display: none;
+}
+
+.cursor-pointer {
+  cursor: pointer;
+}
+
+.position-relative {
+  position: relative;
+}

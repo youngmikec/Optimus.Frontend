@@ -1,0 +1,185 @@
+<div *ngIf="!showReplies">
+  <div
+    class="d-flex justify-content-between align-items-center border-bottom header"
+  >
+    <p class="fw-bold">Comment</p>
+
+    <div matRipple class="close-icon-container" (click)="closeTray()">
+      <img src="/assets/icons/modal-close-icon.svg" alt="modal close icon" />
+    </div>
+  </div>
+
+  <div class="my-2 px-3">
+    <div
+      class="d-flex align-items-center add-comment"
+      *ngIf="!addComment"
+      (click)="addComment = true"
+    >
+      <img [src]="(user$ | async)?.ProfilePicture" alt="Profile Picture" />
+      <small class="mx-2">Click to add new comment</small>
+    </div>
+
+    <app-comment-input
+      *ngIf="addComment"
+      [usersRef]="users$ | async"
+      [isCreating$]="isCreating$"
+      (cancel)="addComment = false"
+      (send)="sendComment($event)"
+    ></app-comment-input>
+  </div>
+
+  <div class="comments px-3">
+    <div class="comment" *ngFor="let comment of comments$ | async">
+      <div class="comment-by">
+        <div class="d-flex align-items-center w-100 justify-content-between">
+          <div class="d-flex align-items-center">
+            <img
+              [src]="(user$ | async)?.ProfilePicture"
+              alt="Profile Picture"
+            />
+            <p class="mx-2">
+              <small
+                >{{ comment?.fromName }} <br />
+                {{ comment?.createdDate | timeAgo }}</small
+              >
+            </p>
+          </div>
+
+          <div matRipple class="more-options">
+            <img
+              src="/assets/icons/more.svg"
+              [matMenuTriggerFor]="commentMenu"
+              alt="more"
+            />
+            <mat-menu #commentMenu="matMenu">
+              <button mat-menu-item (click)="markCommentAsRead()">
+                Mark as read
+              </button>
+              <button
+                mat-menu-item
+                (click)="deleteCommentThread()"
+                class="text-danger"
+              >
+                Delete comment
+              </button>
+            </mat-menu>
+          </div>
+        </div>
+      </div>
+
+      <div class="opt-para-1" [innerHTML]="comment?.text"></div>
+
+      <div
+        class="all-comments-comment-reply d-flex flex-row justify-content-start gap-2"
+      >
+        <span class="replies" role="button"> {{ 3 }} replies</span>
+        <span class="demacate">.</span>
+        <span role="button" (click)="getCommentReplies(comment)"
+          >Reply
+          <span
+            ><svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="16"
+              height="16"
+              viewBox="0 0 16 16"
+              fill="none"
+            >
+              <path
+                d="M4.75293 12.2067H10.0863C11.9263 12.2067 13.4196 10.7134 13.4196 8.87337C13.4196 7.03337 11.9263 5.54004 10.0863 5.54004H2.75293"
+                stroke="#292D32"
+                stroke-miterlimit="10"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              />
+              <path
+                d="M4.28674 7.20655L2.58008 5.49988L4.28674 3.79321"
+                stroke="#292D32"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              /></svg></span
+        ></span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- REPLIES -->
+<div *ngIf="showReplies">
+  <div
+    class="d-flex justify-content-between align-items-center border-bottom header"
+  >
+    <div matRipple class="close-icon-container" (click)="backToComment()">
+      <img src="/assets/icons/arrow_back.svg" alt="modal close icon" />
+    </div>
+
+    <p class="fw-bold">Reply Thread</p>
+
+    <div class="reply-options">
+      <div matRipple class="close-icon-container" (click)="closeTray()">
+        <img src="/assets/icons/modal-close-icon.svg" alt="modal close icon" />
+      </div>
+    </div>
+  </div>
+
+  <div class="replies px-3">
+    <div class="reply">
+      <div class="reply-by">
+        <div class="d-flex align-items-center">
+          <img [src]="(user$ | async)?.ProfilePicture" alt="Profile Picture" />
+
+          <p class="mx-2">
+            <small
+              >{{ activeComment?.fromName }} <br />
+              {{ activeComment?.createdDate | timeAgo }}</small
+            >
+          </p>
+        </div>
+
+        <div matRipple class="more-options">
+          <img
+            src="/assets/icons/more.svg"
+            [matMenuTriggerFor]="replyMenu"
+            alt="more"
+          />
+          <mat-menu #replyMenu="matMenu">
+            <button mat-menu-item (click)="markReplyAsRead()">
+              Mark as Read
+            </button>
+            <button
+              mat-menu-item
+              (click)="deleteNoteThread()"
+              class="text-danger"
+            >
+              Delete Thread
+            </button>
+          </mat-menu>
+        </div>
+      </div>
+      <div class="opt-para-1" [innerHTML]="activeComment.text"></div>
+    </div>
+
+    <div class="reply" *ngFor="let reply of replies$ | async">
+      <div class="reply-by">
+        <div class="d-flex align-items-center">
+          <!-- <img [src]="(user$ | async)?.ProfilePicture" alt="Profile Picture" /> -->
+
+          <p class="mx-2">
+            <small
+              >{{ reply?.fromName }} <br />
+              {{ reply?.createdDate | timeAgo }}</small
+            >
+          </p>
+        </div>
+      </div>
+      <div class="opt-para-1" [innerHTML]="reply.text"></div>
+    </div>
+
+    <app-comment-input
+      activeBtnLabel="Reply"
+      placeholder="Reply"
+      [usersRef]="users$ | async"
+      [showCancelBtn]="false"
+      (send)="sendReply($event)"
+    ></app-comment-input>
+  </div>
+</div>

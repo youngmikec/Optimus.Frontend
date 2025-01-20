@@ -1,0 +1,269 @@
+<mat-dialog-content>
+  <section id="manage-contact-category">
+    <div class="manage-contact-category-header">
+      <div>
+        <h6 class="opt-para-2 fw-700 mb-0">
+          <ng-container *ngIf="data?.instance !== 'update'">
+            Create Company Profile
+          </ng-container>
+          <ng-container *ngIf="data?.instance === 'update'"
+            >Edit Company Profile</ng-container
+          >
+        </h6>
+      </div>
+
+      <div matRipple class="close-icon-container" (click)="closeDialog()">
+        <img src="/assets/icons/modal-close-icon.svg" alt="modal close icon" />
+      </div>
+    </div>
+
+    <form [formGroup]="profileForm" (ngSubmit)="onSubmit()">
+      <div class="profile-section">
+        <div class="profile-picture-section">
+          <div class="profile-picture-container">
+            <img
+              [src]="logoPreview"
+              (click)="logoUpload.click()"
+              alt="No Logo"
+            />
+          </div>
+
+          <input
+            #logoUpload
+            type="file"
+            accept="image/*"
+            name=""
+            class="d-none"
+            (change)="onUploadLogo($event)"
+          />
+        </div>
+
+        <div class="profile-name-container">
+          <!-- <h6 class="opt-heading-6 fw-700 mb-0">
+            {{ user?.firstName }}
+            {{ user?.lastName }}
+          </h6> -->
+          <svg
+            width="14"
+            height="14"
+            viewBox="0 0 14 14"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M3.94332 12.8333H10.0567C11.6667 12.8333 12.3083 11.8475 12.3842 10.6458L12.6875 5.82749C12.7692 4.56749 11.7658 3.49999 10.5 3.49999C10.1442 3.49999 9.81749 3.29582 9.65415 2.98082L9.23415 2.13499C8.96582 1.60416 8.26582 1.16666 7.67082 1.16666H6.33499C5.73415 1.16666 5.03415 1.60416 4.76582 2.13499L4.34582 2.98082C4.18249 3.29582 3.85582 3.49999 3.49999 3.49999C2.23415 3.49999 1.23082 4.56749 1.31249 5.82749L1.61582 10.6458C1.68582 11.8475 2.33332 12.8333 3.94332 12.8333Z"
+              stroke="#1D1D1D"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            />
+            <path
+              d="M6.125 4.66666H7.875"
+              stroke="#1D1D1D"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            />
+            <path
+              d="M6.99999 10.5C8.04416 10.5 8.89582 9.64834 8.89582 8.60418C8.89582 7.56001 8.04416 6.70834 6.99999 6.70834C5.95582 6.70834 5.10416 7.56001 5.10416 8.60418C5.10416 9.64834 5.95582 10.5 6.99999 10.5Z"
+              stroke="#1D1D1D"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            />
+          </svg>
+
+          <p class="opt-para-1 mb-0">Upload image</p>
+        </div>
+      </div>
+
+      <!-- <div class="input-style1 mb-1">
+        <label class="input-label">Head Office Address</label>
+
+        <mat-form-field appearance="outline" [style.width.%]="100">
+          <textarea
+            matInput
+            placeholder="Enter head office address"
+            formControlName="headOfficeAddress"
+            name=""
+            id=""
+            cols="30"
+            rows="10"
+          ></textarea>
+          <mat-error *ngIf="profileFormControls['headOfficeAddress'].invalid">
+            <img
+              src="/assets/icons/error.svg"
+              alt=""
+              class="img-fluid error-icon"
+            />
+            {{ getErrorMessage('headOfficeAddress') }}
+          </mat-error>
+        </mat-form-field>
+      </div> -->
+
+      <label class="input-label">Head Office Address</label>
+      <div class="input-style1 flex-inputs mb-3">
+        <div class="inputs-items">
+          <mat-form-field appearance="outline" [style.width.rem]="10">
+            <mat-select formControlName="country" placeholder="Country">
+              <mat-option
+                [value]="country.name"
+                *ngFor="let country of countryList"
+              >
+                {{ country.name }}
+              </mat-option>
+            </mat-select>
+            <mat-error *ngIf="profileFormControls['country'].invalid">
+              <img
+                src="/assets/icons/error.svg"
+                alt=""
+                class="img-fluid error-icon"
+              />
+              {{ getErrorMessage('country') }}
+            </mat-error>
+          </mat-form-field>
+        </div>
+
+        <div class="inputs-items">
+          <mat-form-field appearance="outline" [style.width.%]="100">
+            <input matInput placeholder="State" formControlName="state" />
+            <mat-error *ngIf="profileFormControls['state'].invalid">
+              <img
+                src="/assets/icons/error.svg"
+                alt=""
+                class="img-fluid error-icon"
+              />
+              {{ getErrorMessage('state') }}
+            </mat-error>
+          </mat-form-field>
+        </div>
+      </div>
+
+      <div class="input-style1 flex-inputs mb-3">
+        <div class="inputs-items">
+          <mat-form-field appearance="outline" [style.width.%]="100">
+            <input matInput placeholder="Area" formControlName="area" />
+            <mat-error *ngIf="profileFormControls['area'].invalid">
+              <img
+                src="/assets/icons/error.svg"
+                alt=""
+                class="img-fluid error-icon"
+              />
+              {{ getErrorMessage('area') }}
+            </mat-error>
+          </mat-form-field>
+        </div>
+
+        <div class="inputs-items">
+          <mat-form-field appearance="outline" [style.width.%]="100">
+            <input
+              matInput
+              type="number"
+              placeholder="Street Number"
+              formControlName="streetNumber"
+            />
+            <mat-error *ngIf="profileFormControls['streetNumber'].invalid">
+              <img
+                src="/assets/icons/error.svg"
+                alt=""
+                class="img-fluid error-icon"
+              />
+              {{ getErrorMessage('streetNumber') }}
+            </mat-error>
+          </mat-form-field>
+        </div>
+      </div>
+
+      <div class="input-style1 flex-inputs mb-3">
+        <div class="inputs-items">
+          <mat-form-field appearance="outline" [style.width.%]="100">
+            <input
+              matInput
+              type="number"
+              placeholder="Building"
+              formControlName="building"
+            />
+            <mat-error *ngIf="profileFormControls['building'].invalid">
+              <img
+                src="/assets/icons/error.svg"
+                alt=""
+                class="img-fluid error-icon"
+              />
+              {{ getErrorMessage('building') }}
+            </mat-error>
+          </mat-form-field>
+        </div>
+
+        <div class="inputs-items">
+          <mat-form-field appearance="outline" [style.width.%]="100">
+            <input
+              matInput
+              type="number"
+              placeholder="Zip Code"
+              formControlName="zipCode"
+            />
+            <mat-error *ngIf="profileFormControls['zipCode'].invalid">
+              <img
+                src="/assets/icons/error.svg"
+                alt=""
+                class="img-fluid error-icon"
+              />
+              {{ getErrorMessage('zipCode') }}
+            </mat-error>
+          </mat-form-field>
+        </div>
+      </div>
+
+      <div class="cta-container footer-button">
+        <button
+          matRipple
+          type="button"
+          class="btn opt-btn-primary-outline"
+          (click)="closeDialog()"
+        >
+          Cancel
+        </button>
+
+        <button
+          matRipple
+          class="btn opt-btn-primary"
+          [disabled]="profileForm.invalid || (isLoading | async) !== false"
+        >
+          <ng-container *ngIf="data.instance === 'update'"
+            >Save Changes</ng-container
+          >
+          <ng-container *ngIf="data.instance === 'create'">Create</ng-container>
+          <ng-container *ngIf="(isLoading | async) !== false">
+            <app-button-loader></app-button-loader>
+          </ng-container>
+        </button>
+      </div>
+    </form>
+  </section>
+</mat-dialog-content>
+
+<div matRipple class="upload-picture-container" (click)="logoUpload.click()">
+  <svg
+    width="14"
+    height="14"
+    viewBox="0 0 14 14"
+    fill="none"
+    xmlns="http://www.w3.org/2000/svg"
+  >
+    <path
+      d="M3.94332 12.8333H10.0567C11.6667 12.8333 12.3083 11.8475 12.3842 10.6458L12.6875 5.82749C12.7692 4.56749 11.7658 3.49999 10.5 3.49999C10.1442 3.49999 9.81749 3.29582 9.65415 2.98082L9.23415 2.13499C8.96582 1.60416 8.26582 1.16666 7.67082 1.16666H6.33499C5.73415 1.16666 5.03415 1.60416 4.76582 2.13499L4.34582 2.98082C4.18249 3.29582 3.85582 3.49999 3.49999 3.49999C2.23415 3.49999 1.23082 4.56749 1.31249 5.82749L1.61582 10.6458C1.68582 11.8475 2.33332 12.8333 3.94332 12.8333Z"
+      stroke="##1D1D1D"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+    />
+    <path
+      d="M6.125 4.66666H7.875"
+      stroke="#EBF0FF"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+    />
+    <path
+      d="M6.99999 10.5C8.04416 10.5 8.89582 9.64834 8.89582 8.60418C8.89582 7.56001 8.04416 6.70834 6.99999 6.70834C5.95582 6.70834 5.10416 7.56001 5.10416 8.60418C5.10416 9.64834 5.95582 10.5 6.99999 10.5Z"
+      stroke="#EBF0FF"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+    />
+  </svg>
+</div>

@@ -1,0 +1,146 @@
+#manage-contact-category {
+  position: relative;
+  height: 92vh;
+
+  .manage-contact-category-header {
+    display: flex;
+    justify-content: space-between;
+    gap: 1.25rem;
+    margin-bottom: 1.25rem;
+  }
+
+  .section-1 {
+    width: 100%;
+    display: grid;
+    place-items: center;
+
+    .profile-picture-container {
+      max-width: 5.75rem;
+
+      img {
+        width: 100%;
+      }
+    }
+
+    .content {
+      text-align: center;
+
+      div {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.5rem;
+      }
+    }
+  }
+
+  .section-2 {
+    .content-container {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+
+      .left {
+        width: 45%;
+        // background-color: $opt-secondary-50;
+        background-color: var(--opt-secondary-color-50);
+        padding: 0.3125rem 0.625rem;
+        color: var(--opt-neutral-400);
+        border-radius: 0.25rem;
+
+        span {
+          color: var(--opt-secondary-color);
+        }
+      }
+
+      .left1 {
+        width: 45%;
+        background-color: var(--opt-primary-color-50);
+        padding: 0.3125rem 0.625rem;
+        color: var(--opt-neutral-400);
+        border-radius: 0.25rem;
+
+        span {
+          color: var(--opt-primary-color);
+        }
+      }
+
+      .right {
+        width: 45%;
+        // background-color: $opt-secondary-50;
+        background-color: var(--opt-secondary-color-50);
+        padding: 0.625rem;
+        color: var(--opt-neutral-400);
+        border-radius: 0.25rem;
+
+        span {
+          color: var(--opt-secondary-color);
+        }
+      }
+    }
+  }
+
+  .section-3 {
+    .container {
+      height: 10rem;
+      overflow-y: scroll;
+      overflow-x: hidden;
+
+      .item {
+        height: 3.125rem;
+        width: 100%;
+        padding: 0 0.625rem;
+        border-bottom: 0.0625rem solid var(--opt-neutral2-200);
+        cursor: pointer;
+        transition-duration: 0.4s;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 1rem;
+
+        .left {
+          display: flex;
+          align-items: center;
+          gap: 1rem;
+        }
+
+        .right {
+          color: var(--opt-secondary-color);
+          visibility: hidden;
+        }
+
+        &:hover {
+          background-color: var(--opt-primary-color-50);
+
+          .right {
+            visibility: visible;
+          }
+        }
+      }
+    }
+  }
+
+  .section-4 {
+    .container {
+      .button1 {
+        button {
+          width: 100%;
+          background-color: var(--opt-secondary-color);
+          color: var(--opt-white);
+          border: 0.0625rem solid var(--opt-secondary-color);
+          padding: 0.6rem;
+        }
+      }
+
+      .button2 {
+        button {
+          width: 100%;
+          background-color: var(--opt-white);
+          color: var(--opt-secondary-color);
+          border: 0.0625rem solid var(--opt-secondary-color);
+          padding: 0.6rem;
+        }
+      }
+    }
+  }
+}

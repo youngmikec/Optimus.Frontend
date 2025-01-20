@@ -1,0 +1,115 @@
+<ng-container *ngIf="(isApplicationLoading | async) !== false">
+  <div class="general-loader-container webapp-view">
+    <div class="general-loader-backdrop"></div>
+
+    <div class="general-loader-content">
+      <app-general-loader></app-general-loader>
+    </div>
+  </div>
+</ng-container>
+
+<!--Quote-->
+<app-quote-topbar
+  [isQuotePreviewAvailable]="isQuotePreviewAvailable"
+  [showResend]="false"
+  [selectedCountry]="selectedContry"
+  [selectedApplicationQuote]="selectedApplicationQuote"
+  [refreshData]="refresh"
+></app-quote-topbar>
+
+<section [ngClass]="{ 'wrapper-expanded': expand, wrapper: !expand }">
+  <div class="grid-1">
+    <app-applicant-info [isFormBuilder]="true"></app-applicant-info>
+  </div>
+
+  <div class="grid-2">
+    <div>
+      <app-quote-stepper
+        (emitSelectedIndex)="getSelectedIndex($event)"
+        (quoteGenerated)="handleOnQuoteGenerated($event)"
+      ></app-quote-stepper>
+    </div>
+  </div>
+
+  <div class="grid-3">
+    <button
+      (click)="expand = !expand"
+      class="btn"
+      [matTooltip]="expand ? 'Collapse' : 'Expand'"
+      matTooltipPosition="above"
+      matTooltipClass="custom-tooltip"
+    >
+      <svg
+        *ngIf="!expand"
+        width="24"
+        height="24"
+        viewBox="0 0 24 24"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <g clip-path="url(#clip0_1448_1875)">
+          <path
+            d="M11 7L6 12L11 17"
+            stroke="var(--opt-primary-color)"
+            stroke-width="1.5"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          />
+          <path
+            d="M17 7L12 12L17 17"
+            stroke="var(--opt-primary-color)"
+            stroke-width="1.5"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          />
+        </g>
+        <defs>
+          <clipPath id="clip0_1448_1875">
+            <rect width="24" height="24" fill="white" />
+          </clipPath>
+        </defs>
+      </svg>
+
+      <svg
+        *ngIf="expand"
+        width="24"
+        height="24"
+        viewBox="0 0 24 24"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <g clip-path="url(#clip0_6158_184822)">
+          <path
+            d="M13 7L18 12L13 17"
+            stroke="#0235CD"
+            stroke-width="1.5"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          />
+          <path
+            d="M7 7L12 12L7 17"
+            stroke="#0235CD"
+            stroke-width="1.5"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          />
+        </g>
+        <defs>
+          <clipPath id="clip0_6158_184822">
+            <rect
+              width="24"
+              height="24"
+              fill="white"
+              transform="matrix(-1 0 0 1 24 0)"
+            />
+          </clipPath>
+        </defs>
+      </svg>
+    </button>
+
+    <app-quote-preview
+      [isQuotePreviewAvailable]="isQuotePreviewAvailable"
+      [selectedCountry]="selectedContry"
+    ></app-quote-preview>
+  </div>
+</section>

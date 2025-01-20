@@ -1,0 +1,972 @@
+<section class="topbar">
+  <div class="content-container px-2 pb-2">
+    <div class="content-left">
+      <span class="opt-para-3 fw-600">
+        {{ selectedApplicationQuote?.application?.applicant?.fullName ?? '' }}
+      </span>
+      <div class="opt-caption fw-500">
+        {{
+          selectedApplicationQuote?.application?.migrationRoute?.description ??
+            ''
+        }}
+      </div>
+      <div class="opt-caption fw-500" *ngIf="selectedApplicationQuote?.amount">
+        Total Application Quote Amount is
+        <span class="fw-600">
+          {{
+            (selectedApplicationQuote.hasDiscountApplied
+              ? selectedApplicationQuote.netAmount
+              : selectedApplicationQuote?.amount) || 0 | number
+          }}
+          {{ selectedContry?.currency?.currencyCode }}
+        </span>
+      </div>
+    </div>
+    <div class="content-right">
+      <button
+        (click)="goToCreateInvoice()"
+        matRipple
+        matTooltip="Create an Invoice"
+        matTooltipClass="custom-tooltip"
+        class="btn opt-btn-primary"
+        *ngIf="permissionService.hasPermission('Create Invoices')"
+      >
+        Add new Invoice
+      </button>
+    </div>
+  </div>
+</section>
+
+<section class="status-section">
+  <div class="status-container">
+    <div class="status-1">
+      <svg
+        width="25"
+        height="24"
+        viewBox="0 0 25 24"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <rect x="0.5" width="24" height="24" rx="4" fill="#10B981" />
+        <path
+          d="M16.5 9L11 14.5L8.5 12"
+          stroke="white"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        />
+      </svg>
+      <div class="opt-para-1">Quote Confirmation</div>
+    </div>
+    <div class="status-2">
+      <div class="number opt-para-1">2</div>
+      <div class="opt-para-1">Invoice</div>
+    </div>
+    <div class="status-3">
+      <div class="number opt-para-1">3</div>
+      <div class="opt-para-1">All Paid</div>
+    </div>
+  </div>
+</section>
+
+<section class="wrapper">
+  <div class="grid-2">
+    <div class="main-invoice-container mb-4">
+      <div class="section-1 mb-4">
+        <div class="item colored">
+          <div>
+            <svg
+              width="42"
+              height="40"
+              viewBox="0 0 42 40"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <ellipse cx="20.6758" cy="20" rx="20.668" ry="20" fill="white" />
+              <ellipse
+                cx="20.6711"
+                cy="20"
+                rx="16.5344"
+                ry="16"
+                fill="#0235CD"
+              />
+              <g clip-path="url(#clip0_5993_176013)">
+                <path
+                  d="M16.3397 13.627V11H16.3391L13.625 13.6264V13.627H16.3397Z"
+                  fill="white"
+                />
+                <path
+                  d="M16.4844 19.3555H18.9667V23.9024H16.4844V19.3555Z"
+                  fill="white"
+                />
+                <path
+                  d="M18.0725 11C17.7174 11 17.4296 11.2878 17.4296 11.6429V14.0388C17.4296 14.3939 17.1418 14.6817 16.7867 14.6817H14.2679C13.9128 14.6817 13.625 14.9695 13.625 15.3245V28.3571C13.625 28.7122 13.9128 29 14.2679 29H27.0731C27.4282 29 27.716 28.7122 27.716 28.3571V11.6429C27.716 11.2878 27.4282 11 27.0731 11H18.0725ZM20.0577 24.3152C20.0577 24.6702 19.7699 24.958 19.4149 24.958H16.0384C15.6834 24.958 15.3956 24.6702 15.3956 24.3152V18.9446C15.3956 18.5895 15.6834 18.3017 16.0384 18.3017H19.4149C19.7699 18.3017 20.0577 18.5895 20.0577 18.9446V24.3152ZM25.9794 24.4307C25.9794 24.722 25.7433 24.958 25.452 24.958H21.7767C21.4855 24.958 21.2494 24.722 21.2494 24.4307C21.2494 24.1395 21.4855 23.9034 21.7767 23.9034H25.452C25.7433 23.9034 25.9794 24.1395 25.9794 24.4307ZM25.9794 22.1901C25.9794 22.4813 25.7433 22.7174 25.452 22.7174H21.7767C21.4855 22.7174 21.2494 22.4813 21.2494 22.1901C21.2494 21.8988 21.4855 21.6627 21.7767 21.6627H25.452C25.7433 21.6627 25.9794 21.8988 25.9794 22.1901ZM25.9794 19.9494C25.9794 20.2407 25.7433 20.4768 25.452 20.4768H21.7767C21.4855 20.4768 21.2494 20.2407 21.2494 19.9494C21.2494 19.6582 21.4855 19.4221 21.7767 19.4221H25.452C25.7433 19.4221 25.9794 19.6582 25.9794 19.9494Z"
+                  fill="white"
+                />
+              </g>
+              <defs>
+                <clipPath id="clip0_5993_176013">
+                  <rect
+                    width="18.6012"
+                    height="18"
+                    fill="white"
+                    transform="translate(11.3711 11)"
+                  />
+                </clipPath>
+              </defs>
+            </svg>
+          </div>
+          <div>
+            <div class="header">
+              {{ invoiceStatistics?.totalProgramFee | number }}
+              {{ selectedContry?.currency?.currencyCode }}
+            </div>
+            <div class="content">Total Program Fee</div>
+          </div>
+        </div>
+
+        <div class="item not-colored">
+          <div>
+            <svg
+              width="43"
+              height="40"
+              viewBox="0 0 43 40"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <ellipse
+                cx="21.5541"
+                cy="20"
+                rx="21.3393"
+                ry="20"
+                fill="#C3D2FE"
+              />
+              <ellipse
+                cx="21.5636"
+                cy="20"
+                rx="17.0714"
+                ry="16"
+                fill="#0235CD"
+              />
+              <g clip-path="url(#clip0_5993_176037)">
+                <path
+                  d="M17.088 13.627V11H17.0875L14.2852 13.6264V13.627H17.088Z"
+                  fill="white"
+                />
+                <path
+                  d="M17.2383 19.3555H19.8012V23.9024H17.2383V19.3555Z"
+                  fill="white"
+                />
+                <path
+                  d="M18.8562 11C18.5011 11 18.2133 11.2878 18.2133 11.6429V14.0388C18.2133 14.3939 17.9255 14.6817 17.5705 14.6817H14.928C14.573 14.6817 14.2852 14.9695 14.2852 15.3245V28.3571C14.2852 28.7122 14.573 29 14.928 29H28.191C28.546 29 28.8338 28.7122 28.8338 28.3571V11.6429C28.8338 11.2878 28.546 11 28.191 11H18.8562ZM20.9268 24.3152C20.9268 24.6702 20.639 24.958 20.2839 24.958H16.7561C16.401 24.958 16.1132 24.6702 16.1132 24.3152V18.9446C16.1132 18.5895 16.401 18.3017 16.7561 18.3017H20.2839C20.639 18.3017 20.9268 18.5895 20.9268 18.9446V24.3152ZM27.0408 24.4307C27.0408 24.722 26.8047 24.958 26.5134 24.958H22.6845C22.3933 24.958 22.1572 24.722 22.1572 24.4307C22.1572 24.1395 22.3933 23.9034 22.6845 23.9034H26.5134C26.8047 23.9034 27.0408 24.1395 27.0408 24.4307ZM27.0408 22.1901C27.0408 22.4813 26.8047 22.7174 26.5134 22.7174H22.6845C22.3933 22.7174 22.1572 22.4813 22.1572 22.1901C22.1572 21.8988 22.3933 21.6627 22.6845 21.6627H26.5134C26.8047 21.6627 27.0408 21.8988 27.0408 22.1901ZM27.0408 19.9494C27.0408 20.2407 26.8047 20.4768 26.5134 20.4768H22.6845C22.3933 20.4768 22.1572 20.2407 22.1572 19.9494C22.1572 19.6582 22.3933 19.4221 22.6845 19.4221H26.5134C26.8047 19.4221 27.0408 19.6582 27.0408 19.9494Z"
+                  fill="white"
+                />
+              </g>
+              <defs>
+                <clipPath id="clip0_5993_176037">
+                  <rect
+                    width="19.2054"
+                    height="18"
+                    fill="white"
+                    transform="translate(11.957 11)"
+                  />
+                </clipPath>
+              </defs>
+            </svg>
+          </div>
+          <div>
+            <div class="header">
+              {{ invoiceStatistics?.totalInvoicedProgramFee | number }}
+              {{ selectedContry?.currency?.currencyCode }}
+            </div>
+            <div class="content">Total Invoiced Program Fee</div>
+          </div>
+        </div>
+
+        <div class="item not-colored">
+          <div>
+            <svg
+              width="43"
+              height="40"
+              viewBox="0 0 43 40"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <ellipse
+                cx="21.5541"
+                cy="20"
+                rx="21.3393"
+                ry="20"
+                fill="#C3D2FE"
+              />
+              <ellipse
+                cx="21.5636"
+                cy="20"
+                rx="17.0714"
+                ry="16"
+                fill="#0235CD"
+              />
+              <g clip-path="url(#clip0_5993_176037)">
+                <path
+                  d="M17.088 13.627V11H17.0875L14.2852 13.6264V13.627H17.088Z"
+                  fill="white"
+                />
+                <path
+                  d="M17.2383 19.3555H19.8012V23.9024H17.2383V19.3555Z"
+                  fill="white"
+                />
+                <path
+                  d="M18.8562 11C18.5011 11 18.2133 11.2878 18.2133 11.6429V14.0388C18.2133 14.3939 17.9255 14.6817 17.5705 14.6817H14.928C14.573 14.6817 14.2852 14.9695 14.2852 15.3245V28.3571C14.2852 28.7122 14.573 29 14.928 29H28.191C28.546 29 28.8338 28.7122 28.8338 28.3571V11.6429C28.8338 11.2878 28.546 11 28.191 11H18.8562ZM20.9268 24.3152C20.9268 24.6702 20.639 24.958 20.2839 24.958H16.7561C16.401 24.958 16.1132 24.6702 16.1132 24.3152V18.9446C16.1132 18.5895 16.401 18.3017 16.7561 18.3017H20.2839C20.639 18.3017 20.9268 18.5895 20.9268 18.9446V24.3152ZM27.0408 24.4307C27.0408 24.722 26.8047 24.958 26.5134 24.958H22.6845C22.3933 24.958 22.1572 24.722 22.1572 24.4307C22.1572 24.1395 22.3933 23.9034 22.6845 23.9034H26.5134C26.8047 23.9034 27.0408 24.1395 27.0408 24.4307ZM27.0408 22.1901C27.0408 22.4813 26.8047 22.7174 26.5134 22.7174H22.6845C22.3933 22.7174 22.1572 22.4813 22.1572 22.1901C22.1572 21.8988 22.3933 21.6627 22.6845 21.6627H26.5134C26.8047 21.6627 27.0408 21.8988 27.0408 22.1901ZM27.0408 19.9494C27.0408 20.2407 26.8047 20.4768 26.5134 20.4768H22.6845C22.3933 20.4768 22.1572 20.2407 22.1572 19.9494C22.1572 19.6582 22.3933 19.4221 22.6845 19.4221H26.5134C26.8047 19.4221 27.0408 19.6582 27.0408 19.9494Z"
+                  fill="white"
+                />
+              </g>
+              <defs>
+                <clipPath id="clip0_5993_176037">
+                  <rect
+                    width="19.2054"
+                    height="18"
+                    fill="white"
+                    transform="translate(11.957 11)"
+                  />
+                </clipPath>
+              </defs>
+            </svg>
+          </div>
+          <div>
+            <div class="header">
+              {{ invoiceStatistics?.totalProgramFeePaid | number }}
+              {{ selectedContry?.currency?.currencyCode }}
+            </div>
+            <div class="content">Total Program Fee Paid</div>
+          </div>
+        </div>
+
+        <div class="item not-colored">
+          <div>
+            <svg
+              width="43"
+              height="40"
+              viewBox="0 0 43 40"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <ellipse
+                cx="21.5541"
+                cy="20"
+                rx="21.3393"
+                ry="20"
+                fill="#C3D2FE"
+              />
+              <ellipse
+                cx="21.5636"
+                cy="20"
+                rx="17.0714"
+                ry="16"
+                fill="#0235CD"
+              />
+              <g clip-path="url(#clip0_5993_176037)">
+                <path
+                  d="M17.088 13.627V11H17.0875L14.2852 13.6264V13.627H17.088Z"
+                  fill="white"
+                />
+                <path
+                  d="M17.2383 19.3555H19.8012V23.9024H17.2383V19.3555Z"
+                  fill="white"
+                />
+                <path
+                  d="M18.8562 11C18.5011 11 18.2133 11.2878 18.2133 11.6429V14.0388C18.2133 14.3939 17.9255 14.6817 17.5705 14.6817H14.928C14.573 14.6817 14.2852 14.9695 14.2852 15.3245V28.3571C14.2852 28.7122 14.573 29 14.928 29H28.191C28.546 29 28.8338 28.7122 28.8338 28.3571V11.6429C28.8338 11.2878 28.546 11 28.191 11H18.8562ZM20.9268 24.3152C20.9268 24.6702 20.639 24.958 20.2839 24.958H16.7561C16.401 24.958 16.1132 24.6702 16.1132 24.3152V18.9446C16.1132 18.5895 16.401 18.3017 16.7561 18.3017H20.2839C20.639 18.3017 20.9268 18.5895 20.9268 18.9446V24.3152ZM27.0408 24.4307C27.0408 24.722 26.8047 24.958 26.5134 24.958H22.6845C22.3933 24.958 22.1572 24.722 22.1572 24.4307C22.1572 24.1395 22.3933 23.9034 22.6845 23.9034H26.5134C26.8047 23.9034 27.0408 24.1395 27.0408 24.4307ZM27.0408 22.1901C27.0408 22.4813 26.8047 22.7174 26.5134 22.7174H22.6845C22.3933 22.7174 22.1572 22.4813 22.1572 22.1901C22.1572 21.8988 22.3933 21.6627 22.6845 21.6627H26.5134C26.8047 21.6627 27.0408 21.8988 27.0408 22.1901ZM27.0408 19.9494C27.0408 20.2407 26.8047 20.4768 26.5134 20.4768H22.6845C22.3933 20.4768 22.1572 20.2407 22.1572 19.9494C22.1572 19.6582 22.3933 19.4221 22.6845 19.4221H26.5134C26.8047 19.4221 27.0408 19.6582 27.0408 19.9494Z"
+                  fill="white"
+                />
+              </g>
+              <defs>
+                <clipPath id="clip0_5993_176037">
+                  <rect
+                    width="19.2054"
+                    height="18"
+                    fill="white"
+                    transform="translate(11.957 11)"
+                  />
+                </clipPath>
+              </defs>
+            </svg>
+          </div>
+          <div>
+            <div class="header">
+              {{ invoiceStatistics?.outstandingProgramFee | number }}
+              {{ selectedContry?.currency?.currencyCode }}
+            </div>
+            <div class="content">Outstanding Program Fee</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="section-1 mb-4">
+        <div class="item colored">
+          <div>
+            <svg
+              width="42"
+              height="40"
+              viewBox="0 0 42 40"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <ellipse cx="20.6758" cy="20" rx="20.668" ry="20" fill="white" />
+              <ellipse
+                cx="20.6711"
+                cy="20"
+                rx="16.5344"
+                ry="16"
+                fill="#0235CD"
+              />
+              <g clip-path="url(#clip0_5993_176013)">
+                <path
+                  d="M16.3397 13.627V11H16.3391L13.625 13.6264V13.627H16.3397Z"
+                  fill="white"
+                />
+                <path
+                  d="M16.4844 19.3555H18.9667V23.9024H16.4844V19.3555Z"
+                  fill="white"
+                />
+                <path
+                  d="M18.0725 11C17.7174 11 17.4296 11.2878 17.4296 11.6429V14.0388C17.4296 14.3939 17.1418 14.6817 16.7867 14.6817H14.2679C13.9128 14.6817 13.625 14.9695 13.625 15.3245V28.3571C13.625 28.7122 13.9128 29 14.2679 29H27.0731C27.4282 29 27.716 28.7122 27.716 28.3571V11.6429C27.716 11.2878 27.4282 11 27.0731 11H18.0725ZM20.0577 24.3152C20.0577 24.6702 19.7699 24.958 19.4149 24.958H16.0384C15.6834 24.958 15.3956 24.6702 15.3956 24.3152V18.9446C15.3956 18.5895 15.6834 18.3017 16.0384 18.3017H19.4149C19.7699 18.3017 20.0577 18.5895 20.0577 18.9446V24.3152ZM25.9794 24.4307C25.9794 24.722 25.7433 24.958 25.452 24.958H21.7767C21.4855 24.958 21.2494 24.722 21.2494 24.4307C21.2494 24.1395 21.4855 23.9034 21.7767 23.9034H25.452C25.7433 23.9034 25.9794 24.1395 25.9794 24.4307ZM25.9794 22.1901C25.9794 22.4813 25.7433 22.7174 25.452 22.7174H21.7767C21.4855 22.7174 21.2494 22.4813 21.2494 22.1901C21.2494 21.8988 21.4855 21.6627 21.7767 21.6627H25.452C25.7433 21.6627 25.9794 21.8988 25.9794 22.1901ZM25.9794 19.9494C25.9794 20.2407 25.7433 20.4768 25.452 20.4768H21.7767C21.4855 20.4768 21.2494 20.2407 21.2494 19.9494C21.2494 19.6582 21.4855 19.4221 21.7767 19.4221H25.452C25.7433 19.4221 25.9794 19.6582 25.9794 19.9494Z"
+                  fill="white"
+                />
+              </g>
+              <defs>
+                <clipPath id="clip0_5993_176013">
+                  <rect
+                    width="18.6012"
+                    height="18"
+                    fill="white"
+                    transform="translate(11.3711 11)"
+                  />
+                </clipPath>
+              </defs>
+            </svg>
+          </div>
+          <div>
+            <div class="header">
+              {{ invoiceStatistics?.totalLocalFee | number }} NGN
+              <!-- {{ selectedContry?.currency?.currencyCode }} -->
+            </div>
+            <div class="content">Total Local Fee</div>
+          </div>
+        </div>
+
+        <div class="item not-colored">
+          <div>
+            <svg
+              width="43"
+              height="40"
+              viewBox="0 0 43 40"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <ellipse
+                cx="21.5541"
+                cy="20"
+                rx="21.3393"
+                ry="20"
+                fill="#C3D2FE"
+              />
+              <ellipse
+                cx="21.5636"
+                cy="20"
+                rx="17.0714"
+                ry="16"
+                fill="#0235CD"
+              />
+              <g clip-path="url(#clip0_5993_176037)">
+                <path
+                  d="M17.088 13.627V11H17.0875L14.2852 13.6264V13.627H17.088Z"
+                  fill="white"
+                />
+                <path
+                  d="M17.2383 19.3555H19.8012V23.9024H17.2383V19.3555Z"
+                  fill="white"
+                />
+                <path
+                  d="M18.8562 11C18.5011 11 18.2133 11.2878 18.2133 11.6429V14.0388C18.2133 14.3939 17.9255 14.6817 17.5705 14.6817H14.928C14.573 14.6817 14.2852 14.9695 14.2852 15.3245V28.3571C14.2852 28.7122 14.573 29 14.928 29H28.191C28.546 29 28.8338 28.7122 28.8338 28.3571V11.6429C28.8338 11.2878 28.546 11 28.191 11H18.8562ZM20.9268 24.3152C20.9268 24.6702 20.639 24.958 20.2839 24.958H16.7561C16.401 24.958 16.1132 24.6702 16.1132 24.3152V18.9446C16.1132 18.5895 16.401 18.3017 16.7561 18.3017H20.2839C20.639 18.3017 20.9268 18.5895 20.9268 18.9446V24.3152ZM27.0408 24.4307C27.0408 24.722 26.8047 24.958 26.5134 24.958H22.6845C22.3933 24.958 22.1572 24.722 22.1572 24.4307C22.1572 24.1395 22.3933 23.9034 22.6845 23.9034H26.5134C26.8047 23.9034 27.0408 24.1395 27.0408 24.4307ZM27.0408 22.1901C27.0408 22.4813 26.8047 22.7174 26.5134 22.7174H22.6845C22.3933 22.7174 22.1572 22.4813 22.1572 22.1901C22.1572 21.8988 22.3933 21.6627 22.6845 21.6627H26.5134C26.8047 21.6627 27.0408 21.8988 27.0408 22.1901ZM27.0408 19.9494C27.0408 20.2407 26.8047 20.4768 26.5134 20.4768H22.6845C22.3933 20.4768 22.1572 20.2407 22.1572 19.9494C22.1572 19.6582 22.3933 19.4221 22.6845 19.4221H26.5134C26.8047 19.4221 27.0408 19.6582 27.0408 19.9494Z"
+                  fill="white"
+                />
+              </g>
+              <defs>
+                <clipPath id="clip0_5993_176037">
+                  <rect
+                    width="19.2054"
+                    height="18"
+                    fill="white"
+                    transform="translate(11.957 11)"
+                  />
+                </clipPath>
+              </defs>
+            </svg>
+          </div>
+          <div>
+            <div class="header">
+              {{ invoiceStatistics?.totalInvoicedLocalFee | number }} NGN
+              <!-- {{ selectedContry?.currency?.currencyCode }} -->
+            </div>
+            <div class="content">Total Invoiced Local Fee</div>
+          </div>
+        </div>
+
+        <div class="item not-colored">
+          <div>
+            <svg
+              width="43"
+              height="40"
+              viewBox="0 0 43 40"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <ellipse
+                cx="21.5541"
+                cy="20"
+                rx="21.3393"
+                ry="20"
+                fill="#C3D2FE"
+              />
+              <ellipse
+                cx="21.5636"
+                cy="20"
+                rx="17.0714"
+                ry="16"
+                fill="#0235CD"
+              />
+              <g clip-path="url(#clip0_5993_176037)">
+                <path
+                  d="M17.088 13.627V11H17.0875L14.2852 13.6264V13.627H17.088Z"
+                  fill="white"
+                />
+                <path
+                  d="M17.2383 19.3555H19.8012V23.9024H17.2383V19.3555Z"
+                  fill="white"
+                />
+                <path
+                  d="M18.8562 11C18.5011 11 18.2133 11.2878 18.2133 11.6429V14.0388C18.2133 14.3939 17.9255 14.6817 17.5705 14.6817H14.928C14.573 14.6817 14.2852 14.9695 14.2852 15.3245V28.3571C14.2852 28.7122 14.573 29 14.928 29H28.191C28.546 29 28.8338 28.7122 28.8338 28.3571V11.6429C28.8338 11.2878 28.546 11 28.191 11H18.8562ZM20.9268 24.3152C20.9268 24.6702 20.639 24.958 20.2839 24.958H16.7561C16.401 24.958 16.1132 24.6702 16.1132 24.3152V18.9446C16.1132 18.5895 16.401 18.3017 16.7561 18.3017H20.2839C20.639 18.3017 20.9268 18.5895 20.9268 18.9446V24.3152ZM27.0408 24.4307C27.0408 24.722 26.8047 24.958 26.5134 24.958H22.6845C22.3933 24.958 22.1572 24.722 22.1572 24.4307C22.1572 24.1395 22.3933 23.9034 22.6845 23.9034H26.5134C26.8047 23.9034 27.0408 24.1395 27.0408 24.4307ZM27.0408 22.1901C27.0408 22.4813 26.8047 22.7174 26.5134 22.7174H22.6845C22.3933 22.7174 22.1572 22.4813 22.1572 22.1901C22.1572 21.8988 22.3933 21.6627 22.6845 21.6627H26.5134C26.8047 21.6627 27.0408 21.8988 27.0408 22.1901ZM27.0408 19.9494C27.0408 20.2407 26.8047 20.4768 26.5134 20.4768H22.6845C22.3933 20.4768 22.1572 20.2407 22.1572 19.9494C22.1572 19.6582 22.3933 19.4221 22.6845 19.4221H26.5134C26.8047 19.4221 27.0408 19.6582 27.0408 19.9494Z"
+                  fill="white"
+                />
+              </g>
+              <defs>
+                <clipPath id="clip0_5993_176037">
+                  <rect
+                    width="19.2054"
+                    height="18"
+                    fill="white"
+                    transform="translate(11.957 11)"
+                  />
+                </clipPath>
+              </defs>
+            </svg>
+          </div>
+          <div>
+            <div class="header">
+              {{ invoiceStatistics?.totalLocalFeePaid | number }} NGN
+              <!-- {{ selectedContry?.currency?.currencyCode }} -->
+            </div>
+            <div class="content">Total Local Fee Paid</div>
+          </div>
+        </div>
+
+        <div class="item not-colored">
+          <div>
+            <svg
+              width="43"
+              height="40"
+              viewBox="0 0 43 40"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <ellipse
+                cx="21.5541"
+                cy="20"
+                rx="21.3393"
+                ry="20"
+                fill="#C3D2FE"
+              />
+              <ellipse
+                cx="21.5636"
+                cy="20"
+                rx="17.0714"
+                ry="16"
+                fill="#0235CD"
+              />
+              <g clip-path="url(#clip0_5993_176037)">
+                <path
+                  d="M17.088 13.627V11H17.0875L14.2852 13.6264V13.627H17.088Z"
+                  fill="white"
+                />
+                <path
+                  d="M17.2383 19.3555H19.8012V23.9024H17.2383V19.3555Z"
+                  fill="white"
+                />
+                <path
+                  d="M18.8562 11C18.5011 11 18.2133 11.2878 18.2133 11.6429V14.0388C18.2133 14.3939 17.9255 14.6817 17.5705 14.6817H14.928C14.573 14.6817 14.2852 14.9695 14.2852 15.3245V28.3571C14.2852 28.7122 14.573 29 14.928 29H28.191C28.546 29 28.8338 28.7122 28.8338 28.3571V11.6429C28.8338 11.2878 28.546 11 28.191 11H18.8562ZM20.9268 24.3152C20.9268 24.6702 20.639 24.958 20.2839 24.958H16.7561C16.401 24.958 16.1132 24.6702 16.1132 24.3152V18.9446C16.1132 18.5895 16.401 18.3017 16.7561 18.3017H20.2839C20.639 18.3017 20.9268 18.5895 20.9268 18.9446V24.3152ZM27.0408 24.4307C27.0408 24.722 26.8047 24.958 26.5134 24.958H22.6845C22.3933 24.958 22.1572 24.722 22.1572 24.4307C22.1572 24.1395 22.3933 23.9034 22.6845 23.9034H26.5134C26.8047 23.9034 27.0408 24.1395 27.0408 24.4307ZM27.0408 22.1901C27.0408 22.4813 26.8047 22.7174 26.5134 22.7174H22.6845C22.3933 22.7174 22.1572 22.4813 22.1572 22.1901C22.1572 21.8988 22.3933 21.6627 22.6845 21.6627H26.5134C26.8047 21.6627 27.0408 21.8988 27.0408 22.1901ZM27.0408 19.9494C27.0408 20.2407 26.8047 20.4768 26.5134 20.4768H22.6845C22.3933 20.4768 22.1572 20.2407 22.1572 19.9494C22.1572 19.6582 22.3933 19.4221 22.6845 19.4221H26.5134C26.8047 19.4221 27.0408 19.6582 27.0408 19.9494Z"
+                  fill="white"
+                />
+              </g>
+              <defs>
+                <clipPath id="clip0_5993_176037">
+                  <rect
+                    width="19.2054"
+                    height="18"
+                    fill="white"
+                    transform="translate(11.957 11)"
+                  />
+                </clipPath>
+              </defs>
+            </svg>
+          </div>
+          <div>
+            <div class="header">
+              {{ invoiceStatistics?.outstandingLocalFee | number }} NGN
+              <!-- {{ selectedContry?.currency?.currencyCode }} -->
+            </div>
+            <div class="content">Outstanding Local Fee</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="section-2">
+        <div class="opt-para-2 fw-700">Invoices</div>
+        <ng-container
+          *ngIf="dataSource !== null && dataSource; else noTableData"
+        >
+          <div class="table-responsive">
+            <table
+              mat-table
+              [dataSource]="dataSource"
+              matSort
+              multiTemplateDataRows
+            >
+              <ng-container matColumnDef="toggle">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header></th>
+                <td mat-cell *matCellDef="let row">
+                  <div
+                    class="cta-container"
+                    matRipple
+                    (click)="
+                      expandedElement = expandedElement === row ? null : row
+                    "
+                  >
+                    <img src="/assets/icons/more-icon.svg" alt="view icon" />
+                  </div>
+                </td>
+              </ng-container>
+
+              <ng-container matColumnDef="applicant_name">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                  Applicant Name
+                </th>
+                <td mat-cell *matCellDef="let row">
+                  {{
+                    selectedApplicationQuote?.application?.applicant
+                      ?.fullName ?? ''
+                  }}
+                </td>
+              </ng-container>
+              <ng-container
+                matColumnDef="invoice_id"
+                class="mat-column-resizable"
+              >
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                  ID
+                  <span
+                    class="resize-handle"
+                    (mousedown)="onResizeColumn($event, 'invoice_id')"
+                  ></span>
+                </th>
+                <td mat-cell *matCellDef="let row">
+                  <span
+                    *ngIf="row.invoiceNo"
+                    [matTooltip]="row?.invoiceNo"
+                    matTooltipPosition="below"
+                    matTooltipClass="custom-tooltip"
+                  >
+                    {{
+                      row.invoiceNo.substring(0, 16) +
+                        (row.invoiceNo.length > 16 ? '...' : '')
+                    }}
+                  </span>
+                </td>
+              </ng-container>
+
+              <ng-container matColumnDef="invoice_program_fee_amount">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                  Invoiced Program Fee
+                </th>
+                <td mat-cell *matCellDef="let row">
+                  {{
+                    row?.invoiceQuotations[1]?.amount
+                      | currency : row.baseCurrencyCode : 'symbol-narrow'
+                  }}
+                </td>
+              </ng-container>
+
+              <ng-container matColumnDef="invoice_local_fee_amount">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                  Invoiced Local Processing Fee
+                </th>
+                <td mat-cell *matCellDef="let row">
+                  {{
+                    row?.invoiceQuotations[0]?.amount
+                      | currency : 'NGN' : 'symbol-narrow'
+                  }}
+                </td>
+              </ng-container>
+
+              <ng-container matColumnDef="program_fee_paid">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                  Program Fee Paid
+                </th>
+                <td mat-cell *matCellDef="let row">
+                  {{
+                    row?.invoiceQuotations[1]?.amountPaid
+                      | currency
+                        : row.baseCurrencyCode || 'USD'
+                        : 'symbol-narrow'
+                  }}
+                </td>
+              </ng-container>
+
+              <ng-container matColumnDef="local_fee_paid">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                  Local Fee Paid (NGN)
+                </th>
+                <td mat-cell *matCellDef="let row">
+                  {{
+                    row?.invoiceQuotations[0]?.amountPaid
+                      | currency : 'NGN' : 'symbol-narrow'
+                  }}
+                </td>
+              </ng-container>
+
+              <ng-container matColumnDef="ngn_equivalent_amount">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                  Program Fee Paid (NGN)
+                </th>
+                <td mat-cell *matCellDef="let row">
+                  {{
+                    row?.invoiceQuotations[1]?.amountPaidConverted
+                      | currency : 'NGN' : 'symbol-narrow'
+                  }}
+                  <!-- {{
+                      row?.invoiceQuotations[1]?.amountPaid * row?.exchangeRate
+                        | currency : 'NGN' : 'symbol-narrow'
+                    }} -->
+                </td>
+              </ng-container>
+              <ng-container matColumnDef="sum">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                  Sum Total (NGN)
+                </th>
+                <td mat-cell *matCellDef="let row">
+                  {{
+                    row?.invoiceQuotations[1]?.amountPaidConverted +
+                      row?.invoiceQuotations[0]?.amountPaid
+                      | currency : 'NGN' : 'symbol-narrow'
+                  }}
+                  <!-- {{
+                      row?.invoiceQuotations[1]?.amountPaid * row?.exchangeRate +
+                        row?.invoiceQuotations[0]?.amountPaid
+                        | currency : 'NGN' : 'symbol-narrow'
+                    }} -->
+                </td>
+              </ng-container>
+
+              <ng-container matColumnDef="program_fee_pending">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                  <!-- Amount Pending -->
+                  Program Fee Pending
+                </th>
+                <td mat-cell *matCellDef="let row">
+                  {{
+                    row?.invoiceQuotations[1]?.amount -
+                      row?.invoiceQuotations[1]?.amountPaid
+                      | currency
+                        : row.baseCurrencyCode || 'USD'
+                        : 'symbol-narrow'
+                  }}
+                  <!-- {{
+                      row?.invoiceQuotations[1]?.outstandingAmount
+                        | currency
+                          : row.baseCurrencyCode || 'USD'
+                          : 'symbol-narrow'
+                    }} -->
+                </td>
+              </ng-container>
+              <ng-container matColumnDef="local_fee_pending">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                  <!-- Amount Pending -->
+                  Local Fee Pending
+                </th>
+                <td mat-cell *matCellDef="let row">
+                  {{
+                    row?.invoiceQuotations[0]?.amount -
+                      row?.invoiceQuotations[0]?.amountPaid
+                      | currency : 'NGN' : 'symbol-narrow'
+                  }}
+                  <!-- {{
+                      row?.invoiceQuotations[0]?.outstandingAmount
+                        | currency : 'NGN' : 'symbol-narrow'
+                    }} -->
+                </td>
+              </ng-container>
+
+              <ng-container matColumnDef="status">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                  Status
+                </th>
+                <td mat-cell *matCellDef="let row">
+                  <span
+                    [ngClass]="{
+                      'status-inactive': row.paymentStatus === 1,
+                      'status-active': row.paymentStatus === 2,
+                      'invoice-stage':
+                        row.paymentStatus === 5 || row.paymentStatus === 6
+                    }"
+                  >
+                    {{ row.paymentStatusDesc }}
+                  </span>
+                </td>
+              </ng-container>
+
+              <ng-container matColumnDef="actions">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                  Action
+                </th>
+                <td mat-cell *matCellDef="let row">
+                  <div class="table-cta-container">
+                    <button
+                      (click)="openMarkAsPaidModal(row)"
+                      matRipple
+                      matTooltip="Add Payment"
+                      matTooltipClass="custom-tooltip"
+                      class="btn opt-btn-primary"
+                      *ngIf="permissionService.hasPermission('Add Payment')"
+                    >
+                      Add Payment
+                    </button>
+
+                    <div>
+                      <span class="ml-4">
+                        <img
+                          alt="More"
+                          src="assets/icons/more-icon.svg"
+                          [matMenuTriggerFor]="menu"
+                        />
+                        <mat-menu #menu="matMenu">
+                          <ng-container>
+                            <button
+                              mat-menu-item
+                              (click)="
+                                viewDocument(row, row.invoiceNo, 'invoice')
+                              "
+                            >
+                              View Invoice
+                            </button>
+                            <button
+                              [disabled]="
+                                selectedApplicationQuote &&
+                                selectedApplicationQuote.quoteStatus !== 5
+                              "
+                              mat-menu-item
+                              (click)="
+                                viewFinancialDocument(selectedApplicationQuote)
+                              "
+                            >
+                              View Financial Statement
+                            </button>
+                          </ng-container>
+                        </mat-menu>
+                      </span>
+                    </div>
+                  </div>
+                </td>
+              </ng-container>
+
+              <ng-container matColumnDef="expandedDetail">
+                <td
+                  mat-cell
+                  *matCellDef="let row"
+                  [attr.colspan]="displayedColumns.length"
+                >
+                  <div
+                    class="example-element-detail"
+                    [@detailExpand]="
+                      row === expandedElement ? 'expanded' : 'collapsed'
+                    "
+                  >
+                    <div class="d-block w-100 main-expanded-table-container">
+                      <div class="px-6 py-2 row w-100">
+                        <!-- <div
+                            class="col-md-1 example-element-description fw-600"
+                          ></div> -->
+                        <div
+                          class="col-md-1 example-element-description fw-600"
+                        >
+                          ID
+                        </div>
+                        <div
+                          class="col-md-2 example-element-description fw-600"
+                        >
+                          Amount
+                        </div>
+                        <div
+                          class="col-md-2 example-element-description fw-600"
+                        >
+                          Fee Category
+                        </div>
+                        <div
+                          class="col-md-2 example-element-description fw-600"
+                        >
+                          Telex Number
+                        </div>
+                        <div
+                          class="col-md-1 example-element-description fw-600"
+                        >
+                          Payment Date
+                        </div>
+                        <div
+                          class="col-md-1 example-element-description fw-600"
+                        >
+                          Created Date
+                        </div>
+                        <div
+                          class="col-md-1 example-element-description fw-600"
+                        >
+                          Status
+                        </div>
+                        <div
+                          class="col-md-2 example-element-description fw-600"
+                        >
+                          Action
+                        </div>
+                      </div>
+                      <div
+                        class="px-8 py-2 row w-100"
+                        *ngFor="let item of row.inoicePaymentDetails"
+                      >
+                        <!-- <div class="col-md-1 example-element-description"></div> -->
+                        <div class="col-md-1 example-element-description">
+                          {{ item.id }}
+                        </div>
+                        <div class="col-md-2 example-element-description">
+                          {{
+                            item.amount
+                              | currency : item.currencyCode : 'symbol-narrow'
+                          }}
+                        </div>
+                        <div class="col-md-2 example-element-description">
+                          {{ item.feeCategoryDesc || '--' }}
+                        </div>
+                        <div class="col-md-2 example-element-description">
+                          {{ item.telexNumber }}
+                        </div>
+                        <div class="col-md-1 example-element-description">
+                          {{ item.paymentDate | date }}
+                        </div>
+                        <div class="col-md-1 example-element-description">
+                          {{ item.createdDate | date }}
+                        </div>
+                        <div class="col-md-1 example-element-description">
+                          <span
+                            [ngClass]="{
+                              'status-inactive':
+                                item.paymentStatusDesc === 'Unpaid',
+                              'status-active':
+                                item.paymentStatusDesc === 'Paid',
+                              'invoice-stage':
+                                item.paymentStatusDesc === 'Pending'
+                            }"
+                          >
+                            {{ item.paymentStatusDesc }}
+                          </span>
+                        </div>
+                        <div
+                          class="col-md-2 d-flex gap-2 example-element-description"
+                        >
+                          <div
+                            class="mark-as-paid-button"
+                            matRipple
+                            role="button"
+                            (click)="
+                              viewDocument(item, row.invoiceNo, 'payment')
+                            "
+                            *ngIf="
+                              permissionService.hasPermission('View Invoices')
+                            "
+                          >
+                            View
+                          </div>
+                          <div
+                            class="mark-as-paid-button"
+                            matRipple
+                            role="button"
+                            (click)="confirmPayment(item.id)"
+                            *ngIf="
+                              item.paymentStatusDesc === 'Pending' &&
+                              permissionService.hasPermission('Confirm Invoice')
+                            "
+                          >
+                            <span class="fw-600"> Confirm Payment </span>
+                          </div>
+                          <!--  -->
+                          <div
+                            matRipple
+                            role="button"
+                            class="mark-as-paid-button"
+                            (click)="viewPaymentReceipt(item)"
+                            *ngIf="item.paymentStatusDesc === 'Paid'"
+                          >
+                            <span class="fw-600"> Preview Receipt </span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </td>
+              </ng-container>
+
+              <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+              <tr
+                mat-row
+                *matRowDef="let row; columns: displayedColumns"
+                class="example-element-row"
+                role="button"
+                [class.example-expanded-row]="expandedElement === row"
+                (click)="expandedElement = expandedElement === row ? null : row"
+              ></tr>
+
+              <tr
+                mat-row
+                *matRowDef="let element; columns: ['expandedDetail']"
+                class="example-detail-row"
+              ></tr>
+
+              <tr class="mat-row" *matNoDataRow>
+                <td class="mat-cell" colspan="4">No matching data"</td>
+              </tr>
+            </table>
+          </div>
+        </ng-container>
+
+        <ng-template #noTableData>
+          <app-table-loader></app-table-loader>
+        </ng-template>
+      </div>
+    </div>
+  </div>
+</section>
+
+<ng-container
+  *ngIf="(isLoading | async) !== false || (isLoading2 | async) !== false"
+>
+  <div class="general-loader-container webapp-view">
+    <div class="general-loader-backdrop"></div>
+
+    <div class="general-loader-content">
+      <app-general-loader></app-general-loader>
+    </div>
+  </div>
+</ng-container>

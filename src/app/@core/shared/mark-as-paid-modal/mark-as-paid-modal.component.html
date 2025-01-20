@@ -1,0 +1,465 @@
+<section id="main-container">
+  <div class="main-header">
+    <h6 class="opt-heading-6 fw-600 mb-0">Mark Invoice as Paid</h6>
+
+    <div matRipple class="close-icon-container" (click)="closeDialog()">
+      <img src="/assets/icons/modal-close-icon.svg" alt="modal close icon" />
+    </div>
+  </div>
+
+  <div class="mb-2">
+    <div class="opt-caption mb-1">
+      Ensure you have received payment for this invoice.
+    </div>
+  </div>
+
+  <form [formGroup]="markAsPaidForm">
+    <div class="main-content">
+      <div class="invoice-details-container">
+        <div class="opt-para-1 fw-600">
+          {{
+            markAsPaidForm.value['paymentType'] === 1
+              ? 'LOCAL PROCESSING FEE AMOUNT'
+              : 'PROGRAM FEE AMOUNT'
+          }}
+        </div>
+        <div>
+          <span class="opt-para-1 fw-600">
+            {{
+              markAsPaidForm.value['paymentType'] === 1
+                ? (data?.invoiceStatistics?.outstandingLocalFee | number)
+                : (data?.invoiceStatistics?.outstandingProgramFee | number)
+            }}
+            {{
+              markAsPaidForm.value['paymentType'] === 1
+                ? 'NGN'
+                : data.invoice?.baseCurrencyCode
+            }}
+          </span>
+          <span
+            *ngIf="
+              markAsPaidForm.value['paymentType'] === 2 &&
+              markAsPaidForm.value['paymentCurrency'] !==
+                data.invoice?.baseCurrencyCode
+            "
+            class="opt-para-2 fw-700"
+            >({{ amountEquivalent | number }}
+            <!-- markAsPaidFormControls['paymentCurrency'] ||
+              data.invoice?.invoiceCurrencyCode -->
+            <!-- {{ data.invoice?.invoiceCurrencyCode }}) -->
+            {{ displayCurrency }})
+          </span>
+        </div>
+
+        <div
+          class="opt-para-1"
+          *ngIf="
+            markAsPaidForm.value['paymentType'] === 2 &&
+            markAsPaidForm.value['paymentCurrency'] !==
+              data.invoice?.baseCurrencyCode
+          "
+        >
+          Issued at a rate of
+          <span class="fw-600">
+            1
+            {{
+              selectedExchangeRate
+                ? selectedExchangeRate.baseCurrencyCode
+                : data.invoice?.baseCurrencyCode
+            }}
+            =
+            {{ decideExchangeRate() | number }}
+            {{
+              selectedExchangeRate
+                ? selectedExchangeRate.variableCurrencyCode
+                : data.invoice?.invoiceCurrencyCode
+            }}</span
+          >
+        </div>
+      </div>
+
+      <!-- currencyMask 
+      [(ngModel)]="amountPaid" -->
+      <!-- <div class="custom-input">
+        </div> -->
+      <!-- <div class="opt-caption">
+          Equivalent to
+          {{
+            (markAsPaidForm.get('amountPaid')?.value ?? 0) *
+              data.invoice?.exchangeRate
+          }}
+          {{ data.invoice?.invoiceCurrencyCode }}
+        </div> -->
+
+      <!-- <div class="amount-container">
+        <div class="opt-caption">Enter amount recieved</div>
+        <div class="custom-input">
+          <input 
+            type="number" 
+            formControlName="amountPaid" 
+            (input)="onAmountInput($event)" 
+            [value]="amountPaid" 
+            style="opacity: 0; position: absolute; z-index: -1;"
+          />
+          
+          <p>{{ formattedAmountPaid }}</p>
+        </div>
+      </div> -->
+      <!-- <div class="amount-container">
+        <div class="opt-caption">Enter amount recieved</div>
+        <div class="custom-input">
+          <input 
+            type="text" 
+            [value]="amount"
+            (input)="formatAmount($event)"
+            formControlName="amountPaid" 
+          />
+
+        </div>
+      </div> -->
+
+      <div class="row mt-1 mb-1">
+        <div class="col-md-6">
+          <div class="input-style1">
+            <div class="amount-container">
+              <label class="input-label">Enter amount recieved</label>
+              <div class="custom-input">
+                <input
+                  type="text"
+                  [value]="amount"
+                  (input)="formatAmount($event)"
+                  formControlName="amountPaid"
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="input-style1 mb-1">
+            <label class="input-label">Select your Payment type</label>
+            <mat-form-field appearance="outline" [style.width.%]="100">
+              <mat-select
+                placeholder="payment type"
+                formControlName="paymentType"
+                (selectionChange)="selectProgramType($event)"
+              >
+                <mat-option
+                  [value]="paymentType.value"
+                  *ngFor="let paymentType of paymentTypes"
+                >
+                  <span>{{ paymentType.name }}</span>
+                </mat-option>
+              </mat-select>
+              <mat-error *ngIf="markAsPaidFormControls['paymentType'].invalid">
+                <img
+                  src="/assets/icons/error.svg"
+                  alt=""
+                  class="img-fluid error-icon"
+                />
+                {{ getErrorMessage('paymentType') }}
+              </mat-error>
+            </mat-form-field>
+          </div>
+        </div>
+
+        <div class="col-md-6">
+          <div class="input-style1 mb-1">
+            <label class="input-label">Select Currency Used for Payment</label>
+            <mat-form-field appearance="outline" [style.width.%]="100">
+              <mat-select
+                placeholder="Applicant Preferred Currency"
+                formControlName="paymentCurrency"
+                (selectionChange)="selectCurrency($event)"
+              >
+                <mat-option
+                  [value]="currency.bankCurrencyCode"
+                  *ngFor="let currency of bankCurrencyList"
+                >
+                  <span>{{ currency.bankCurrencyCode }}</span>
+                </mat-option>
+              </mat-select>
+              <mat-error
+                *ngIf="markAsPaidFormControls['paymentCurrency'].invalid"
+              >
+                <img
+                  src="/assets/icons/error.svg"
+                  alt=""
+                  class="img-fluid error-icon"
+                />
+                {{ getErrorMessage('paymentCurrency') }}
+              </mat-error>
+            </mat-form-field>
+          </div>
+        </div>
+
+        <div class="col-md-6">
+          <div class="input-style1 input-md mb-1">
+            <label class="input-label">Payment Date</label>
+
+            <mat-form-field appearance="outline" [style.width.%]="100">
+              <input type="date" matInput formControlName="paymentDate" />
+
+              <mat-error *ngIf="markAsPaidFormControls['paymentDate'].invalid">
+                <img
+                  src="/assets/icons/error.svg"
+                  alt=""
+                  class="img-fluid error-icon"
+                />
+                {{ getErrorMessage('paymentDate') }}
+              </mat-error>
+            </mat-form-field>
+          </div>
+        </div>
+
+        <div
+          class="col-md-6"
+          *ngIf="
+            markAsPaidForm.value['paymentType'] === 2 ||
+            markAsPaidForm.value['paymentCurrency'] !== 'NGN'
+          "
+        >
+          <div class="input-style1 input-md mb-1">
+            <label class="input-label">
+              Exchange Rate As Of Payment Date
+              <ng-container
+                *ngIf="
+                  PaymentWasIssuedWithOptionalCurrency ||
+                  markAsPaidForm.value['paymentCurrency'] !== 'NGN'
+                "
+              >
+                (1{{ markAsPaidForm.value['paymentCurrency'] }} -
+                {{ ngnConversionRate | number }} NGN)
+              </ng-container>
+            </label>
+
+            <mat-form-field appearance="outline" [style.width.%]="100">
+              <input
+                type="number"
+                matInput
+                [(ngModel)]="ngnConversionRate"
+                formControlName="exchangeRate"
+                [disabled]="markAsPaidForm.value['paymentCurrency'] === 'NGN'"
+                (input)="calculateAmountEquivalent()"
+              />
+
+              <mat-error *ngIf="markAsPaidFormControls['exchangeRate'].invalid">
+                <img
+                  src="/assets/icons/error.svg"
+                  alt=""
+                  class="img-fluid error-icon"
+                />
+                {{ getErrorMessage('exchangeRate') }}
+              </mat-error>
+            </mat-form-field>
+          </div>
+        </div>
+
+        <div
+          class="col-md-6"
+          *ngIf="
+            PaymentWasIssuedWithOptionalCurrency &&
+            markAsPaidForm.value['paymentType'] === 2
+          "
+        >
+          <div class="input-style1 input-md mb-1">
+            <label class="input-label">
+              FX Exchange Rate. (1 {{ data.invoice?.baseCurrencyCode }} -
+              {{ fxRate | number }}
+              {{ markAsPaidForm.value['paymentCurrency'] }})
+            </label>
+
+            <mat-form-field appearance="outline" [style.width.%]="100">
+              <input
+                type="number"
+                matInput
+                [(ngModel)]="fxRate"
+                formControlName="OptionalCurrencyExchangeRate"
+                (input)="calculateAmountEquivalent()"
+              />
+
+              <mat-error
+                *ngIf="
+                  markAsPaidFormControls['OptionalCurrencyExchangeRate'].invalid
+                "
+              >
+                <img
+                  src="/assets/icons/error.svg"
+                  alt=""
+                  class="img-fluid error-icon"
+                />
+                {{ getErrorMessage('OptionalCurrencyExchangeRate') }}
+              </mat-error>
+            </mat-form-field>
+          </div>
+        </div>
+
+        <div class="col-md-6">
+          <div class="input-style1 input-md mb-1">
+            <label class="input-label">Telex Number</label>
+
+            <mat-form-field appearance="outline" [style.width.%]="100">
+              <input
+                type="text"
+                matInput
+                formControlName="telexNumber"
+                placeholder="Enter reciept number"
+              />
+
+              <!-- <mat-error *ngIf="markAsPaidFormControls['email'].invalid">
+                  <img
+                    src="/assets/icons/error.svg"
+                    alt=""
+                    class="img-fluid error-icon"
+                  />
+                  {{ getErrorMessage('email') }}
+                </mat-error> -->
+            </mat-form-field>
+          </div>
+        </div>
+      </div>
+
+      <div
+        class="upload-container default"
+        (click)="openFileInput()"
+        *ngIf="!this.selectedFile"
+      >
+        <div>
+          <svg
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <circle
+              cx="12"
+              cy="12"
+              r="12"
+              *ngIf="!isFileAccepted"
+              fill="#80171A"
+            />
+            <circle
+              cx="12"
+              cy="12"
+              r="12"
+              *ngIf="isFileAccepted"
+              fill="#10b981"
+            />
+            <g clip-path="url(#clip0_9377_248830)">
+              <path
+                d="M17.6708 10.8023C17.3062 10.532 16.8583 10.3336 16.3854 10.2266C16.3078 10.2091 16.2367 10.1699 16.1805 10.1135C16.1243 10.0572 16.0852 9.98603 16.068 9.90833C15.8648 9.00339 15.4276 8.22734 14.7849 7.63932C14.0378 6.95469 13.0497 6.57812 12.0026 6.57812C11.082 6.57812 10.2318 6.86667 9.54505 7.41276C9.07964 7.78345 8.70502 8.25552 8.44974 8.79297C8.42206 8.85177 8.38101 8.90329 8.32987 8.9434C8.27873 8.98351 8.21892 9.0111 8.15521 9.02396C7.45859 9.16458 6.82969 9.46328 6.34948 9.88646C5.68646 10.4724 5.33594 11.2513 5.33594 12.1406C5.33594 13.0396 5.71328 13.8594 6.39818 14.4521C7.05234 15.0169 7.93307 15.3281 8.8776 15.3281H11.5859V11.3341L10.6305 12.2896C10.5906 12.3295 10.543 12.3608 10.4906 12.3818C10.4383 12.4027 10.3822 12.4129 10.3258 12.4115C10.2694 12.4101 10.2139 12.3973 10.1626 12.3739C10.1113 12.3504 10.0653 12.3168 10.0273 12.275C9.8763 12.1091 9.89089 11.8505 10.0495 11.6919L11.7081 10.0336C11.7862 9.95551 11.8921 9.91165 12.0026 9.91165C12.1131 9.91165 12.219 9.95551 12.2971 10.0336L13.9557 11.6914C14.1193 11.8552 14.1286 12.1237 13.9659 12.288C13.9273 12.327 13.8813 12.358 13.8307 12.3792C13.7801 12.4004 13.7258 12.4114 13.6709 12.4115C13.616 12.4117 13.5616 12.401 13.5109 12.38C13.4602 12.3591 13.4141 12.3284 13.3753 12.2896L12.4193 11.3341V15.3281H15.6484C16.4646 15.3281 17.2086 15.099 17.7435 14.6831C18.3492 14.2117 18.6693 13.5372 18.6693 12.7344C18.6693 11.9547 18.324 11.2862 17.6708 10.8023ZM11.5859 17.0057C11.5859 17.1162 11.6298 17.2222 11.708 17.3004C11.7861 17.3785 11.8921 17.4224 12.0026 17.4224C12.1131 17.4224 12.2191 17.3785 12.2972 17.3004C12.3754 17.2222 12.4193 17.1162 12.4193 17.0057V15.3281H11.5859V17.0057Z"
+                fill="white"
+              />
+            </g>
+            <defs>
+              <clipPath id="clip0_9377_248830">
+                <rect
+                  width="13.3333"
+                  height="13.3333"
+                  fill="white"
+                  transform="translate(5.33594 5.33203)"
+                />
+              </clipPath>
+            </defs>
+          </svg>
+
+          <span class="opt-para-1">
+            Click here to upload proof of payment from local storage or drop
+            file here.
+          </span>
+          <input
+            id="upload"
+            class="file-upload-input"
+            (change)="onUpload($event)"
+            type="file"
+            accept="image/*,application/pdf,.pdf"
+          />
+        </div>
+      </div>
+
+      <ng-container *ngIf="this.selectedFile">
+        <div class="upload-container success">
+          <div>
+            <svg
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <circle cx="12" cy="12" r="12" fill="#10b981" />
+              <g clip-path="url(#clip0_9377_248830)">
+                <path
+                  d="M17.6708 10.8023C17.3062 10.532 16.8583 10.3336 16.3854 10.2266C16.3078 10.2091 16.2367 10.1699 16.1805 10.1135C16.1243 10.0572 16.0852 9.98603 16.068 9.90833C15.8648 9.00339 15.4276 8.22734 14.7849 7.63932C14.0378 6.95469 13.0497 6.57812 12.0026 6.57812C11.082 6.57812 10.2318 6.86667 9.54505 7.41276C9.07964 7.78345 8.70502 8.25552 8.44974 8.79297C8.42206 8.85177 8.38101 8.90329 8.32987 8.9434C8.27873 8.98351 8.21892 9.0111 8.15521 9.02396C7.45859 9.16458 6.82969 9.46328 6.34948 9.88646C5.68646 10.4724 5.33594 11.2513 5.33594 12.1406C5.33594 13.0396 5.71328 13.8594 6.39818 14.4521C7.05234 15.0169 7.93307 15.3281 8.8776 15.3281H11.5859V11.3341L10.6305 12.2896C10.5906 12.3295 10.543 12.3608 10.4906 12.3818C10.4383 12.4027 10.3822 12.4129 10.3258 12.4115C10.2694 12.4101 10.2139 12.3973 10.1626 12.3739C10.1113 12.3504 10.0653 12.3168 10.0273 12.275C9.8763 12.1091 9.89089 11.8505 10.0495 11.6919L11.7081 10.0336C11.7862 9.95551 11.8921 9.91165 12.0026 9.91165C12.1131 9.91165 12.219 9.95551 12.2971 10.0336L13.9557 11.6914C14.1193 11.8552 14.1286 12.1237 13.9659 12.288C13.9273 12.327 13.8813 12.358 13.8307 12.3792C13.7801 12.4004 13.7258 12.4114 13.6709 12.4115C13.616 12.4117 13.5616 12.401 13.5109 12.38C13.4602 12.3591 13.4141 12.3284 13.3753 12.2896L12.4193 11.3341V15.3281H15.6484C16.4646 15.3281 17.2086 15.099 17.7435 14.6831C18.3492 14.2117 18.6693 13.5372 18.6693 12.7344C18.6693 11.9547 18.324 11.2862 17.6708 10.8023ZM11.5859 17.0057C11.5859 17.1162 11.6298 17.2222 11.708 17.3004C11.7861 17.3785 11.8921 17.4224 12.0026 17.4224C12.1131 17.4224 12.2191 17.3785 12.2972 17.3004C12.3754 17.2222 12.4193 17.1162 12.4193 17.0057V15.3281H11.5859V17.0057Z"
+                  fill="white"
+                />
+              </g>
+              <defs>
+                <clipPath id="clip0_9377_248830">
+                  <rect
+                    width="13.3333"
+                    height="13.3333"
+                    fill="white"
+                    transform="translate(5.33594 5.33203)"
+                  />
+                </clipPath>
+              </defs>
+            </svg>
+
+            <span class="opt-para-1">
+              <div class="opt-para-1">
+                {{
+                  selectedFile.name.substring(0, 16) +
+                    (selectedFile.name.length > 16 ? '...' : '')
+                }}
+              </div>
+              <div class="opt-para-1">
+                {{ formatBytes(selectedFile.size) }}
+              </div>
+            </span>
+          </div>
+        </div>
+      </ng-container>
+
+      <!-- <div class="currency-details-container">
+        <div class="opt-para-1">
+          The current conversion rate of
+          {{ data.invoice?.baseCurrencyCode }} against
+          {{ data.invoice?.invoiceCurrencyCode }} is 1
+          {{ data.invoice?.baseCurrencyCode }} =
+          {{ data.invoice?.exchangeRate }}
+          {{ data.invoice?.invoiceCurrencyCode }}.
+        </div>
+      </div> -->
+    </div>
+  </form>
+
+  <div>
+    <div class="cta-container">
+      <button
+        matRipple
+        type="button"
+        class="btn opt-btn-primary-outline"
+        (click)="closeDialog()"
+      >
+        Cancel
+      </button>
+
+      <button
+        [disabled]="
+          markAsPaidForm.invalid ||
+          !selectedFile ||
+          (isLoading | async) !== false
+        "
+        matRipple
+        class="btn opt-btn-primary"
+        (click)="onSubmit()"
+      >
+        Send for Confirmation
+        <ng-container *ngIf="(isLoading | async) !== false">
+          <app-button-loader></app-button-loader>
+        </ng-container>
+      </button>
+    </div>
+  </div>
+</section>

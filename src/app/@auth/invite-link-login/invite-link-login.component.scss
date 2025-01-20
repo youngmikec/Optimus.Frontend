@@ -1,0 +1,117 @@
+@use '../../@core/styles/abstracts/media-query' as *;
+
+.login-background {
+  min-width: 30rem;
+  background-color: var(--opt-white);
+  position: absolute;
+  top: 5rem;
+  left: 50%;
+  // transform: translate(-50, -50%);
+  transform: translateX(-50%);
+
+  @include opt-media-query-max(opt-md) {
+    min-width: auto;
+    padding: 0 3rem;
+  }
+
+  @include opt-media-query-max(opt-sm) {
+    min-width: auto;
+    top: 1rem;
+    padding: 0 2.5rem;
+  }
+
+  @include opt-media-query-max(opt-xsm) {
+    width: auto;
+    position: static;
+    top: 0;
+    left: 0;
+    transform: translate(0, 0);
+  }
+
+  .content-section {
+    width: 35.81rem;
+    border: 1.5px solid var(--opt-neutral2-100);
+
+    @include opt-media-query-max(opt-sm) {
+      border: none;
+      width: auto;
+    }
+
+    .form-section {
+      padding: 3.75rem 7.88rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+
+      @include opt-media-query-max(opt-md) {
+        padding: 2.5rem 4.5rem;
+      }
+
+      @include opt-media-query-max(opt-sm) {
+        padding: 0rem;
+      }
+
+      // .logo-header-container {
+      //   display: flex;
+      //   flex-direction: column;
+      //   gap: 5rem;
+      // }
+
+      .text-optimus {
+        margin-bottom: 4.5rem;
+        background: #fafafa;
+        padding: 0.675rem;
+
+        width: 5.625rem;
+        text-align: center;
+
+        p {
+          background: linear-gradient(180deg, #80171a 0%, #011b6a 100%);
+          -webkit-background-clip: text;
+          background-clip: text;
+          -webkit-text-fill-color: transparent;
+          margin-bottom: 0rem;
+        }
+      }
+
+      h5 {
+        margin-bottom: 1.5rem;
+      }
+
+      .border {
+        height: 1px;
+        background-color: var(--opt-neutral-100);
+        border-radius: 0.313rem;
+        width: 100%;
+      }
+
+      form {
+        margin-top: 1.325rem;
+
+        button {
+          margin-top: 0.625rem;
+        }
+      }
+
+      .forgot-password-text {
+        color: var(--opt-primary-color-900);
+        text-decoration: none;
+        margin: 2rem 0rem;
+
+        span {
+          color: var(--opt-secondary-color);
+        }
+      }
+
+      .logo-content {
+        display: flex;
+        align-items: center;
+        gap: 0.25rem;
+
+        h3 {
+          color: var(--opt-neutral2-500);
+        }
+      }
+    }
+  }
+}

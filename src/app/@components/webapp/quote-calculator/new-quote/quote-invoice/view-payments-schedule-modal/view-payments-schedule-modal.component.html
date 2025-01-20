@@ -1,0 +1,625 @@
+<div
+  class="positive-relative d-flex flex-column"
+  *ngIf="!isEditMode && !viewDocumentMode"
+>
+  <!--Loading spinner-->
+  <div
+    class="spinner-border text-primary d-grid mx-auto mt-5"
+    role="status"
+    *ngIf="(isLoading | async) === true"
+  >
+    <span class="visually-hidden">Loading...</span>
+  </div>
+  <!--Loading spinner-->
+
+  <ng-container
+    *ngIf="
+      ((paymentsSchedulePlan$ | async) === null || undefined) &&
+      (isLoading | async) === false
+    "
+  >
+    <div class="d-flex justify-content-center align-items-center">
+      <div class="mt-5">
+        <div class="d-flex justify-content-center">
+          <img src="/assets/icons/empty-state-icon.svg" alt="no files" />
+        </div>
+        <div>
+          <p class="card__text ms-3 text-center">
+            No Payment schedule for this loan record
+          </p>
+          <div class="icons-container">
+            <div matRipple class="close-icon-container" (click)="closeTray()">
+              <img
+                src="/assets/icons/modal-close-icon.svg"
+                alt="modal close icon"
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </ng-container>
+  <ng-container *ngIf="paymentsSchedulePlan$ | async as paymentsSchedulePlan">
+    <div class="d-flex justify-content-between align-items-center header mb-3">
+      <div class="d-flex align-items-center">
+        <span class="fw-bold opt-para-1 pe-1">
+          LO{{ paymentsSchedulePlan.invoiceLoanId }}:
+        </span>
+        <p class="opt-para-1 m-0">View Details</p>
+      </div>
+      <div class="icons-container">
+        <div matRipple class="close-icon-container" (click)="closeTray()">
+          <img
+            src="/assets/icons/modal-close-icon.svg"
+            alt="modal close icon"
+          />
+        </div>
+      </div>
+    </div>
+
+    <div class="amount-container border-top border-bottom">
+      <section>
+        <p class="opt-caption m-0">Total amount</p>
+        <div>
+          <h6 class="fw-700 mb-0">
+            {{ loan?.amount | currency : loan?.currencyCode }}
+          </h6>
+        </div>
+      </section>
+      <section>
+        <p class="opt-caption m-0">Total amount paid</p>
+        <div>
+          <h6 class="fw-700 mb-0">
+            {{
+              (loan?.amount || 0) - (loan?.balanceAmount || 0) | currency : loan?.currencyCode
+            }}
+          </h6>
+        </div>
+      </section>
+    </div>
+
+    <div class="next-payment-info border-bottom">
+      <h4>Next payment date</h4>
+      <p>
+        <!-- work to do here -->
+        {{
+          paymentsSchedulePlan.invoiceLoanPaymentDetails[0].paymentDate | date
+        }}
+      </p>
+      <button
+        matripple
+        class="mat-ripple btn opt-btn-primary-outline"
+        [routerLink]="
+          '/app/calculator/quote/quote-invoice/' + loan?.applicationQuoteId
+        "
+      >
+        Create Invoice
+      </button>
+    </div>
+
+    <div class="payment-schedule-info border-bottom">
+      <h4>payment Schedule</h4>
+
+      <section>
+        <div class="info-item">
+          <p>Total amount</p>
+          <p>{{ loan?.amount | currency : loan?.currencyCode }}</p>
+        </div>
+        <div class="info-item">
+          <p>Payment duration</p>
+          <p>{{ paymentsSchedulePlan.repaymentDuration }} Months</p>
+        </div>
+        <div class="info-item">
+          <p>Frequency per month</p>
+          <p>2</p>
+        </div>
+        <div class="info-item">
+          <p>Interest rate</p>
+          <p>{{ paymentsSchedulePlan.interest }}%</p>
+        </div>
+        <div class="info-item">
+          <p>Start date</p>
+          <p>{{ paymentsSchedulePlan.startDate | date }}</p>
+        </div>
+        <div class="info-item">
+          <p>End date</p>
+          <p>
+            {{
+              paymentsSchedulePlan.invoiceLoanPaymentDetails[
+                paymentsSchedulePlan.invoiceLoanPaymentDetails.length - 1
+              ].paymentDate | date
+            }}
+          </p>
+        </div>
+
+        <div class="divider"></div>
+        <div class="actions">
+          <ng-container *ngIf="(paymentsScheduleHistory$ | async) === null">
+            <button
+              mat-ripple
+              class="btn"
+              (click)="isEditMode = 'EDIT_BEFORE_PAYMENT'"
+            >
+              Edit
+              <img src="/assets/icons/edit.svg" alt="edit icon" />
+            </button>
+          </ng-container>
+          <ng-container
+            *ngIf="paymentsScheduleHistory$ | async as paymentsScheduleHistory"
+          >
+            <button
+              *ngIf="paymentsScheduleHistory.length"
+              mat-ripple
+              class="btn"
+              (click)="isEditMode = 'UPDATE_AFTER_PAYMENT'"
+            >
+              Update Payment Plan
+              <img src="/assets/icons/edit.svg" alt="edit icon" />
+            </button>
+          </ng-container>
+          <button
+            mat-ripple
+            class="btn"
+            (click)="showDownloadPreview(paymentsSchedulePlan)"
+          >
+            Preview
+            <svg
+              width="16"
+              height="16"
+              viewBox="0 0 16 16"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M6 7.33203L6 11.332L7.33333 9.9987"
+                stroke="#64748B"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              />
+              <path
+                d="M5.9974 11.3333L4.66406 10"
+                stroke="#64748B"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              />
+              <path
+                d="M14.6693 6.66536L14.6693 9.9987C14.6693 13.332 13.3359 14.6654 10.0026 14.6654L6.0026 14.6654C2.66927 14.6654 1.33594 13.332 1.33594 9.9987L1.33594 5.9987C1.33594 2.66536 2.66927 1.33203 6.0026 1.33203L9.33594 1.33203"
+                stroke="#64748B"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              />
+              <path
+                d="M14.6693 6.66536L12.0026 6.66536C10.0026 6.66536 9.33594 5.9987 9.33594 3.9987L9.33594 1.33203L14.6693 6.66536Z"
+                stroke="#64748B"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              />
+            </svg>
+          </button>
+        </div>
+      </section>
+    </div>
+
+    <div class="d-flex flex-column payment-details-container">
+      <h4>PAYMENT DETAILS</h4>
+      <div class="timeline-container">
+        <ul class="timeline-with-icons opt-caption">
+          <li
+            *ngFor="let item of paymentsSchedulePlan.invoiceLoanPaymentDetails"
+            class="timeline-item"
+          >
+            <div class="d-flex justify-content-between align-items-center">
+              <div class="d-flex justify-content-center">
+                <span class="timeline-icon"></span>
+                <span>{{ item.amount | currency : loan?.currencyCode }}</span>
+              </div>
+              <span class="opt-time-txt">{{ item.paymentDate | date }}</span>
+            </div>
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="d-flex flex-column payment-details-container">
+      <h4>Payment History</h4>
+
+      <div class="timeline-container">
+        <ul
+          class="timeline-with-icons opt-caption"
+          *ngIf="
+            paymentsScheduleHistory$ | async as paymentsScheduleHistory;
+            else noHistory
+          "
+        >
+          <li
+            *ngFor="let item of paymentsScheduleHistory"
+            class="timeline-item"
+          >
+            <div class="d-flex justify-content-between align-items-center">
+              <div class="d-flex justify-content-center">
+                <span class="timeline-icon"></span>
+                <span>
+                  {{ item.amountPaid | currency : loan?.currencyCode }}
+                </span>
+              </div>
+              <div class="d-flex gap-2 mx-2">
+                <span
+                  *ngIf="item.paymentStatus === 0"
+                  matRipple
+                  matTooltip="Approve Loan"
+                  matTooltipPosition="above"
+                  matTooltipClass="custom-tooltip"
+                  (click)="approveLoan(item)"
+                >
+                  <img
+                    src="assets/icons/sale-overview/loans/approve-loan-icon.svg"
+                    alt="approve loan icon"
+                  />
+                </span>
+                <button
+                  *ngIf="item.paymentStatus > 0"
+                  (click)="downloadPdf(item?.paymentHistoryPDFURL)"
+                  matRipple
+                  matTooltip="Download quote"
+                  matTooltipClass="custom-tooltip"
+                  class="btn opt-btn-primary-light"
+                  [disabled]="!item?.paymentHistoryPDFURL"
+                >
+                  <span class="img-fluid"
+                    ><img src="/assets/icons/import.svg" alt=""
+                  /></span>
+                </button>
+
+                <button
+                  class="btn opt-btn-primary-light"
+                  (click)="viewPaymentDocument(item.paymentHistoryPDFURL)"
+                >
+                  <img src="/assets/icons/eye.svg" alt="eye icon" />
+                </button>
+              </div>
+            </div>
+          </li>
+        </ul>
+        <ng-template #noHistory>
+          <p style="text-align: center">No payment history</p>
+        </ng-template>
+      </div>
+    </div>
+  </ng-container>
+</div>
+
+<form
+  *ngIf="isEditMode === 'EDIT_BEFORE_PAYMENT'"
+  [formGroup]="schedulePaymentForm"
+  class="positive-relative d-flex flex-column"
+>
+  <div class="d-flex justify-content-between align-items-center header">
+    <div class="d-flex align-items-center">
+      <span class="fw-bold opt-para-1 pe-1">
+        ID{{ loan?.applicationQuoteId }}:
+      </span>
+      <p class="opt-para-1 m-0">Payment Schedule</p>
+    </div>
+    <div class="icons-container">
+      <div matRipple class="close-icon-container" (click)="closeTray()">
+        <img src="/assets/icons/modal-close-icon.svg" alt="modal close icon" />
+      </div>
+    </div>
+  </div>
+
+  <div class="position-relative form-contents">
+    <p class="opt-para-1">Set your payment schedule</p>
+    <div class="d-flex flex-column">
+      <label for=""><span class="opt-caption">Loan Amount</span></label>
+      <div class="input-group mb-3">
+        <input
+          type="text"
+          class="form-control"
+          placeholder="Loan Amount"
+          [value]="loan?.amount | number"
+          [disabled]="true"
+        />
+        <span class="input-group-text">{{ loan?.currencyCode }}</span>
+      </div>
+    </div>
+
+    <div class="d-flex flex-column">
+      <label for=""><span class="opt-caption">Repayment Duration</span></label>
+      <div class="input-group mb-3">
+        <select class="form-select" formControlName="repaymentDuration">
+          <option
+            *ngFor="let duration of paymentDuration"
+            [value]="duration.value"
+          >
+            {{ duration.label }}
+          </option>
+        </select>
+        <label class="input-group-text">Months</label>
+      </div>
+    </div>
+
+    <div class="d-flex flex-column">
+      <label for=""><span class="opt-caption">Frequency Per Month</span></label>
+      <div class="input-group mb-3">
+        <select class="form-select" formControlName="frequencyPerMonth">
+          <option
+            *ngFor="let freq of frequencyList"
+            [value]="freq.value"
+            selected
+          >
+            {{ freq.label }}
+          </option>
+        </select>
+      </div>
+    </div>
+
+    <div class="d-flex flex-column">
+      <label for=""><span class="opt-caption">Interest</span></label>
+      <div class="input-group mb-3">
+        <input
+          type="number"
+          class="form-control"
+          placeholder="Interest"
+          formControlName="interest"
+        />
+        <span class="input-group-text">%</span>
+      </div>
+    </div>
+
+    <div class="d-flex flex-column">
+      <label for=""><span class="opt-caption">Interest amount</span></label>
+      <div class="input-group mb-3">
+        <input
+          type="text"
+          class="form-control"
+          [value]="(interestRateToUse / 100) * (loan?.amount || 0) | number"
+          readonly
+        />
+        <span class="input-group-text">{{ loan?.currencyCode }}</span>
+      </div>
+    </div>
+
+    <div>
+      <div class="d-flex flex-column">
+        <label for="">
+          <span class="opt-caption">Total Amount to be Paid</span>
+        </label>
+        <div class="input-group mb-3">
+          <input
+            type="text"
+            class="form-control"
+            [disabled]="true"
+            placeholder="10,000"
+            [value]="
+              (interestRateToUse / 100) * (loan?.amount || 0) + (loan?.amount || 0) | number
+            "
+          />
+          <span class="input-group-text">{{ loan?.currencyCode }}</span>
+        </div>
+      </div>
+
+      <div class="d-flex flex-column">
+        <label for=""><span class="opt-caption">Start Date</span></label>
+        <div class="input-group mb-3">
+          <input type="date" class="form-control" formControlName="startDate" />
+        </div>
+      </div>
+
+      <div class="d-flex flex-column payment-details-container">
+        <h4>PAYMENT DETAILS</h4>
+        <div class="timeline-container">
+          <ul class="timeline-with-icons opt-caption">
+            <li *ngFor="let item of paymentPlanList" class="timeline-item">
+              <div class="d-flex justify-content-between align-items-center">
+                <div class="d-flex justify-content-center">
+                  <span class="timeline-icon"></span>
+                  <span>{{ item.amount | currency : loan?.currencyCode }}</span>
+                </div>
+                <span class="opt-time-txt">{{ item.paymentDate | date }}</span>
+              </div>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="action-container">
+    <button
+      matRipple
+      type="button"
+      class="btn opt-btn-primary-light opt-btn-lg"
+      (click)="closeTray()"
+    >
+      Cancel
+    </button>
+
+    <button
+      type="button"
+      (click)="save()"
+      matRipple
+      class="btn opt-btn-primary opt-btn-lg"
+      [disabled]="schedulePaymentForm.invalid || (isLoading | async)"
+    >
+      Save
+      <ng-container *ngIf="isLoading | async">
+        <app-button-loader></app-button-loader>
+      </ng-container>
+    </button>
+  </div>
+</form>
+
+<app-quote-document-view
+  *ngIf="viewDocumentMode"
+  [data]="viewedquoteDocumentData"
+  (closeDocumentModal)="viewDocumentMode = false"
+></app-quote-document-view>
+
+<!-- update payment plan only -->
+<!-- maybe change form group as well? -->
+<form
+  *ngIf="isEditMode === 'UPDATE_AFTER_PAYMENT'"
+  [formGroup]="schedulePaymentForm"
+  class="positive-relative d-flex flex-column"
+>
+  <div class="d-flex justify-content-between align-items-center header">
+    <div class="d-flex align-items-center">
+      <span class="fw-bold opt-para-1 pe-1">
+        ID{{ loan?.applicationQuoteId }}:
+      </span>
+      <p class="opt-para-1 m-0">Payment Schedule</p>
+    </div>
+    <div class="icons-container">
+      <div matRipple class="close-icon-container" (click)="closeTray()">
+        <img src="/assets/icons/modal-close-icon.svg" alt="modal close icon" />
+      </div>
+    </div>
+  </div>
+
+  <div class="position-relative form-contents">
+    <p class="opt-para-1">Set your payment schedule</p>
+    <div class="d-flex flex-column">
+      <label for=""><span class="opt-caption">Loan Amount</span></label>
+      <div class="input-group mb-3">
+        <input
+          type="text"
+          class="form-control"
+          placeholder="Loan Amount"
+          [value]="loan?.amount | number"
+          [disabled]="true"
+        />
+        <span class="input-group-text">{{ loan?.currencyCode }}</span>
+      </div>
+    </div>
+
+    <div class="d-flex flex-column">
+      <label for=""><span class="opt-caption">Repayment Duration</span></label>
+      <div class="input-group mb-3">
+        <select class="form-select" formControlName="repaymentDuration">
+          <option
+            *ngFor="let duration of paymentDuration"
+            [value]="duration.value"
+          >
+            {{ duration.label }}
+          </option>
+        </select>
+        <label class="input-group-text">Months</label>
+      </div>
+    </div>
+
+    <div class="d-flex flex-column">
+      <label for=""><span class="opt-caption">Frequency Per Month</span></label>
+      <div class="input-group mb-3">
+        <select class="form-select" formControlName="frequencyPerMonth">
+          <option
+            *ngFor="let freq of frequencyList"
+            [value]="freq.value"
+            selected
+          >
+            {{ freq.label }}
+          </option>
+        </select>
+      </div>
+    </div>
+
+    <div class="d-flex flex-column">
+      <label for=""><span class="opt-caption">Interest</span></label>
+      <div class="input-group mb-3">
+        <input
+          type="number"
+          class="form-control"
+          placeholder="Interest"
+          formControlName="interest"
+          [disabled]="true"
+        />
+        <span class="input-group-text">%</span>
+      </div>
+    </div>
+
+    <div class="d-flex flex-column">
+      <label for=""><span class="opt-caption">Interest amount</span></label>
+      <div class="input-group mb-3">
+        <input
+          type="text"
+          class="form-control"
+          [value]="(interestRateToUse / 100) * (loan?.amount || 0) | number"
+          readonly
+        />
+        <span class="input-group-text">{{ loan?.currencyCode }}</span>
+      </div>
+    </div>
+
+    <div>
+      <!-- <div class="d-flex flex-column">
+        <label for="">
+          <span class="opt-caption">Total Amount to be Paid</span>
+        </label>
+        <div class="input-group mb-3">
+          <input
+            type="text"
+            class="form-control"
+            [disabled]="true"
+            placeholder="10,000"
+            [value]="
+              (interestRateToUse / 100) * loan.amount + loan.amount | number
+            "
+          />
+          <span class="input-group-text">{{ loan.currencyCode }}</span>
+        </div>
+      </div> -->
+
+      <div class="d-flex flex-column">
+        <label for=""><span class="opt-caption">Start Date</span></label>
+        <div class="input-group mb-3">
+          <input
+            type="date"
+            class="form-control"
+            formControlName="startDate"
+            [min]="today.toISOString().slice(0, 10)"
+          />
+        </div>
+      </div>
+
+      <div class="d-flex flex-column payment-details-container">
+        <h4>PAYMENT DETAILS</h4>
+        <div class="timeline-container">
+          <ul class="timeline-with-icons opt-caption">
+            <li *ngFor="let item of paymentPlanList" class="timeline-item">
+              <div class="d-flex justify-content-between align-items-center">
+                <div class="d-flex justify-content-center">
+                  <span class="timeline-icon"></span>
+                  <span>{{ item.amount | currency : loan?.currencyCode }}</span>
+                </div>
+                <span class="opt-time-txt">{{ item.paymentDate | date }}</span>
+              </div>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="action-container">
+    <button
+      matRipple
+      type="button"
+      class="btn opt-btn-primary-light opt-btn-lg"
+      (click)="closeTray()"
+    >
+      Cancel
+    </button>
+
+    <button
+      type="button"
+      (click)="save()"
+      matRipple
+      class="btn opt-btn-primary opt-btn-lg"
+      [disabled]="schedulePaymentForm.invalid || (isLoading | async)"
+    >
+      Save
+      <ng-container *ngIf="isLoading | async">
+        <app-button-loader></app-button-loader>
+      </ng-container>
+    </button>
+  </div>
+</form>

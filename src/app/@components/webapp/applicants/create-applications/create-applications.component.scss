@@ -1,0 +1,35 @@
+#manage-contact-category {
+  .manage-contact-category-header {
+    display: flex;
+    justify-content: space-between;
+    gap: 1.25rem;
+    margin-bottom: 1.25rem;
+  }
+
+  .cta-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+    gap: 0.625rem;
+    margin-top: 0.5rem;
+  }
+
+  .opt-id {
+    border-radius: 1.5rem;
+    background: var(--opt-primary-color-50);
+  }
+
+  p {
+    padding: 0.375rem 0.75rem;
+    border: 0.0625rem solid var(--opt-neutral2-700);
+    border-radius: 1.5rem;
+    background-color: var(--opt-primary-color-50);
+  }
+}
+
+.country-flag {
+  width: 1.5rem;
+  height: 1.125rem;
+  margin-right: 0.5rem;
+}

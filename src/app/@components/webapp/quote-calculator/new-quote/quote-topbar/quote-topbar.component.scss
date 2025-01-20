@@ -1,0 +1,51 @@
+@use '../../../../../@core/styles/abstracts' as *;
+
+.topbar {
+  height: 2.75rem;
+  width: 100%;
+  border-bottom: 1px solid $opt-neutral-100;
+
+  .content-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    overflow: auto;
+    white-space: nowrap;
+
+    .content-left {
+      display: flex;
+      gap: 0.65rem;
+      align-items: center;
+
+      .topbar-buttons1 {
+        padding: 0.15rem 0.3rem !important;
+        background-color: #e7eaee;
+        border: 1px solid $opt-neutral-100;
+        color: #0d0f11;
+      }
+    }
+
+    .content-right {
+      display: flex;
+      gap: 1rem;
+
+      .topbar-buttons {
+        padding: 0.2rem 0.5rem !important;
+        background-color: var(--opt-primary-color-50);
+        border: 1px solid $opt-primary-400;
+        color: $opt-primary-400;
+
+        .text {
+          padding-right: 0.25rem;
+        }
+
+        &:disabled {
+          background: var(--opt-neutral-200);
+          color: var(--opt-neutral-400);
+          opacity: 1;
+          cursor: not-allowed;
+        }
+      }
+    }
+  }
+}

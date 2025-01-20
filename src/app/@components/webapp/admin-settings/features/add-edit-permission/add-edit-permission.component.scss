@@ -1,0 +1,8 @@
+#add-edit-permission {
+  .access-level {
+    display: grid;
+    grid-template-columns: auto auto;
+    justify-content: space-between;
+    margin-bottom: 3.5rem;
+  }
+}

@@ -1,0 +1,303 @@
+<ng-container *ngIf="(isLoading | async) !== false">
+  <div class="general-loader-container webapp-view">
+    <div class="general-loader-backdrop"></div>
+
+    <div class="general-loader-content">
+      <app-general-loader></app-general-loader>
+    </div>
+  </div>
+</ng-container>
+<section id="country">
+  <ng-container>
+    <div class="card-section">
+      <div class="country-list-header">
+        <div class="header-group">
+          <img
+            [src]="selectedContry?.flagUrl"
+            class="country-flag"
+            alt="flag"
+          />
+          <div>
+            <div class="header-text-container">
+              <div class="opt-para-3 fw-600">
+                {{ selectedContry?.name }}
+              </div>
+
+              <div
+                *ngIf="countryPermission[2]"
+                class="pr-5"
+                matRipple
+                matTooltip="Edit"
+                matTooltipPosition="above"
+                matTooltipClass="custom-tooltip"
+                (click)="openAddOrEditCountry('edit', selectedContry)"
+              >
+                <img src="/assets/icons/edit.svg" alt="edit icon" />
+              </div>
+
+              <mat-slide-toggle
+                *ngIf="countryPermission[3]"
+                matTooltipPosition="above"
+                matTooltipClass="custom-tooltip"
+                [matTooltip]="
+                  selectedContry.status === 1 ? 'Deactivate' : 'Activate'
+                "
+                [checked]="selectedContry.status === 1 ? 'true' : 'false'"
+                (change)="onChangeRoleStatus($event, selectedContry.id)"
+              >
+              </mat-slide-toggle>
+            </div>
+            <p class="opt-para-1 fw-500 mb-0">
+              Currency:
+              {{ selectedContry?.currency?.currencyCode }}
+            </p>
+          </div>
+        </div>
+
+        <div class="table-controls">
+          <span class="opt-para-3 fw-600">Status</span>
+          <span
+            [ngClass]="{
+              'status-active': selectedContry?.status === 1,
+              'status-inactive':
+                selectedContry?.status === 2 || selectedContry?.status === 3
+            }"
+          >
+            <span *ngIf="selectedContry?.status === 1">Active</span>
+            <span
+              *ngIf="
+                selectedContry?.status === 2 || selectedContry?.status === 3
+              "
+              >Deactivated</span
+            >
+          </span>
+        </div>
+      </div>
+
+      <div class="country-progress-grid">
+        <div class="country-container">
+          <div class="country-container-card">
+            <div class="opt-para-2 fw-600 chart-label">Progress</div>
+            <div id="chart">
+              <div class="apex-chart">
+                <div class="opt-para-3 fw-600 apex-chart-label">
+                  {{ dashboardDataPercentage[0] }}%
+                </div>
+                <apx-chart
+                  [series]="dashboardDataPercentage"
+                  [legend]="chartOptions.legend"
+                  [plotOptions]="chartOptions.plotOptions"
+                  [tooltip]="chartOptions.tooltip"
+                  [states]="chartOptions.states"
+                  [chart]="chartOptions.chart"
+                  [colors]="chartOptions.colors"
+                  [dataLabels]="chartOptions.dataLabels"
+                  [labels]="chartOptions.labels"
+                  [responsive]="chartOptions.responsive"
+                ></apx-chart>
+              </div>
+            </div>
+
+            <div class="country">
+              <div class="country-country">
+                <ng-container
+                  *ngIf="
+                    dashboardDataMissingParameters &&
+                    dashboardDataMissingParameters.length >= 1
+                  "
+                >
+                  <div>
+                    <div
+                      class="feature-grid"
+                      *ngFor="let item of dashboardDataMissingParameters"
+                    >
+                      <p class="feature-name">
+                        You are yet to complete your {{ item }}
+                        configuration. Tap this link to
+                        <span [routerLink]="item">continue.</span>
+                      </p>
+                    </div>
+                  </div>
+                </ng-container>
+
+                <ng-container
+                  *ngIf="
+                    dashboardDataMissingParameters &&
+                    dashboardDataMissingParameters.length < 1
+                  "
+                >
+                  <div>
+                    <div class="feature-grid">
+                      <p class="feature-name">
+                        You have completed your configuration for this country
+                      </p>
+                    </div>
+                  </div>
+                </ng-container>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="dashboard-menus-container">
+          <div
+            matRipple
+            class="dashboard-menus-items"
+            routerLink="invoiceCurrency"
+            *ngIf="canViewInvoiceCurrency === true"
+          >
+            <div class="dashboard-menus-content">
+              <div>
+                <h6 class="opt-heading-6 fw-600">Invoice Currencies</h6>
+
+                <p class="opt-para-1">Configure invoice currencies</p>
+              </div>
+              <div class="dashboard-menus-number">
+                <span class="opt-heading-6 fw-600">{{
+                  dashboardData.invoiceCurrency
+                }}</span>
+              </div>
+            </div>
+          </div>
+
+          <div
+            matRipple
+            class="dashboard-menus-items"
+            routerLink="familyMembers"
+            *ngIf="canViewFamilyMembers === true"
+          >
+            <div class="dashboard-menus-content">
+              <div>
+                <h6 class="opt-heading-6 fw-600">Family Relation</h6>
+                <p class="opt-para-1">Configure family relation</p>
+              </div>
+              <div class="dashboard-menus-number">
+                <span class="opt-heading-6 fw-600">{{
+                  dashboardData.familyMembers
+                }}</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- <div
+            matRipple
+            class="dashboard-menus-items"
+            routerLink="family-members-type-settings"
+            *ngIf="canViewFamilyMemberTypeSettings === true"
+          >
+            <div class="dashboard-menus-content">
+              <div>
+                <h6 class="opt-heading-6 fw-600">
+                  Family Members Type Setting
+                </h6>
+                <p class="opt-para-1">Configure family members type setting</p>
+              </div>
+              <div class="dashboard-menus-number">
+                <span class="opt-heading-6 fw-600"> </span>
+              </div>
+            </div>
+          </div> -->
+
+          <!-- <div
+            matRipple
+            class="dashboard-menus-items"
+            routerLink="productCategory"
+            *ngIf="canViewProductCategory === true"
+          >
+            <div class="dashboard-menus-content">
+              <div>
+                <h6 class="opt-heading-6 fw-600">Product Category</h6>
+
+                <p class="opt-para-1">Configure product category</p>
+              </div>
+              <div class="dashboard-menus-number">
+                <span class="opt-heading-6 fw-600">{{
+                  dashboardData.productCategory
+                }}</span>
+              </div>
+            </div>
+          </div> -->
+
+          <!-- <div
+            matRipple
+            class="dashboard-menus-items"
+            routerLink="product"
+            *ngIf="canViewProducts === true"
+          >
+            <div class="dashboard-menus-content">
+              <div>
+                <h6 class="opt-heading-6 fw-600">Product</h6>
+                <p class="opt-para-1">Configure product</p>
+              </div>
+              <div class="dashboard-menus-number">
+                <span class="opt-heading-6 fw-600">{{
+                  dashboardData.product
+                }}</span>
+              </div>
+            </div>
+          </div> -->
+
+          <div
+            matRipple
+            class="dashboard-menus-items"
+            routerLink="paymentPlans"
+            *ngIf="canViewPaymentPlan === true"
+          >
+            <div class="dashboard-menus-content">
+              <div>
+                <h6 class="opt-heading-6 fw-600">Payment Plan</h6>
+
+                <p class="opt-para-1">Configure playment plan</p>
+              </div>
+              <div class="dashboard-menus-number">
+                <span class="opt-heading-6 fw-600">{{
+                  dashboardData.paymentPlans
+                }}</span>
+              </div>
+            </div>
+          </div>
+
+          <div
+            matRipple
+            class="dashboard-menus-items"
+            routerLink="migrationRoutes"
+            *ngIf="canViewMigrationRoutes === true"
+          >
+            <div class="dashboard-menus-content">
+              <div>
+                <h6 class="opt-heading-6 fw-600">Migration Routes</h6>
+
+                <p class="opt-para-1">Configure migration routes</p>
+              </div>
+              <div class="dashboard-menus-number">
+                <span class="opt-heading-6 fw-600">{{
+                  dashboardData.migrationRoutes
+                }}</span>
+              </div>
+            </div>
+          </div>
+
+          <div
+            matRipple
+            class="dashboard-menus-items"
+            routerLink="discount"
+            *ngIf="canViewDiscount === true"
+          >
+            <div class="dashboard-menus-content">
+              <div>
+                <h6 class="opt-heading-6 fw-600">Discount</h6>
+
+                <p class="opt-para-1">Configure discount</p>
+              </div>
+              <div class="dashboard-menus-number">
+                <span class="opt-heading-6 fw-600">{{
+                  dashboardData.discounts || 0
+                }}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </ng-container>
+</section>

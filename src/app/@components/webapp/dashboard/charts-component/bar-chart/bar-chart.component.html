@@ -1,0 +1,16 @@
+<div style="text-align: center">
+  <ng-container *ngIf="chartOptions">
+    <apx-chart
+      *ngIf="showChart"
+      [series]="chartOptions.series"
+      [chart]="chartOptions.chart"
+      [xaxis]="chartOptions.xaxis"
+      [title]="chartOptions.title"
+      [plotOptions]="chartOptions.plotOptions"
+      [colors]="chartOptions.colors"
+      [legend]="chartOptions.legend"
+      [dataLabels]="chartOptions.dataLabels"
+      [grid]="chartOptions.grid"
+    ></apx-chart>
+  </ng-container>
+</div>

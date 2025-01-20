@@ -1,0 +1,1087 @@
+<ng-container *ngIf="(isLoading2 | async) !== false">
+  <div class="general-loader-container webapp-view">
+    <div class="general-loader-backdrop"></div>
+
+    <div class="general-loader-content">
+      <app-general-loader></app-general-loader>
+    </div>
+  </div>
+</ng-container>
+<section id="country">
+  <ng-container>
+    <div class="opt-para-3 fw-600">
+      {{ selectedCountry?.name }}: {{ selectedMigration.name }}
+    </div>
+    <div class="card-section">
+      <div class="country-progress-grid">
+        <div class="country-container">
+          <div class="country-list-header">
+            <div class="header-group">
+              <img
+                [src]="selectedCountry?.flagUrl"
+                class="country-flag"
+                alt="flag"
+              />
+              <div class="header-parent-container">
+                <div>
+                  <div class="header-text-container">
+                    <div
+                      class="opt-para-3 fw-600"
+                      [routerLink]="
+                        '/app/admin-settings/country-setup/dashboard/' +
+                        selectedMigration.countryId
+                      "
+                    >
+                      {{ selectedCountry.name }}
+                    </div>
+                  </div>
+                  <p class="opt-para-1 fw-500 mb-0">
+                    Currency: {{ selectedCountry?.currency?.name }}
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="opt-para-3 fw-600">All Fees</div>
+
+          <div class="feature-container">
+            <div class="feature-list-section">
+              <ng-container
+                *ngIf="(isLoading3 | async) !== true; else isRouteLoading"
+              >
+                <div
+                  class="list-group feature-list-card"
+                  cdkDropList
+                  [cdkDropListData]="allFeeList"
+                  (cdkDropListDropped)="drop($event)"
+                >
+                  <ng-container
+                    *ngFor="
+                      let item of allFeeList;
+                      index as i;
+                      let first = first
+                    "
+                  >
+                    <div
+                      (click)="selectedFees(item, i)"
+                      class="list-group-item mb-1"
+                      [ngClass]="{
+                        'active-feature': selectedFeeList.includes(i)
+                      }"
+                      cdkDrag
+                      cdkDragLockAxis="y"
+                      [cdkDragData]="item"
+                      [cdkDragDisabled]="first"
+                    >
+                      <span class="opt-para-1 name text-truncate">{{
+                        item.name
+                      }}</span>
+                      <div matRipple class="more-option">
+                        <img src="/assets/icons/more-icon.svg" />
+                      </div>
+                    </div>
+                  </ng-container>
+                </div>
+              </ng-container>
+            </div>
+            <ng-template #isRouteLoading>
+              <ul class="ph-item">
+                <li class="ph-col-12">
+                  <div class="ph-row item" *ngFor="let item of [1, 2, 3, 4]">
+                    <div class="ph-col-12 round background"></div>
+                  </div>
+                </li>
+              </ul>
+            </ng-template>
+          </div>
+        </div>
+
+        <form [formGroup]="addRouteFeeForm" (ngSubmit)="onSubmit()">
+          <div class="dashboard-menus-container">
+            <div class="card-section-header-container">
+              <div class="card-section-header-left" (click)="previousPage()">
+                <span
+                  ><img
+                    src="/assets/icons/arrow-left.svg"
+                    class="section-header-icon"
+                    alt="back-icon"
+                  />
+                </span>
+                <span class="opt-para-1 fw-400">Back</span>
+              </div>
+
+              <button
+                matRipple
+                class="btn opt-btn-primary"
+                [disabled]="
+                  addRouteFeeForm.invalid || (isLoading3 | async) !== false
+                "
+              >
+                Save
+                <ng-container *ngIf="(isLoading3 | async) !== false">
+                  <app-button-loader></app-button-loader>
+                </ng-container>
+              </button>
+            </div>
+            <div class="main-form-container">
+              <div class="inner-card-header-container">
+                <span
+                  ><img
+                    src="/assets/icons/info-circle.svg"
+                    class="section-header-icon"
+                    alt="back-icon"
+                  />
+                </span>
+                <span class="opt-para-1 opt-neutral-700 fw-400"
+                  >Configure Route Fee.</span
+                >
+              </div>
+
+              <div class="card-form-container">
+                <!-- <form [formGroup]="addRouteFeeForm" (ngSubmit)="onSubmit()"> -->
+                <div class="row">
+                  <div class="col-md-6">
+                    <div class="input-style1">
+                      <label class="input-label input-required">Fee Name</label>
+
+                      <mat-form-field
+                        appearance="outline"
+                        [style.width.%]="100"
+                      >
+                        <input
+                          type="text"
+                          matInput
+                          formControlName="name"
+                          placeholder="Enter Fee Name"
+                        />
+
+                        <mat-error *ngIf="newUserFormControls['name'].invalid">
+                          <img
+                            src="/assets/icons/error.svg"
+                            alt=""
+                            class="img-fluid error-icon"
+                          />
+                          {{ getErrorMessage('name') }}
+                        </mat-error>
+                      </mat-form-field>
+                    </div>
+                  </div>
+
+                  <div class="col-md-6">
+                    <div class="input-style1 mb-2">
+                      <label class="input-label input-required">Fee Type</label>
+
+                      <div>
+                        <mat-radio-group
+                          class="opt-radio-group"
+                          formControlName="feeType"
+                          (change)="handleSelection($event)"
+                        >
+                          <mat-radio-button
+                            [value]="item.value"
+                            class="opt-radio-btn"
+                            *ngFor="let item of feeTypeList"
+                          >
+                            <span class="mat-radio-label-content">{{
+                              item.name
+                            }}</span>
+                          </mat-radio-button>
+                        </mat-radio-group>
+
+                        <!-- <mat-error
+                            *ngIf="newUserFormControls['feeName'].invalid"
+                          >
+                            <img
+                              src="/assets/icons/error.svg"
+                              alt=""
+                              class="img-fluid error-icon"
+                            />
+                            {{ getErrorMessage('feeName') }}
+                          </mat-error> -->
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- first row -->
+
+                <div class="row">
+                  <div class="col-md-6">
+                    <div class="input-style1">
+                      <label class="input-label input-required"
+                        >Fee Basis</label
+                      >
+
+                      <mat-form-field
+                        appearance="outline"
+                        [style.width.%]="100"
+                      >
+                        <mat-select
+                          formControlName="feeBasis"
+                          placeholder="Select Fee Basis"
+                        >
+                          <mat-option
+                            [value]="item.value"
+                            *ngFor="let item of feeBasisList"
+                          >
+                            {{ item.name }}
+                          </mat-option>
+                        </mat-select>
+
+                        <mat-error
+                          *ngIf="newUserFormControls['feeBasis'].invalid"
+                        >
+                          <img
+                            src="/assets/icons/error.svg"
+                            alt=""
+                            class="img-fluid error-icon"
+                          />
+                          {{ getErrorMessage('feeBasis') }}
+                        </mat-error>
+                      </mat-form-field>
+                    </div>
+                  </div>
+
+                  <div class="col-md-6">
+                    <div class="input-style1 mb-2">
+                      <label class="input-label input-required"
+                        >Fee Category</label
+                      >
+
+                      <div>
+                        <mat-radio-group
+                          class="opt-radio-group"
+                          formControlName="feeCategory"
+                        >
+                          <mat-radio-button
+                            [value]="item.value"
+                            class="opt-radio-btn"
+                            *ngFor="let item of feeCategoryList"
+                          >
+                            <span class="mat-radio-label-content">{{
+                              item.name
+                            }}</span>
+                          </mat-radio-button>
+                        </mat-radio-group>
+
+                        <!-- <mat-error
+                            *ngIf="newUserFormControls['feeCategory'].invalid"
+                          >
+                            <img
+                              src="/assets/icons/error.svg"
+                              alt=""
+                              class="img-fluid error-icon"
+                            />
+                            {{ getErrorMessage('feeName') }}
+                          </mat-error> -->
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- second row -->
+
+                <div class="row">
+                  <div class="col-md-6">
+                    <div class="input-style1">
+                      <label class="input-label input-required"
+                        >Serial Number</label
+                      >
+                      <mat-form-field
+                        appearance="outline"
+                        [style.width.%]="100"
+                      >
+                        <input
+                          type="number"
+                          matInput
+                          formControlName="serialNumber"
+                          placeholder="Enter Route Fee Serial Number"
+                        />
+
+                        <mat-error
+                          *ngIf="newUserFormControls['serialNumber'].invalid"
+                        >
+                          <img
+                            src="/assets/icons/error.svg"
+                            alt=""
+                            class="img-fluid error-icon"
+                          />
+                          {{ getErrorMessage('serialNumber') }}
+                        </mat-error>
+                      </mat-form-field>
+                    </div>
+                  </div>
+
+                  <div class="col-6 pt-4">
+                    <div class="d-flex justify-content-start gap-4">
+                      <div class="d-flex align-items-center mb-2 mr-2">
+                        <mat-checkbox
+                          color="primary"
+                          class="me-3"
+                          value="3"
+                          formControlName="applicationIncludesSpouse"
+                        >
+                        </mat-checkbox>
+                        <p class="opt-para-1 mb-0">Is there spouse</p>
+                      </div>
+
+                      <div
+                        class="d-flex align-items-center mb-2"
+                        *ngIf="addRouteFeeForm.get('feeType')?.value === 1"
+                      >
+                        <mat-checkbox
+                          color="primary"
+                          class="me-3"
+                          value="3"
+                          formControlName="hasRealEstateInvestmentTier"
+                        >
+                        </mat-checkbox>
+                        <p class="opt-para-1 mb-0">
+                          Are there different investment tiers?
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <ng-container
+                  *ngIf="addRouteFeeForm.get('feeType')?.value === 1"
+                >
+                  <div class="row">
+                    <div class="col-md-6">
+                      <div class="input-style1">
+                        <label class="input-label input-required"
+                          >Family Member</label
+                        >
+
+                        <mat-form-field
+                          appearance="outline"
+                          [style.width.%]="100"
+                        >
+                          <mat-select
+                            formControlName="familyMemberId"
+                            placeholder="Select Fee Basis"
+                          >
+                            <mat-option
+                              [value]="item.id"
+                              *ngFor="let item of familyMemberList"
+                            >
+                              {{ item.name }}
+                            </mat-option>
+                          </mat-select>
+
+                          <mat-error
+                            *ngIf="
+                              newUserFormControls['familyMemberId'].invalid
+                            "
+                          >
+                            <img
+                              src="/assets/icons/error.svg"
+                              alt=""
+                              class="img-fluid error-icon"
+                            />
+                            {{ getErrorMessage('familyMemberId') }}
+                          </mat-error>
+                        </mat-form-field>
+                      </div>
+                    </div>
+
+                    <div
+                      class="col-md-6"
+                      *ngIf="
+                        addRouteFeeForm.get('feeType')?.value === 1 &&
+                        addRouteFeeForm.get('hasRealEstateInvestmentTier')
+                          ?.value === false
+                      "
+                    >
+                      <div class="input-style1">
+                        <label class="input-label input-required">Amount</label>
+
+                        <mat-form-field
+                          appearance="outline"
+                          [style.width.%]="100"
+                        >
+                          <input
+                            type="number"
+                            matInput
+                            formControlName="amount2"
+                            placeholder="Enter amount"
+                          />
+                          <div matSuffix class="currency-suffix opt-caption">
+                            <mat-select class="select-field">
+                              <mat-option
+                                [value]="item.id"
+                                *ngFor="let item of invoiceCurrencyList"
+                              >
+                                {{ item.currencyCode }}
+                              </mat-option>
+                            </mat-select>
+                            <!-- <mat-error
+                              *ngIf="
+                                newUserFormControls['familyMemberId'].invalid
+                              "
+                            >
+                              <img
+                                src="/assets/icons/error.svg"
+                                alt=""
+                                class="img-fluid error-icon"
+                              />
+                              {{ getErrorMessage('familyMemberId') }}
+                            </mat-error> -->
+                          </div>
+                          <mat-error
+                            *ngIf="newUserFormControls['amount2'].invalid"
+                          >
+                            <img
+                              src="/assets/icons/error.svg"
+                              alt=""
+                              class="img-fluid error-icon"
+                            />
+                            {{ getErrorMessage('amount2') }}
+                          </mat-error>
+                        </mat-form-field>
+                      </div>
+                    </div>
+                  </div>
+                </ng-container>
+
+                <ng-container
+                  *ngIf="
+                    addRouteFeeForm.get('feeType')?.value === 2 ||
+                    addRouteFeeForm.get('feeType')?.value === 3
+                  "
+                >
+                  <span class="opt-para-1 fw-500 mb-0 mt-1"> Fee Cap </span>
+
+                  <div class="row compute-fields-container">
+                    <div class="col-md-6">
+                      <div class="input-style1">
+                        <label class="input-label">Capped at</label>
+
+                        <mat-form-field
+                          appearance="outline"
+                          [style.width.%]="100"
+                        >
+                          <input
+                            type="number"
+                            matInput
+                            formControlName="numberOfFamilyMembersFeeCap"
+                            placeholder="No. of family members"
+                          />
+                          <mat-error
+                            *ngIf="
+                              newUserFormControls['numberOfFamilyMembersFeeCap']
+                                .invalid
+                            "
+                          >
+                            <img
+                              src="/assets/icons/error.svg"
+                              alt=""
+                              class="img-fluid error-icon"
+                            />
+                            {{ getErrorMessage('numberOfFamilyMembersFeeCap') }}
+                          </mat-error>
+                        </mat-form-field>
+                      </div>
+                    </div>
+
+                    <div class="col-md-6">
+                      <div class="input-style1">
+                        <label class="input-label">Amount</label>
+
+                        <mat-form-field
+                          appearance="outline"
+                          [style.width.%]="100"
+                        >
+                          <input
+                            type="number"
+                            matInput
+                            formControlName="feeCapAmount"
+                            placeholder="Enter amount"
+                          />
+                          <div matSuffix class="currency-suffix opt-caption">
+                            <mat-select class="select-field">
+                              <mat-option
+                                [value]="item.id"
+                                *ngFor="let item of invoiceCurrencyList"
+                              >
+                                {{ item.currencyCode }}
+                              </mat-option>
+                            </mat-select>
+                          </div>
+                          <mat-error
+                            *ngIf="newUserFormControls['feeCapAmount'].invalid"
+                          >
+                            <img
+                              src="/assets/icons/error.svg"
+                              alt=""
+                              class="img-fluid error-icon"
+                            />
+                            {{ getErrorMessage('feeCapAmount') }}
+                          </mat-error>
+                        </mat-form-field>
+                      </div>
+                    </div>
+                  </div>
+                </ng-container>
+
+                <ng-container
+                  *ngIf="
+                    (addRouteFeeForm.get('feeType')?.value === 1 &&
+                      addRouteFeeForm.get('hasRealEstateInvestmentTier')
+                        ?.value === true) ||
+                    addRouteFeeForm.get('feeType')?.value === 2 ||
+                    addRouteFeeForm.get('feeType')?.value === 3 ||
+                    addRouteFeeForm.get('feeType')?.value === 4
+                  "
+                >
+                  <!-- Route fee item label -->
+                  <div class="mb-3">
+                    <ng-container
+                      *ngIf="
+                        (addRouteFeeForm.get('feeType')?.value === 1 &&
+                          addRouteFeeForm.get('hasRealEstateInvestmentTier')
+                            ?.value === true) ||
+                        addRouteFeeForm.get('feeType')?.value === 2 ||
+                        addRouteFeeForm.get('feeType')?.value === 3
+                      "
+                    >
+                      <span class="opt-para-1 fw-500 mb-0 mt-1">
+                        Add the Fee Items
+                      </span>
+                    </ng-container>
+
+                    <ng-container
+                      *ngIf="addRouteFeeForm.get('feeType')?.value === 4"
+                    >
+                      <span class="opt-para-1 fw-500 mb-0 mt-1">
+                        Compute Fee
+                      </span>
+                    </ng-container>
+                  </div>
+                  <!-- Route fee item label -->
+
+                  <!-- Route fee items form arry -->
+                  <div
+                    class="card2-form-container"
+                    formArrayName="routeFeeItems"
+                  >
+                    <ng-container
+                      *ngIf="
+                        (addRouteFeeForm.get('feeType')?.value === 1 &&
+                          addRouteFeeForm.get('hasRealEstateInvestmentTier')
+                            ?.value === true) ||
+                        addRouteFeeForm.get('feeType')?.value === 2 ||
+                        addRouteFeeForm.get('feeType')?.value === 3
+                      "
+                    >
+                      <div
+                        *ngFor="
+                          let arrayItem of routeFeeItems().controls;
+                          let i = index
+                        "
+                        [formGroupName]="i"
+                      >
+                        <div class="row">
+                          <div class="col-md-11">
+                            <div class="row">
+                              <div
+                                [class]="
+                                  (addRouteFeeForm.get('feeBasis')?.value ===
+                                    5 &&
+                                    arrayItem.get('familyGroup')?.value ===
+                                      1) ||
+                                  (addRouteFeeForm.get('feeType')?.value ===
+                                    1 &&
+                                    addRouteFeeForm.get(
+                                      'hasRealEstateInvestmentTier'
+                                    )?.value === true) ||
+                                  addRouteFeeForm.get('feeBasis')?.value === 7
+                                    ? 'col-md-3'
+                                    : 'col-md-4'
+                                "
+                              >
+                                <div class="input-style1">
+                                  <label class="input-label input-required"
+                                    >Family Member</label
+                                  >
+
+                                  <mat-form-field
+                                    appearance="outline"
+                                    [style.width.%]="100"
+                                  >
+                                    <mat-select
+                                      formControlName="familyMemberId"
+                                      (selectionChange)="
+                                        onFamilyMemberChange($event.value, i)
+                                      "
+                                      placeholder="Select Family Member"
+                                    >
+                                      <mat-option
+                                        [value]="item.id"
+                                        *ngFor="let item of familyMemberList"
+                                      >
+                                        {{ item.name }}
+                                      </mat-option>
+                                    </mat-select>
+                                  </mat-form-field>
+                                </div>
+                              </div>
+
+                              <!-- show investment tiers -->
+                              <ng-container
+                                *ngIf="
+                                  addRouteFeeForm.get('feeType')?.value === 1 &&
+                                  addRouteFeeForm.get(
+                                    'hasRealEstateInvestmentTier'
+                                  )?.value === true
+                                "
+                              >
+                                <div class="col-md-3">
+                                  <div class="input-style1">
+                                    <label class="input-label input-required"
+                                      >Investment Tier</label
+                                    >
+
+                                    <mat-form-field
+                                      appearance="outline"
+                                      [style.width.%]="100"
+                                    >
+                                      <mat-select
+                                        formControlName="realEstateInvestmentTierId"
+                                        placeholder="Select Family Group"
+                                      >
+                                        <mat-option
+                                          [value]="item.id"
+                                          *ngFor="
+                                            let item of investmentTierList
+                                          "
+                                        >
+                                          {{ item.name }}
+                                        </mat-option>
+                                      </mat-select>
+                                    </mat-form-field>
+                                  </div>
+                                </div>
+                              </ng-container>
+
+                              <ng-container
+                                *ngIf="
+                                  addRouteFeeForm.get('feeBasis')?.value === 5
+                                "
+                              >
+                                <div
+                                  [class]="
+                                    addRouteFeeForm.get('feeBasis')?.value ===
+                                      5 &&
+                                    arrayItem.get('familyGroup')?.value === 1
+                                      ? 'col-md-3'
+                                      : 'col-md-4'
+                                  "
+                                >
+                                  <div class="input-style1">
+                                    <label class="input-label input-required"
+                                      >Family Group</label
+                                    >
+
+                                    <mat-form-field
+                                      appearance="outline"
+                                      [style.width.%]="100"
+                                    >
+                                      <mat-select
+                                        formControlName="familyGroup"
+                                        placeholder="Select Family Group"
+                                      >
+                                        <mat-option
+                                          [value]="item.value"
+                                          *ngFor="let item of familyGroupList"
+                                        >
+                                          {{ item.description }}
+                                        </mat-option>
+                                      </mat-select>
+                                    </mat-form-field>
+                                  </div>
+                                </div>
+                              </ng-container>
+
+                              <div
+                                [class]="
+                                  (addRouteFeeForm.get('feeBasis')?.value ===
+                                    5 &&
+                                    arrayItem.get('familyGroup')?.value ===
+                                      1) ||
+                                  (addRouteFeeForm.get('feeType')?.value ===
+                                    1 &&
+                                    addRouteFeeForm.get(
+                                      'hasRealEstateInvestmentTier'
+                                    )?.value === true) ||
+                                  addRouteFeeForm.get('feeBasis')?.value === 7
+                                    ? 'col-md-3'
+                                    : 'col-md-4'
+                                "
+                              >
+                                <div class="input-style1">
+                                  <label class="input-label input-required"
+                                    >Amount</label
+                                  >
+
+                                  <mat-form-field
+                                    appearance="outline"
+                                    [style.width.%]="100"
+                                  >
+                                    <input
+                                      type="number"
+                                      matInput
+                                      formControlName="amount"
+                                      placeholder="Enter Amount"
+                                    />
+                                    <div
+                                      matSuffix
+                                      class="currency-suffix opt-caption"
+                                    >
+                                      <mat-select
+                                        class="select-field"
+                                        formControlName="currencyCode"
+                                      >
+                                        <mat-option
+                                          [value]="item.id"
+                                          *ngFor="
+                                            let item of invoiceCurrencyList
+                                          "
+                                        >
+                                          {{ item.currencyCode }}
+                                        </mat-option>
+                                      </mat-select>
+                                    </div>
+                                  </mat-form-field>
+                                </div>
+                              </div>
+
+                              <ng-container
+                                *ngIf="
+                                  addRouteFeeForm.get('feeBasis')?.value ===
+                                    5 &&
+                                  arrayItem.get('familyGroup')?.value === 1
+                                "
+                              >
+                                <div class="col-md-3">
+                                  <div class="input-style1">
+                                    <label class="input-label input-required"
+                                      >Fixed number of people</label
+                                    >
+
+                                    <mat-form-field
+                                      appearance="outline"
+                                      [style.width.%]="100"
+                                    >
+                                      <input
+                                        type="number"
+                                        matInput
+                                        formControlName="fixedNoOfPeople"
+                                        placeholder="Fixed number of people"
+                                      />
+                                    </mat-form-field>
+                                  </div>
+                                </div>
+                              </ng-container>
+
+                              <ng-container
+                                *ngIf="
+                                  addRouteFeeForm.get('feeBasis')?.value ===
+                                    7 &&
+                                  addRouteFeeForm.get('feeType')?.value === 3
+                                "
+                              >
+                                <div class="col-md-3">
+                                  <div class="input-style1">
+                                    <label class="input-label input-required"
+                                      >Minimum number of people</label
+                                    >
+
+                                    <mat-form-field
+                                      appearance="outline"
+                                      [style.width.%]="100"
+                                    >
+                                      <input
+                                        type="number"
+                                        matInput
+                                        formControlName="minimumPeople"
+                                        placeholder="Minimum Number Of People"
+                                      />
+                                    </mat-form-field>
+                                  </div>
+                                </div>
+                              </ng-container>
+
+                              <ng-container
+                                *ngIf="
+                                  addRouteFeeForm.get('feeBasis')?.value ===
+                                    7 &&
+                                  addRouteFeeForm.get('feeType')?.value === 3
+                                "
+                              >
+                                <div class="col-md-3">
+                                  <div class="input-style1">
+                                    <label class="input-label input-required"
+                                      >Maximum number of people</label
+                                    >
+
+                                    <mat-form-field
+                                      appearance="outline"
+                                      [style.width.%]="100"
+                                    >
+                                      <input
+                                        type="number"
+                                        matInput
+                                        formControlName="maximumPeople"
+                                        placeholder="Maximum Number Of People"
+                                      />
+                                    </mat-form-field>
+                                  </div>
+                                </div>
+                              </ng-container>
+                            </div>
+                          </div>
+
+                          <div class="col-md-1 form-icon">
+                            <div class="d-flex gap-3">
+                              <ng-container
+                                *ngIf="i !== routeFeeItems().controls.length"
+                              >
+                                <button
+                                  matRipple
+                                  type="button"
+                                  class="btn opt-btn-primary-outline"
+                                  (click)="removeQuantity(i)"
+                                >
+                                  <span
+                                    ><img
+                                      src="/assets/icons/minus.svg"
+                                      class="section-header-icon"
+                                      alt="back-icon"
+                                    />
+                                  </span>
+                                </button>
+                              </ng-container>
+
+                              <ng-container
+                                *ngIf="
+                                  i + 1 === routeFeeItems().controls.length
+                                "
+                              >
+                                <button
+                                  matRipple
+                                  type="button"
+                                  class="btn opt-btn-primary-outline"
+                                  (click)="addFeeArray()"
+                                >
+                                  <span>
+                                    <img
+                                      src="/assets/icons/add.svg"
+                                      class="section-header-icon"
+                                      alt="back-icon"
+                                    />
+                                  </span>
+                                </button>
+                              </ng-container>
+                            </div>
+                          </div>
+                        </div>
+                        <div
+                          class="card2-form-divider"
+                          *ngIf="i + 1 !== routeFeeItems().controls.length"
+                        ></div>
+                      </div>
+                    </ng-container>
+
+                    <ng-container
+                      *ngIf="addRouteFeeForm.get('feeType')?.value === 4"
+                    >
+                      <div class="row compute-fields-container">
+                        <div class="col-md-3">
+                          <div class="input-style1">
+                            <label class="input-label input-required">
+                              Sum of Fee Category A
+                            </label>
+
+                            <mat-form-field
+                              appearance="outline"
+                              [style.width.%]="100"
+                            >
+                              <mat-select
+                                placeholder="Select Fee Type"
+                                formControlName="feeCategoryAForComputeOperation"
+                              >
+                                <mat-option
+                                  [value]="item.value"
+                                  *ngFor="let item of feeCategoryList2"
+                                >
+                                  {{ item.name }}
+                                </mat-option>
+                              </mat-select>
+                            </mat-form-field>
+                          </div>
+                        </div>
+
+                        <div
+                          class="col-md-2 d-flex gap-4 operator-button-container"
+                        >
+                          <div>
+                            <button
+                              matRipple
+                              type="button"
+                              class="btn opt-btn-primary-outline operator-button"
+                              [ngClass]="
+                                addRouteFeeForm.get('firstComputeOperation')
+                                  ?.value === 2
+                                  ? 'operator-button-active'
+                                  : 'operator-button'
+                              "
+                              (click)="toggleComputeOperation(2)"
+                            >
+                              <span>
+                                <img
+                                  src="/assets/icons/minus.svg"
+                                  class="section-header-icon"
+                                  alt="minus-icon"
+                                />
+                              </span>
+                            </button>
+                          </div>
+
+                          <div>
+                            <button
+                              matRipple
+                              type="button"
+                              class="btn opt-btn-primary-outline operator-button"
+                              [ngClass]="
+                                addRouteFeeForm.get('firstComputeOperation')
+                                  ?.value === 1
+                                  ? 'operator-button-active'
+                                  : 'operator-button'
+                              "
+                              (click)="toggleComputeOperation(1)"
+                            >
+                              <span>
+                                <img
+                                  src="/assets/icons/add.svg"
+                                  class="section-header-icon"
+                                  alt="add-icon"
+                                />
+                              </span>
+                            </button>
+                          </div>
+                        </div>
+
+                        <div class="col-md-3">
+                          <div class="input-style1">
+                            <label class="input-label input-required"
+                              >Sum of Fee Category B</label
+                            >
+
+                            <mat-form-field
+                              appearance="outline"
+                              [style.width.%]="100"
+                            >
+                              <mat-select
+                                placeholder="Select Fee Type"
+                                formControlName="feeCategoryBForComputeOperation"
+                              >
+                                <mat-option
+                                  [value]="item.value"
+                                  *ngFor="let item of feeCategoryList2"
+                                >
+                                  {{ item.name }}
+                                </mat-option>
+                              </mat-select>
+                            </mat-form-field>
+                          </div>
+                        </div>
+
+                        <div
+                          class="col-md-2 d-flex gap-4 operator-button-container"
+                        >
+                          <div>
+                            <button
+                              matRipple
+                              type="button"
+                              class="btn opt-btn-primary-outline operator-button"
+                              [ngClass]="
+                                addRouteFeeForm.get('secondComputeOperation')
+                                  ?.value === 2
+                                  ? 'operator-button-active'
+                                  : 'operator-button'
+                              "
+                              (click)="toggleComputeOperation1(2)"
+                            >
+                              <span>
+                                <img
+                                  src="/assets/icons/minus.svg"
+                                  class="section-header-icon"
+                                  alt="minus-icon"
+                                />
+                              </span>
+                            </button>
+                          </div>
+                          <div>
+                            <button
+                              matRipple
+                              type="button"
+                              class="btn opt-btn-primary-outline operator-button"
+                              [ngClass]="
+                                addRouteFeeForm.get('secondComputeOperation')
+                                  ?.value === 1
+                                  ? 'operator-button-active'
+                                  : 'operator-button'
+                              "
+                              (click)="toggleComputeOperation1(1)"
+                            >
+                              <span>
+                                <img
+                                  src="/assets/icons/add.svg"
+                                  class="section-header-icon"
+                                  alt="add-icon"
+                                />
+                              </span>
+                            </button>
+                          </div>
+                        </div>
+
+                        <div class="col-md-3">
+                          <div class="input-style1">
+                            <label class="input-label input-required"
+                              >Sum of Fee Category C</label
+                            >
+
+                            <mat-form-field
+                              appearance="outline"
+                              [style.width.%]="100"
+                            >
+                              <mat-select
+                                placeholder="Select Fee Type"
+                                formControlName="feeCategoryCForComputeOperation"
+                              >
+                                <mat-option
+                                  [value]="item.value"
+                                  *ngFor="let item of feeCategoryList2"
+                                >
+                                  {{ item.name }}
+                                </mat-option>
+                              </mat-select>
+                            </mat-form-field>
+                          </div>
+                        </div>
+                      </div>
+                    </ng-container>
+                  </div>
+                  <!-- Route fee items form arry -->
+                </ng-container>
+                <!-- </form> -->
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </ng-container>
+</section>

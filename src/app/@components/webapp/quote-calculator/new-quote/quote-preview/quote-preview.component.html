@@ -1,0 +1,242 @@
+<ng-container
+  *ngIf="{
+    quoteCalculatorQuestionsAndAnswers:
+      quoteCalculatorQuestionsAndAnswers$ | async
+  } as obs"
+>
+  <section id="main-section">
+    <mat-tab-group>
+      <mat-tab label="Responses">
+        <ng-container>
+          <section id="quote-preview">
+            <div class="header_section mb-4">
+              <h3 class="opt-para-1 fw-700">Responses</h3>
+              <p class="opt-caption opt-text-neutral">
+                See responses of all question answered.
+              </p>
+            </div>
+            <ng-container
+              *ngFor="let question of obs.quoteCalculatorQuestionsAndAnswers"
+            >
+              <div class="mb-2">
+                <ng-container *ngIf="question.type === 'COUNTRY'">
+                  <div class="mb-1 opt-para-1 opt-text-neutral">
+                    Which country program are you applying for?
+                  </div>
+                  <div>
+                    {{ question.answer }}
+                  </div>
+                </ng-container>
+                <ng-container *ngIf="question.type === 'ROUTE'">
+                  <div class="mb-1 opt-para-1 opt-text-neutral">
+                    What route are you taking?
+                  </div>
+                  <div>
+                    {{ question.answer }}
+                  </div>
+                </ng-container>
+                <ng-container
+                  *ngIf="
+                    (question.type === 'TrueOrFalse' ||
+                      question.type === 'Number' ||
+                      question.type === 'FreeText' ||
+                      question.type === 'MultiSelection' ||
+                      question.type === 'FamilyMemberType' ||
+                      question.type === 'SingleSelection') &&
+                    question.answer
+                  "
+                >
+                  <div class="mb-1 opt-para-1 opt-text-neutral">
+                    {{ question.question }}
+                  </div>
+                  <div>
+                    <ng-container *ngIf="question.type === 'TrueOrFalse'">
+                      <ng-container *ngIf="question.answer === 'true'"
+                        >Yes</ng-container
+                      >
+                      <ng-container *ngIf="question.answer === 'false'"
+                        >No</ng-container
+                      >
+                    </ng-container>
+                    <ng-container *ngIf="question.type !== 'TrueOrFalse'">
+                      {{ question.answer }}
+                    </ng-container>
+                  </div>
+                </ng-container>
+              </div>
+            </ng-container>
+          </section>
+        </ng-container>
+      </mat-tab>
+
+      <mat-tab label="Quotes Preview">
+        <ng-container>
+          <section id="quote-preview">
+            <div class="header_section">
+              <h3 class="opt-para-1 fw-700">Quotes Preview</h3>
+              <p class="opt-caption opt-text-neutral">
+                See details of all fees attached to applicant.
+              </p>
+            </div>
+            <ng-container *ngIf="!isQuotePreviewAvailable">
+              <div class="quote-image">
+                <img src="assets/images/quote-preview.svg" alt="" />
+                <p class="opt-para-1 mt-5 fw-600">Loading...</p>
+                <p class="opt-caption opt-text-neutral">
+                  Fees start calculating when route is set
+                </p>
+              </div>
+            </ng-container>
+            <h3 class="opt-para-1 fw-600">Program Fee</h3>
+            <ng-container *ngIf="isQuotePreviewAvailable">
+              <ng-container
+                *ngIf="dataSource !== null && dataSource; else noTableData"
+              >
+                <div class="table-responsive">
+                  <table
+                    class="preview"
+                    mat-table
+                    [dataSource]="dataSource"
+                    matSort
+                  >
+                    <ng-container matColumnDef="routeFeeName">
+                      <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                        Fees
+                      </th>
+                      <td mat-cell *matCellDef="let row">
+                        {{ row.routeFeeName }}
+                      </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="unit">
+                      <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                        Qnt
+                      </th>
+                      <td mat-cell *matCellDef="let row">
+                        x{{ row.numberOfPeople }}
+                      </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="totalAmount">
+                      <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                        {{ selectedCountry?.currency?.currencyCode || 'USD' }}
+                      </th>
+                      <td mat-cell *matCellDef="let row">
+                        <span class="fw-600">{{
+                          row.totalAmount | number
+                        }}</span>
+                      </td>
+                    </ng-container>
+
+                    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                    <tr
+                      mat-row
+                      *matRowDef="let row; columns: displayedColumns"
+                    ></tr>
+
+                    <!-- Row shown when there is no matching data. -->
+                    <tr class="mat-row" *matNoDataRow>
+                      <td class="mat-cell" colspan="4">No matching data"</td>
+                    </tr>
+                  </table>
+                </div>
+              </ng-container>
+              <ng-template #noTableData>
+                <app-table-loader></app-table-loader>
+              </ng-template>
+              <p class="btn opt-btn-secondary-outline total mt-4">
+                {{
+                  selectedApplicationQuote.hasDiscountApplied
+                    ? 'Net Program Fees:'
+                    : 'Total:'
+                }}
+                {{ totalQuoteGenerated | number }}
+                {{ selectedCountry?.currency?.currencyCode || 'USD' }}
+              </p>
+            </ng-container>
+
+            <h3 class="opt-para-1 fw-600">Local Processing Fee</h3>
+            <ng-container *ngIf="isQuotePreviewAvailable">
+              <ng-container
+                *ngIf="
+                  localFeeDataSource !== null && localFeeDataSource;
+                  else noTableData
+                "
+              >
+                <div class="table-responsive">
+                  <table
+                    class="preview"
+                    mat-table
+                    [dataSource]="localFeeDataSource"
+                    matSort
+                  >
+                    <ng-container matColumnDef="routeFeeName">
+                      <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                        Fees
+                      </th>
+                      <td mat-cell *matCellDef="let row">
+                        {{ row.routeFeeName }}
+                      </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="unit">
+                      <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                        Qnt
+                      </th>
+                      <td mat-cell *matCellDef="let row">x1</td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="totalAmount">
+                      <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                        <!-- USD -->
+                        NGN
+                      </th>
+                      <td mat-cell *matCellDef="let row">
+                        <span class="fw-600">{{ row.amount | number }}</span>
+                      </td>
+                    </ng-container>
+
+                    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                    <tr
+                      mat-row
+                      *matRowDef="let row; columns: displayedColumns"
+                    ></tr>
+
+                    <!-- Row shown when there is no matching data. -->
+                    <tr class="mat-row" *matNoDataRow>
+                      <td class="mat-cell" colspan="4">No matching data"</td>
+                    </tr>
+                  </table>
+                </div>
+              </ng-container>
+              <ng-template #noTableData>
+                <app-table-loader></app-table-loader>
+              </ng-template>
+
+              <p class="btn opt-btn-secondary-outline total mt-4">
+                Total Local Processing Fee:
+                {{ localFeeData[0].amount | number }} NGN
+              </p>
+
+              <div
+                class="opt-discount-outline"
+                *ngIf="selectedApplicationQuote.hasDiscountApplied === true"
+              >
+                <div class="title-container">
+                  <div>
+                    <img src="assets/images/info-circle.svg" alt="info" />
+                  </div>
+                  <p class="title mt-1">IMPORTANT NOTICE!</p>
+                </div>
+
+                <p class="message">
+                  {{ selectedApplicationQuote.discountAppliedMessage || '--' }}
+                </p>
+              </div>
+            </ng-container>
+          </section>
+        </ng-container>
+      </mat-tab>
+    </mat-tab-group>
+  </section>
+</ng-container>

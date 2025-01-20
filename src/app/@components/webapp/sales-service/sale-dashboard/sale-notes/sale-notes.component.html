@@ -1,0 +1,145 @@
+<div id="sale-notes">
+  <div class="row">
+    <!-- NOTES SECTION -->
+    <div class="col-12 col-sm-3 col-xl-3 border-end">
+      <!-- NOTES ADD -->
+      <div class="col">
+        <div class="">
+          <div class="d-flex justify-content-between mt-3">
+            <div
+              class="cursor-pointer fw-bolder opt-para-1 fw-600 d-flex align-items-center"
+            >
+              Notes
+            </div>
+          </div>
+          <div class="my-4">
+            <div class="opt-para-1 d-flex text-muted mb-3">
+              Notes can be seen by Optiva staff that has access to this
+              application.
+            </div>
+
+            <button
+              matRipple
+              class="btn opt-btn-neutral opt-btn-with-icon w-100 new-note-btn"
+              (click)="addNote()"
+            >
+              <span class="img-fluid"
+                ><img src="/assets/icons/add_grey.svg" alt="arrow-right"
+              /></span>
+              {{ selectedNoteId ? 'Update' : 'Add New' }} Note
+
+              <span
+                class="spinner-border spinner-border-sm"
+                role="status"
+                aria-hidden="true"
+                *ngIf="isCreating$ | async"
+              ></span>
+            </button>
+          </div>
+        </div>
+        <!-- <div class="card h-100">
+        </div> -->
+      </div>
+
+      <!-- NOTES LIST -->
+      <div class="col note-list">
+        <div class="card h-100">
+          <div *ngIf="isLoading$ | async">Loading Notes...</div>
+
+          <div
+            class="card-body"
+            matRipple
+            *ngFor="let note of notes$ | async"
+            (click)="viewNote(note)"
+          >
+            <div class="opt-para-1">
+              <div
+                class="opt-caption text-muted mt-1 d-flex justify-content-between align-items-start"
+              >
+                <p>{{ note?.lastModifiedDate | date : 'hh:mm a' }} - YOU</p>
+                <div matRipple class="more-options">
+                  <img
+                    src="/assets/icons/more.svg"
+                    [matMenuTriggerFor]="menu"
+                    alt="more"
+                  />
+                  <mat-menu #menu="matMenu">
+                    <button
+                      mat-menu-item
+                      (click)="duplicateNote(note?.description)"
+                    >
+                      Duplicate note
+                    </button>
+                    <button
+                      mat-menu-item
+                      (click)="deleteNote(note?.id)"
+                      class="text-danger"
+                    >
+                      Delete note
+                    </button>
+                  </mat-menu>
+                </div>
+              </div>
+              <div [innerHTML]="note?.description?.slice(0, 10) + '...'"></div>
+              <div
+                class="text-muted mt-1 note-body"
+                [innerHTML]="note?.description"
+              ></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- NOTE DETAILS -->
+    <div class="col-12 col-sm-9 col-xl-9">
+      <div class="mb-4">
+        <div class="d-flex align-items-center my-2 justify-content-between">
+          <div>
+            <div class="invisible">
+              <button
+                matRipple
+                class="btn opt-btn-neutral opt-btn-with-icon w-100 delete-note-btn"
+                (click)="deleteNote()"
+              >
+                <span class="img-fluid"
+                  ><img src="/assets/icons/delete_red.svg" alt="arrow-right"
+                /></span>
+                Delete&nbsp;Note
+              </button>
+            </div>
+          </div>
+          <div class="mx-auto p-2 my-1 opt-caption text-muted text-center">
+            Last Modified Today 03:53
+          </div>
+          <div>
+            <button
+              (click)="deleteNote()"
+              matRipple
+              class="btn opt-btn-neutral opt-btn-with-icon w-100 delete-note-btn"
+            >
+              <span class="img-fluid"
+                ><img src="/assets/icons/delete_red.svg" alt="arrow-right"
+              /></span>
+              Delete&nbsp;Note
+            </button>
+          </div>
+        </div>
+
+        <!-- EDITOR -->
+        <div class="d-flex border-top quill-editor">
+          <div class="p-2 flex-grow-1">
+            <quill-editor
+              class="mt-2"
+              [bounds]="'self'"
+              [placeholder]="'Enter your note here'"
+              [modules]="quillModules"
+              #editor
+              [(ngModel)]="content"
+            ></quill-editor>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

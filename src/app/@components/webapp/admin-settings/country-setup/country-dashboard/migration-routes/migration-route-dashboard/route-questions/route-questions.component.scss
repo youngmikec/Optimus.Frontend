@@ -1,0 +1,43 @@
+@use '/src/app/@core/styles/abstracts/media-query' as *;
+
+#contact-category {
+  .contact-category-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    flex-wrap: wrap;
+    gap: 1.25rem;
+    margin-bottom: 0.5rem;
+
+    @include opt-media-query-max(opt-xsm) {
+      margin-bottom: 1.25rem;
+    }
+
+    .table-controls {
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+    }
+  }
+
+  table {
+    width: 100%;
+  }
+
+  .mat-column-question {
+    word-wrap: break-word !important;
+    white-space: unset !important;
+    flex: 0 0 28% !important;
+    width: 70% !important;
+    overflow-wrap: break-word;
+    word-wrap: break-word;
+
+    word-break: break-word;
+
+    -ms-hyphens: auto;
+    -moz-hyphens: auto;
+    -webkit-hyphens: auto;
+    hyphens: auto;
+  }
+}

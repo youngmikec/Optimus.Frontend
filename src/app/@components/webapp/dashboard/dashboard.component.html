@@ -1,0 +1,456 @@
+<section id="dashboard">
+  <div class="dashboard_header">
+    <div>
+      <h6 class="opt-heading-6 fw-700">Overview</h6>
+    </div>
+
+    <div class="input-style1 input-no-error filter">
+      <mat-form-field
+        appearance="outline"
+        [style.width.%]="100"
+        [style.float]="'right'"
+      >
+        <span>
+          <img src="assets/icons/calendar.svg" alt="" />
+        </span>
+
+        <mat-select
+          [(value)]="selectedFilter"
+          (selectionChange)="onFilterChange($event)"
+        >
+          <!-- <mat-option disabled value=""> Select Filter </mat-option> -->
+          <mat-option
+            [value]="filter.value"
+            *ngFor="let filter of filterOptions"
+          >
+            {{ filter.name }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+  </div>
+
+  <div class="cards-section">
+    <div class="stat-card">
+      <div class="stat-card-icon">
+        <svg
+          width="43"
+          height="40"
+          viewBox="0 0 43 40"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <ellipse cx="21.5096" cy="20" rx="20.6496" ry="20" fill="#C3D2FE" />
+          <ellipse cx="21.5093" cy="20" rx="16.5197" ry="16" fill="#0235CD" />
+          <g clip-path="url(#clip0_3446_103168)">
+            <path
+              d="M17.1822 13.627V11H17.1817L14.4699 13.6264V13.627H17.1822Z"
+              fill="white"
+            />
+            <path
+              d="M17.3279 19.3555H19.808V23.9024H17.3279V19.3555Z"
+              fill="white"
+            />
+            <path
+              d="M18.914 11C18.559 11 18.2711 11.2878 18.2711 11.6429V14.0388C18.2711 14.3939 17.9833 14.6817 17.6283 14.6817H15.1128C14.7578 14.6817 14.4699 14.9695 14.4699 15.3245V28.3571C14.4699 28.7122 14.7578 29 15.1128 29H27.9055C28.2606 29 28.5484 28.7122 28.5484 28.3571V11.6429C28.5484 11.2878 28.2606 11 27.9055 11H18.914ZM20.8969 24.3152C20.8969 24.6702 20.6091 24.958 20.2541 24.958H16.8818C16.5267 24.958 16.2389 24.6702 16.2389 24.3152V18.9446C16.2389 18.5895 16.5267 18.3017 16.8818 18.3017H20.2541C20.6091 18.3017 20.8969 18.5895 20.8969 18.9446V24.3152ZM26.8133 24.4307C26.8133 24.722 26.5772 24.958 26.2859 24.958H22.6149C22.3236 24.958 22.0875 24.722 22.0875 24.4307C22.0875 24.1395 22.3236 23.9034 22.6149 23.9034H26.2859C26.5772 23.9034 26.8133 24.1395 26.8133 24.4307ZM26.8133 22.1901C26.8133 22.4813 26.5772 22.7174 26.2859 22.7174H22.6149C22.3236 22.7174 22.0875 22.4813 22.0875 22.1901C22.0875 21.8988 22.3236 21.6627 22.6149 21.6627H26.2859C26.5772 21.6627 26.8133 21.8988 26.8133 22.1901ZM26.8133 19.9494C26.8133 20.2407 26.5772 20.4768 26.2859 20.4768H22.6149C22.3236 20.4768 22.0875 20.2407 22.0875 19.9494C22.0875 19.6582 22.3236 19.4221 22.6149 19.4221H26.2859C26.5772 19.4221 26.8133 19.6582 26.8133 19.9494Z"
+              fill="white"
+            />
+          </g>
+          <defs>
+            <clipPath id="clip0_3446_103168">
+              <rect
+                width="18.5846"
+                height="18"
+                fill="white"
+                transform="translate(12.2169 11)"
+              />
+            </clipPath>
+          </defs>
+        </svg>
+      </div>
+      <div class="stat-card-content">
+        <h4 class="opt-heading-6 fw-700">{{ noOfApplicants }}</h4>
+
+        <p class="opt-caption opt-text-neutral">Total no. of Applicants</p>
+      </div>
+    </div>
+
+    <div class="stat-card">
+      <div class="stat-card-icon">
+        <svg
+          width="43"
+          height="40"
+          viewBox="0 0 43 40"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <ellipse cx="21.5096" cy="20" rx="20.6496" ry="20" fill="#C3D2FE" />
+          <ellipse cx="21.5093" cy="20" rx="16.5197" ry="16" fill="#0235CD" />
+          <g clip-path="url(#clip0_3446_103168)">
+            <path
+              d="M17.1822 13.627V11H17.1817L14.4699 13.6264V13.627H17.1822Z"
+              fill="white"
+            />
+            <path
+              d="M17.3279 19.3555H19.808V23.9024H17.3279V19.3555Z"
+              fill="white"
+            />
+            <path
+              d="M18.914 11C18.559 11 18.2711 11.2878 18.2711 11.6429V14.0388C18.2711 14.3939 17.9833 14.6817 17.6283 14.6817H15.1128C14.7578 14.6817 14.4699 14.9695 14.4699 15.3245V28.3571C14.4699 28.7122 14.7578 29 15.1128 29H27.9055C28.2606 29 28.5484 28.7122 28.5484 28.3571V11.6429C28.5484 11.2878 28.2606 11 27.9055 11H18.914ZM20.8969 24.3152C20.8969 24.6702 20.6091 24.958 20.2541 24.958H16.8818C16.5267 24.958 16.2389 24.6702 16.2389 24.3152V18.9446C16.2389 18.5895 16.5267 18.3017 16.8818 18.3017H20.2541C20.6091 18.3017 20.8969 18.5895 20.8969 18.9446V24.3152ZM26.8133 24.4307C26.8133 24.722 26.5772 24.958 26.2859 24.958H22.6149C22.3236 24.958 22.0875 24.722 22.0875 24.4307C22.0875 24.1395 22.3236 23.9034 22.6149 23.9034H26.2859C26.5772 23.9034 26.8133 24.1395 26.8133 24.4307ZM26.8133 22.1901C26.8133 22.4813 26.5772 22.7174 26.2859 22.7174H22.6149C22.3236 22.7174 22.0875 22.4813 22.0875 22.1901C22.0875 21.8988 22.3236 21.6627 22.6149 21.6627H26.2859C26.5772 21.6627 26.8133 21.8988 26.8133 22.1901ZM26.8133 19.9494C26.8133 20.2407 26.5772 20.4768 26.2859 20.4768H22.6149C22.3236 20.4768 22.0875 20.2407 22.0875 19.9494C22.0875 19.6582 22.3236 19.4221 22.6149 19.4221H26.2859C26.5772 19.4221 26.8133 19.6582 26.8133 19.9494Z"
+              fill="white"
+            />
+          </g>
+          <defs>
+            <clipPath id="clip0_3446_103168">
+              <rect
+                width="18.5846"
+                height="18"
+                fill="white"
+                transform="translate(12.2169 11)"
+              />
+            </clipPath>
+          </defs>
+        </svg>
+      </div>
+      <div class="stat-card-content">
+        <h4 class="opt-heading-6 fw-700">{{ noOfApplicants }}</h4>
+
+        <p class="opt-caption opt-text-neutral">Total no. of Invoices</p>
+      </div>
+    </div>
+
+    <div class="stat-card">
+      <div class="stat-card-icon">
+        <svg
+          width="43"
+          height="40"
+          viewBox="0 0 43 40"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <ellipse cx="21.5096" cy="20" rx="20.6496" ry="20" fill="#C3D2FE" />
+          <ellipse cx="21.5093" cy="20" rx="16.5197" ry="16" fill="#0235CD" />
+          <g clip-path="url(#clip0_3446_103168)">
+            <path
+              d="M17.1822 13.627V11H17.1817L14.4699 13.6264V13.627H17.1822Z"
+              fill="white"
+            />
+            <path
+              d="M17.3279 19.3555H19.808V23.9024H17.3279V19.3555Z"
+              fill="white"
+            />
+            <path
+              d="M18.914 11C18.559 11 18.2711 11.2878 18.2711 11.6429V14.0388C18.2711 14.3939 17.9833 14.6817 17.6283 14.6817H15.1128C14.7578 14.6817 14.4699 14.9695 14.4699 15.3245V28.3571C14.4699 28.7122 14.7578 29 15.1128 29H27.9055C28.2606 29 28.5484 28.7122 28.5484 28.3571V11.6429C28.5484 11.2878 28.2606 11 27.9055 11H18.914ZM20.8969 24.3152C20.8969 24.6702 20.6091 24.958 20.2541 24.958H16.8818C16.5267 24.958 16.2389 24.6702 16.2389 24.3152V18.9446C16.2389 18.5895 16.5267 18.3017 16.8818 18.3017H20.2541C20.6091 18.3017 20.8969 18.5895 20.8969 18.9446V24.3152ZM26.8133 24.4307C26.8133 24.722 26.5772 24.958 26.2859 24.958H22.6149C22.3236 24.958 22.0875 24.722 22.0875 24.4307C22.0875 24.1395 22.3236 23.9034 22.6149 23.9034H26.2859C26.5772 23.9034 26.8133 24.1395 26.8133 24.4307ZM26.8133 22.1901C26.8133 22.4813 26.5772 22.7174 26.2859 22.7174H22.6149C22.3236 22.7174 22.0875 22.4813 22.0875 22.1901C22.0875 21.8988 22.3236 21.6627 22.6149 21.6627H26.2859C26.5772 21.6627 26.8133 21.8988 26.8133 22.1901ZM26.8133 19.9494C26.8133 20.2407 26.5772 20.4768 26.2859 20.4768H22.6149C22.3236 20.4768 22.0875 20.2407 22.0875 19.9494C22.0875 19.6582 22.3236 19.4221 22.6149 19.4221H26.2859C26.5772 19.4221 26.8133 19.6582 26.8133 19.9494Z"
+              fill="white"
+            />
+          </g>
+          <defs>
+            <clipPath id="clip0_3446_103168">
+              <rect
+                width="18.5846"
+                height="18"
+                fill="white"
+                transform="translate(12.2169 11)"
+              />
+            </clipPath>
+          </defs>
+        </svg>
+      </div>
+      <div class="stat-card-content">
+        <h4 class="opt-heading-6 fw-700">500</h4>
+
+        <p class="opt-caption opt-text-neutral">Total Invoice Value</p>
+      </div>
+    </div>
+
+    <div class="stat-card">
+      <div class="stat-card-icon">
+        <svg
+          width="43"
+          height="40"
+          viewBox="0 0 43 40"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <ellipse cx="21.5096" cy="20" rx="20.6496" ry="20" fill="#C3D2FE" />
+          <ellipse cx="21.5093" cy="20" rx="16.5197" ry="16" fill="#0235CD" />
+          <g clip-path="url(#clip0_3446_103168)">
+            <path
+              d="M17.1822 13.627V11H17.1817L14.4699 13.6264V13.627H17.1822Z"
+              fill="white"
+            />
+            <path
+              d="M17.3279 19.3555H19.808V23.9024H17.3279V19.3555Z"
+              fill="white"
+            />
+            <path
+              d="M18.914 11C18.559 11 18.2711 11.2878 18.2711 11.6429V14.0388C18.2711 14.3939 17.9833 14.6817 17.6283 14.6817H15.1128C14.7578 14.6817 14.4699 14.9695 14.4699 15.3245V28.3571C14.4699 28.7122 14.7578 29 15.1128 29H27.9055C28.2606 29 28.5484 28.7122 28.5484 28.3571V11.6429C28.5484 11.2878 28.2606 11 27.9055 11H18.914ZM20.8969 24.3152C20.8969 24.6702 20.6091 24.958 20.2541 24.958H16.8818C16.5267 24.958 16.2389 24.6702 16.2389 24.3152V18.9446C16.2389 18.5895 16.5267 18.3017 16.8818 18.3017H20.2541C20.6091 18.3017 20.8969 18.5895 20.8969 18.9446V24.3152ZM26.8133 24.4307C26.8133 24.722 26.5772 24.958 26.2859 24.958H22.6149C22.3236 24.958 22.0875 24.722 22.0875 24.4307C22.0875 24.1395 22.3236 23.9034 22.6149 23.9034H26.2859C26.5772 23.9034 26.8133 24.1395 26.8133 24.4307ZM26.8133 22.1901C26.8133 22.4813 26.5772 22.7174 26.2859 22.7174H22.6149C22.3236 22.7174 22.0875 22.4813 22.0875 22.1901C22.0875 21.8988 22.3236 21.6627 22.6149 21.6627H26.2859C26.5772 21.6627 26.8133 21.8988 26.8133 22.1901ZM26.8133 19.9494C26.8133 20.2407 26.5772 20.4768 26.2859 20.4768H22.6149C22.3236 20.4768 22.0875 20.2407 22.0875 19.9494C22.0875 19.6582 22.3236 19.4221 22.6149 19.4221H26.2859C26.5772 19.4221 26.8133 19.6582 26.8133 19.9494Z"
+              fill="white"
+            />
+          </g>
+          <defs>
+            <clipPath id="clip0_3446_103168">
+              <rect
+                width="18.5846"
+                height="18"
+                fill="white"
+                transform="translate(12.2169 11)"
+              />
+            </clipPath>
+          </defs>
+        </svg>
+      </div>
+      <div class="stat-card-content">
+        <h4 class="opt-heading-6 fw-700">4</h4>
+
+        <p class="opt-caption opt-text-neutral">Total no. of Receipts</p>
+      </div>
+    </div>
+
+    <div class="stat-card">
+      <div class="stat-card-icon">
+        <svg
+          width="43"
+          height="40"
+          viewBox="0 0 43 40"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <ellipse cx="21.5096" cy="20" rx="20.6496" ry="20" fill="#C3D2FE" />
+          <ellipse cx="21.5093" cy="20" rx="16.5197" ry="16" fill="#0235CD" />
+          <g clip-path="url(#clip0_3446_103168)">
+            <path
+              d="M17.1822 13.627V11H17.1817L14.4699 13.6264V13.627H17.1822Z"
+              fill="white"
+            />
+            <path
+              d="M17.3279 19.3555H19.808V23.9024H17.3279V19.3555Z"
+              fill="white"
+            />
+            <path
+              d="M18.914 11C18.559 11 18.2711 11.2878 18.2711 11.6429V14.0388C18.2711 14.3939 17.9833 14.6817 17.6283 14.6817H15.1128C14.7578 14.6817 14.4699 14.9695 14.4699 15.3245V28.3571C14.4699 28.7122 14.7578 29 15.1128 29H27.9055C28.2606 29 28.5484 28.7122 28.5484 28.3571V11.6429C28.5484 11.2878 28.2606 11 27.9055 11H18.914ZM20.8969 24.3152C20.8969 24.6702 20.6091 24.958 20.2541 24.958H16.8818C16.5267 24.958 16.2389 24.6702 16.2389 24.3152V18.9446C16.2389 18.5895 16.5267 18.3017 16.8818 18.3017H20.2541C20.6091 18.3017 20.8969 18.5895 20.8969 18.9446V24.3152ZM26.8133 24.4307C26.8133 24.722 26.5772 24.958 26.2859 24.958H22.6149C22.3236 24.958 22.0875 24.722 22.0875 24.4307C22.0875 24.1395 22.3236 23.9034 22.6149 23.9034H26.2859C26.5772 23.9034 26.8133 24.1395 26.8133 24.4307ZM26.8133 22.1901C26.8133 22.4813 26.5772 22.7174 26.2859 22.7174H22.6149C22.3236 22.7174 22.0875 22.4813 22.0875 22.1901C22.0875 21.8988 22.3236 21.6627 22.6149 21.6627H26.2859C26.5772 21.6627 26.8133 21.8988 26.8133 22.1901ZM26.8133 19.9494C26.8133 20.2407 26.5772 20.4768 26.2859 20.4768H22.6149C22.3236 20.4768 22.0875 20.2407 22.0875 19.9494C22.0875 19.6582 22.3236 19.4221 22.6149 19.4221H26.2859C26.5772 19.4221 26.8133 19.6582 26.8133 19.9494Z"
+              fill="white"
+            />
+          </g>
+          <defs>
+            <clipPath id="clip0_3446_103168">
+              <rect
+                width="18.5846"
+                height="18"
+                fill="white"
+                transform="translate(12.2169 11)"
+              />
+            </clipPath>
+          </defs>
+        </svg>
+      </div>
+      <div class="stat-card-content">
+        <h4 class="opt-heading-6 fw-700">450</h4>
+
+        <p class="opt-caption opt-text-neutral">Total Receipt Value</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="bar-pie-chart-container">
+    <div class="bar-chart">
+      <div class="dashboard_header">
+        <h6 class="opt-heading-6 fw-700 chart-title-text">
+          Applicants Per Country
+        </h6>
+
+        <!-- <div class="input-style1 input-no-error filter">
+          <mat-form-field
+            appearance="outline"
+            [style.width.%]="100"
+            [style.float]="'right'"
+          >
+            <span>
+              <img src="assets/icons/calendar.svg" alt="" />
+            </span>
+
+            <mat-select [(value)]="selectedFilter">
+              <mat-option disabled value=""> Select Filter </mat-option>
+              <mat-option
+                [value]="filter.value"
+                *ngFor="let filter of filterOptions"
+              >
+                {{ filter.name }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div> -->
+      </div>
+      <div style="text-align: center">
+        <apx-chart
+          [series]="barChart.series"
+          [chart]="barChart.chart"
+          [xaxis]="barChart.xaxis"
+          [title]="barChart.title"
+          [plotOptions]="barChart.plotOptions"
+          [colors]="barChart.colors"
+        ></apx-chart>
+      </div>
+    </div>
+
+    <div class="donut-chart">
+      <div class="dashboard_header">
+        <h6 class="opt-heading-6 fw-700 chart-title-text">
+          Applicants by Gender
+        </h6>
+
+        <!-- <div class="input-style1 input-no-error filter">
+          <mat-form-field
+            appearance="outline"
+            [style.width.%]="100"
+            [style.float]="'right'"
+          >
+            <span>
+              <img src="assets/icons/calendar.svg" alt="" />
+            </span>
+
+            <mat-select [(value)]="selectedFilter">
+              <mat-option disabled value=""> Select Filter </mat-option>
+              <mat-option
+                [value]="filter.value"
+                *ngFor="let filter of filterOptions"
+              >
+                {{ filter.name }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div> -->
+      </div>
+
+      <div class="donut-chart-container">
+        <apx-chart
+          [colors]="donutChart.colors"
+          [series]="applicantByGenderPercentage"
+          [chart]="donutChart.chart"
+          [labels]="donutChart.labels"
+          [responsive]="donutChart.responsive"
+          [plotOptions]="donutChart.plotOptions"
+          [dataLabels]="donutChart.dataLabels"
+          [legend]="donutChart.legend"
+        ></apx-chart>
+      </div>
+    </div>
+  </div>
+
+  <div class="applicants-table">
+    <div class="contact-category-header">
+      <h6 class="opt-heading-6 fw-700 mb-0">Applicants</h6>
+
+      <div class="table-controls">
+        <div class="input-style1 input-no-error">
+          <mat-form-field appearance="outline" [style.width.%]="100">
+            <span matPrefix class="img-fluid">
+              <img src="/assets/icons/search.svg" alt="icon" />
+            </span>
+
+            <input
+              matInput
+              (input)="search($event)"
+              placeholder="Search applicants"
+            />
+          </mat-form-field>
+        </div>
+
+        <button matRipple class="btn opt-btn-neutral opt-btn-with-icon">
+          <span class="img-fluid"
+            ><img src="/assets/icons/filter-icon.svg" alt="filter-icon"
+          /></span>
+          Filters
+        </button>
+
+        <a routerLink="/app/applicants">View All</a>
+      </div>
+    </div>
+
+    <ng-container *ngIf="dataSource !== null && dataSource; else noTableData">
+      <div class="table-responsive">
+        <table mat-table [dataSource]="dataSource" matSort>
+          <ng-container matColumnDef="applicant_name">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>
+              Applicant Name
+            </th>
+            <td mat-cell *matCellDef="let row">
+              {{ row?.firstName }} {{ row?.lastName }}
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="phone_number">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>
+              Phone Number
+            </th>
+            <td mat-cell *matCellDef="let row">
+              {{ row?.mobileNo }}
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="createdAt">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>
+              Created Date
+            </th>
+            <td mat-cell *matCellDef="let row">
+              {{ row?.createdDate | date }}
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="createdBy">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>
+              Created By
+            </th>
+            <td mat-cell *matCellDef="let row">
+              {{ row?.createdBy }}
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="updatedAt">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>
+              Last modified date
+            </th>
+            <td mat-cell *matCellDef="let row">
+              {{ row?.lastModifiedDate | date }}
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="updatedBy">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>
+              Last Modified By
+            </th>
+            <td mat-cell *matCellDef="let row">
+              {{ row?.lastModifiedBy }}
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="status">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>Status</th>
+            <td mat-cell *matCellDef="let row">
+              <span
+                [ngClass]="{
+                  'status-active': row.status === 1,
+                  'status-inactive': row.status === 2
+                }"
+              >
+                {{ row.status === 1 ? 'Active' : 'Inactive' }}
+              </span>
+            </td>
+          </ng-container>
+
+          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+          <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+
+          <!-- Row shown when there is no matching data. -->
+          <tr class="mat-row" *matNoDataRow>
+            <td class="mat-cell" colspan="4">No matching data"</td>
+          </tr>
+        </table>
+      </div>
+    </ng-container>
+
+    <ng-template #noTableData>
+      <app-table-loader></app-table-loader>
+    </ng-template>
+  </div>
+</section>

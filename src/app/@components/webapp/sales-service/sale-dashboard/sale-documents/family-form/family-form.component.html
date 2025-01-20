@@ -1,0 +1,126 @@
+<div class="family-form-wrapper">
+  <div class="d-flex justify-content-between align-items-center gap-1">
+    <div class="param-header">
+      <h4>Family Members</h4>
+      <p>
+        Just before we set the document parameter for Joe Doe and all family
+        members, we would like to This would help you easily identify other
+        family member types and address them uniquely and appropriately.
+      </p>
+    </div>
+
+    <div>
+      <button class="btn btn-primary" (click)="continue()">Continue</button>
+    </div>
+  </div>
+
+  <p class="text-danger">{{ errorMessage }}</p>
+  <form [formGroup]="familyMemberForm">
+    <div formArrayName="bioData">
+      <div *ngFor="let member of familyMembers; let i = index">
+        <div
+          [formGroupName]="i"
+          class="row d-flex align-items-center parameter-item mb-3 form-item"
+        >
+          <h6>
+            {{ member.familyMemberTypeDesc | titlecase }}
+            <small class="fw-light fs-6"
+              >({{ member.question | titlecase }})</small
+            >
+          </h6>
+
+          <div class="row">
+            <div class="col-md-2">
+              <div class="input-style1 input-width">
+                <label class="input-label">Title</label>
+
+                <mat-form-field appearance="outline" [style.width.%]="100">
+                  <mat-select formControlName="title">
+                    <mat-option value="mr"> Mr. </mat-option>
+                    <mat-option value="mrs"> Mrs. </mat-option>
+                    <mat-option value="miss">Miss.</mat-option>
+                  </mat-select>
+
+                  <mat-error
+                    *ngIf="
+                      getBioDataFormControl(i, 'title').invalid &&
+                      getBioDataFormControl(i, 'title').touched
+                    "
+                  >
+                    <img
+                      src="assets/icons/vybe_error.svg"
+                      alt=""
+                      class="img-fluid error-icon"
+                    />
+
+                    {{ getErrorMessage('title') }}
+                  </mat-error>
+                </mat-form-field>
+              </div>
+            </div>
+
+            <div class="col-md-5">
+              <div class="input-style1">
+                <label class="input-label">Last Name</label>
+
+                <mat-form-field [style.width.%]="100" appearance="outline">
+                  <input
+                    type="text"
+                    matInput
+                    formControlName="lastName"
+                    placeholder="Last Name"
+                  />
+
+                  <mat-error
+                    *ngIf="
+                      getBioDataFormControl(i, 'lastName').invalid &&
+                      getBioDataFormControl(i, 'lastName').touched
+                    "
+                  >
+                    <img
+                      src="assets/icons/vybe_error.svg"
+                      alt=""
+                      class="img-fluid error-icon"
+                    />
+
+                    {{ getErrorMessage('lastName') }}
+                  </mat-error>
+                </mat-form-field>
+              </div>
+            </div>
+
+            <div class="col-md-5">
+              <div class="input-style1">
+                <label class="input-label">First Name</label>
+
+                <mat-form-field [style.width.%]="100" appearance="outline">
+                  <input
+                    type="text"
+                    matInput
+                    formControlName="firstName"
+                    placeholder="First Name"
+                  />
+
+                  <mat-error
+                    *ngIf="
+                      getBioDataFormControl(i, 'firstName').invalid &&
+                      getBioDataFormControl(i, 'firstName').touched
+                    "
+                  >
+                    <img
+                      src="assets/icons/vybe_error.svg"
+                      alt=""
+                      class="img-fluid error-icon"
+                    />
+
+                    {{ getErrorMessage('firstName') }}
+                  </mat-error>
+                </mat-form-field>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </form>
+</div>

@@ -1,0 +1,55 @@
+<section id="confirm-container">
+  <div class="header">
+    <div matRipple class="close-icon-container" (click)="closeDialog()">
+      <img src="/assets/icons/modal-close-icon.svg" alt="modal close icon" />
+    </div>
+  </div>
+
+  <div class="content">
+    <div>
+      <svg
+        width="60"
+        height="60"
+        viewBox="0 0 60 60"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <circle cx="30" cy="30" r="30" fill="#ECFDF5" />
+        <path
+          d="M37.8064 27.1864L37.8118 27.181L37.8171 27.1755C38.5835 26.3827 38.5987 25.1159 37.8064 24.3236C37.0199 23.5371 35.7301 23.5371 34.9436 24.3236L27.87 31.3972L25.0564 28.5836C24.2699 27.7971 22.9801 27.7971 22.1936 28.5836C21.4071 29.3701 21.4071 30.6599 22.1936 31.4464L26.4386 35.6914C26.8155 36.0683 27.3286 36.285 27.87 36.285C28.4114 36.285 28.9245 36.0683 29.3014 35.6914L37.8064 27.1864ZM15.9 30C15.9 22.2321 22.2321 15.9 30 15.9C37.7679 15.9 44.1 22.2321 44.1 30C44.1 37.7679 37.7679 44.1 30 44.1C22.2321 44.1 15.9 37.7679 15.9 30Z"
+          fill="#10B981"
+          stroke="#10B981"
+          stroke-width="1.8"
+        />
+      </svg>
+      <div class="opt-para-3 fw-700">Confirm Quote</div>
+      <div class="opt-para-1">
+        Please ensure that the details of this quote is accurate and the
+        applicant has accepted it
+      </div>
+    </div>
+  </div>
+
+  <div class="cta-container">
+    <button
+      matRipple
+      type="button"
+      class="btn opt-btn-primary-outline"
+      (click)="closeDialog()"
+    >
+      Cancel
+    </button>
+
+    <button
+      matRipple
+      (click)="confirmQuote()"
+      class="btn opt-btn-primary"
+      [disabled]="(isLoading | async) !== false"
+    >
+      Confirm
+      <ng-container *ngIf="(isLoading | async) !== false">
+        <app-button-loader></app-button-loader>
+      </ng-container>
+    </button>
+  </div>
+</section>

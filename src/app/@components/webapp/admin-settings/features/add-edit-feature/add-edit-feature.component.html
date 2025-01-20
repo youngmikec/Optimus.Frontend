@@ -1,0 +1,63 @@
+<section id="add-edit-section">
+  <div class="d-flex align-items-center justify-content-between">
+    <h6 class="opt-para-2 mb-0">
+      <ng-container *ngIf="data.type !== 'edit'">
+        Create New Feature
+      </ng-container>
+      <ng-container *ngIf="data.type === 'edit'">Edit Feature</ng-container>
+    </h6>
+
+    <div matRipple class="close-icon-container" (click)="closeDialog()">
+      <img src="/assets/icons/modal-close-icon.svg" alt="modal close icon" />
+    </div>
+  </div>
+
+  <form [formGroup]="addEditFeatureForm" (ngSubmit)="onSubmit()">
+    <div class="input-style1 mb-3">
+      <label class="input-label">Feature Name</label>
+
+      <mat-form-field appearance="outline" [style.width.%]="100">
+        <input
+          matInput
+          placeholder="Enter feature name"
+          formControlName="featureName"
+        />
+
+        <mat-error *ngIf="addEditFeatureFormControls['featureName'].invalid">
+          <img
+            src="/assets/icons/error.svg"
+            alt=""
+            class="img-fluid error-icon"
+          />
+
+          {{ getErrorMessage('featureName') }}
+        </mat-error>
+      </mat-form-field>
+    </div>
+
+    <div class="d-flex justify-content-between">
+      <button
+        matRipple
+        type="button"
+        class="btn opt-btn-primary-outline"
+        (click)="closeDialog()"
+      >
+        Cancel
+      </button>
+      <button
+        matRipple
+        class="btn opt-btn-primary"
+        [disabled]="addEditFeatureForm.invalid || (isLoading | async) !== false"
+      >
+        <ng-container *ngIf="data.type === 'edit'">Save</ng-container>
+        <ng-container *ngIf="data.type !== 'edit'">Create</ng-container>
+
+        <ng-container *ngIf="(isLoading | async) !== false">
+          <app-button-loader></app-button-loader>
+        </ng-container>
+      </button>
+    </div>
+  </form>
+</section>
+<!-- <mat-dialog-content>
+</mat-dialog-content> -->

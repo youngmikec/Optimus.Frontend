@@ -1,0 +1,353 @@
+<section id="invoice-item-config">
+  <div class="currency-config-header">
+    <h6 class="opt-heading-6 fw-700 mb-0">Invoice Item Configuration</h6>
+
+    <div class="table-controls">
+      <div class="input-style1 input-no-error">
+        <mat-form-field appearance="outline" [style.width.%]="100">
+          <span matPrefix class="img-fluid">
+            <img src="/assets/icons/search.svg" alt="icon" />
+          </span>
+
+          <input
+            matInput
+            (input)="search($event)"
+            placeholder="Search invoice item list"
+          />
+        </mat-form-field>
+      </div>
+
+      <button
+        matRipple
+        [matMenuTriggerFor]="filter"
+        class="btn opt-btn-neutral opt-btn-with-icon"
+      >
+        <span class="img-fluid"
+          ><img src="/assets/icons/filter-icon.svg" alt="filter-icon"
+        /></span>
+        Filters
+      </button>
+
+      <mat-menu #filter="matMenu" class="opt-table-filter">
+        <div class="opt-table-filter-body" (click)="$event.stopPropagation()">
+          <p class="opt-caption mb-0 opt-table-filter-body-title">
+            Filter items by Status:
+          </p>
+
+          <ng-container *ngIf="filterResult && filterResult?.length !== 0">
+            <div class="opt-table-filter-items">
+              <ng-container *ngFor="let item of filterResult">
+                <mat-checkbox
+                  color="primary"
+                  [name]="item.name"
+                  [(ngModel)]="item.selected"
+                  (click)="filterByStatus(item)"
+                  [ngModelOptions]="{ standalone: true }"
+                >
+                  {{ item?.column }}
+                </mat-checkbox>
+              </ng-container>
+            </div>
+          </ng-container>
+
+          <div class="opt-table-filter-body-cta-container">
+            <button
+              matRipple
+              class="btn opt-btn-accent-outline"
+              (click)="clearFilterSelection(); closeFilterMenu()"
+            >
+              Clear selection
+            </button>
+          </div>
+        </div>
+      </mat-menu>
+
+      <button
+        matRipple
+        class="btn opt-btn-primary"
+        (click)="onCreateEditInvoiceItem('create', null)"
+        [disabled]="!invoiceItemList"
+      >
+        Create Invoice Item
+      </button>
+    </div>
+  </div>
+
+  <div class="list-section">
+    <mat-tab-group>
+      <mat-tab label="Invoice Item">
+        <ng-container *ngIf="dataSource !== null; else noTableData">
+          <div class="table-responsive">
+            <table mat-table [dataSource]="dataSource" matSort>
+              <ng-container matColumnDef="select">
+                <th mat-header-cell *matHeaderCellDef>
+                  <mat-checkbox
+                    color="primary"
+                    (change)="$event ? masterToggle() : null"
+                    [checked]="selection.hasValue() && isAllSelected()"
+                    [indeterminate]="selection.hasValue() && !isAllSelected()"
+                    [aria-label]="checkboxLabel()"
+                  >
+                  </mat-checkbox>
+                </th>
+                <td mat-cell *matCellDef="let row">
+                  <mat-checkbox
+                    color="primary"
+                    (click)="$event.stopPropagation()"
+                    (change)="$event ? selection.toggle(row) : null"
+                    [checked]="selection.isSelected(row)"
+                    [aria-label]="checkboxLabel(row)"
+                  >
+                  </mat-checkbox>
+                </td>
+              </ng-container>
+
+              <ng-container matColumnDef="country">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                  Country
+                </th>
+                <td mat-cell *matCellDef="let row">
+                  <img
+                    [src]="row?.country?.flagUrl"
+                    alt=""
+                    class="country-flag"
+                  />
+                  <span
+                    *ngIf="row.country?.name"
+                    [matTooltip]="row?.country?.name"
+                    matTooltipPosition="below"
+                    matTooltipClass="custom-tooltip"
+                  >
+                    {{
+                      row.country?.name?.substring(0, 16) +
+                        (row.country?.name?.length > 16 ? '...' : '')
+                    }}
+                  </span>
+                </td>
+              </ng-container>
+
+              <ng-container matColumnDef="migrationRoute">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                  Migration Route
+                </th>
+                <td mat-cell *matCellDef="let row">
+                  <span
+                    *ngIf="row.migrationRoute?.name"
+                    [matTooltip]="row?.migrationRoute?.name"
+                    matTooltipPosition="below"
+                    matTooltipClass="custom-tooltip"
+                  >
+                    {{
+                      row.migrationRoute?.name?.substring(0, 16) +
+                        (row.migrationRoute?.name?.length > 16 ? '...' : '')
+                    }}
+                  </span>
+                </td>
+              </ng-container>
+
+              <ng-container matColumnDef="countryPercent">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                  Country Percentage
+                </th>
+                <td mat-cell *matCellDef="let row">
+                  {{ row?.percentageCountryFee }}%
+                </td>
+              </ng-container>
+
+              <ng-container matColumnDef="localPercent">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                  Local Percentage
+                </th>
+                <td mat-cell *matCellDef="let row">
+                  {{ row?.percentageLocalFee }}%
+                </td>
+              </ng-container>
+
+              <ng-container matColumnDef="localFee">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                  Local Fee
+                </th>
+                <td mat-cell *matCellDef="let row">
+                  {{ row?.localFeeAmount | number }}
+                </td>
+              </ng-container>
+
+              <ng-container matColumnDef="createdDate">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                  Created Date
+                </th>
+                <td mat-cell *matCellDef="let row">
+                  {{ row?.createdDate | date }}
+                </td>
+              </ng-container>
+
+              <ng-container matColumnDef="createdByEmail">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                  Created By
+                </th>
+                <td mat-cell *matCellDef="let row">
+                  <span
+                    *ngIf="row.createdBy"
+                    [matTooltip]="row?.createdBy"
+                    matTooltipPosition="below"
+                    matTooltipClass="custom-tooltip"
+                  >
+                    {{
+                      row.createdBy.substring(0, 16) +
+                        (row.createdBy.length > 16 ? '...' : '')
+                    }}
+                  </span>
+                </td>
+              </ng-container>
+
+              <ng-container matColumnDef="lastModifiedDate">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                  Last Modified Date
+                </th>
+                <td mat-cell *matCellDef="let row">
+                  <span
+                    class="d-flex justify-content-start align-items-center"
+                    [ngClass]="{
+                      'ms-3': row.lastModifiedDate === 0
+                    }"
+                  >
+                    {{
+                      row.lastModifiedDate !== 0
+                        ? (row.lastModifiedDate | date)
+                        : '-'
+                    }}
+                  </span>
+                </td>
+              </ng-container>
+
+              <ng-container matColumnDef="lastModifiedByEmail">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                  Last Modified By
+                </th>
+                <td mat-cell *matCellDef="let row">
+                  <span
+                    *ngIf="row.lastModifiedBy"
+                    [matTooltip]="row?.lastModifiedBy"
+                    matTooltipPosition="below"
+                    matTooltipClass="custom-tooltip"
+                  >
+                    {{ row.lastModifiedBy?.slice(0, 16) + '...' || '-' }}
+                  </span>
+                </td>
+              </ng-container>
+
+              <ng-container matColumnDef="statusDesc">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                  Status
+                </th>
+                <td mat-cell *matCellDef="let row">
+                  <span
+                    [ngClass]="{
+                      'status-active': row.statusDesc === 'Active',
+                      'status-inactive': row.statusDesc === 'Deactivated'
+                    }"
+                  >
+                    {{ row.statusDesc }}
+                  </span>
+                </td>
+              </ng-container>
+
+              <ng-container matColumnDef="actions">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                  Actions
+                </th>
+                <td mat-cell *matCellDef="let row">
+                  <div class="table-cta-container">
+                    <div
+                      class="cta-container"
+                      matRipple
+                      matTooltip="Edit"
+                      matTooltipPosition="above"
+                      matTooltipClass="custom-tooltip"
+                      (click)="onCreateEditInvoiceItem('update', row)"
+                    >
+                      <img src="/assets/icons/edit.svg" alt="view icon" />
+                    </div>
+
+                    <div class="toggle-container">
+                      <mat-slide-toggle
+                        matTooltipPosition="above"
+                        matTooltipClass="custom-tooltip"
+                        [matTooltip]="
+                          row.status === 1 ? 'Deactivate' : 'Activate'
+                        "
+                        [checked]="row.status === 1 ? 'true' : 'false'"
+                        (toggleChange)="
+                          onChangeInvoiceItemStatus(row.id, row.status)
+                        "
+                      >
+                      </mat-slide-toggle>
+                    </div>
+
+                    <!-- <div class="toggle-container">
+                      <mat-slide-toggle
+                        matTooltipPosition="above"
+                        matTooltipClass="custom-tooltip"
+                        [matTooltip]="
+                          row.status === 1 ? 'Deactivate' : 'Activate'
+                        "
+                        [checked]="row.status === 1 ? 'true' : 'false'"
+                        (toggleChange)="onChangeDocConfigStatus(row)"
+                      >
+                      </mat-slide-toggle>
+                    </div> -->
+
+                    <div>
+                      <span class="ml-4">
+                        <img
+                          alt="More"
+                          src="assets/icons/more-icon.svg"
+                          [matMenuTriggerFor]="menu"
+                        />
+                        <mat-menu #menu="matMenu">
+                          <ng-container>
+                            <button
+                              mat-menu-item
+                              [disabled]=""
+                              (click)="openDeleteModal(row)"
+                            >
+                              Delete Invoice Item
+                            </button>
+                          </ng-container>
+                        </mat-menu>
+                      </span>
+                    </div>
+                  </div>
+                </td>
+              </ng-container>
+
+              <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+              <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+
+              <!-- Row shown when there is no matching data. -->
+              <tr class="mat-row" *matNoDataRow>
+                <td class="mat-cell" colspan="12">No matching data</td>
+              </tr>
+            </table>
+          </div>
+
+          <mat-paginator
+            [pageSizeOptions]="[
+              10, 15, 20, 25, 30, 35, 40, 45, 50, 55, 60, 65, 70, 75, 80, 85,
+              90, 95, 100
+            ]"
+            showFirstLastButtons
+            [pageSize]="10"
+            [hidePageSize]="false"
+            [length]="totalRecords"
+            (page)="onPaginationChange($event)"
+          ></mat-paginator>
+        </ng-container>
+
+        <ng-template #noTableData>
+          <app-table-loader></app-table-loader>
+        </ng-template>
+      </mat-tab>
+    </mat-tab-group>
+  </div>
+</section>

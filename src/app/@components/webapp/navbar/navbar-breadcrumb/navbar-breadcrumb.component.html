@@ -1,0 +1,31 @@
+<div id="navbar-breadcrumb">
+  <div class="content-left">
+    <button
+      (click)="goBack()"
+      matRipple
+      matTooltip="Back"
+      matTooltipClass="custom-tooltip"
+      class="btn topbar-buttons1"
+    >
+      <span class="img-fluid"
+        ><img src="/assets/icons/return-icon.svg" alt=""
+      /></span>
+    </button>
+    <!-- <span class="opt-para-1 fw-600">{{ this.quoteData?.quoteNo }}</span> -->
+  </div>
+  <div
+    class="d-flex align-items-center"
+    *ngFor="let breadcrumbEl of breadcrumbLoadedData; let last = last"
+  >
+    <h6
+      matRipple
+      [routerLink]="breadcrumbEl?.url"
+      class="opt-heading-6 fw-700 breadcrumb-link"
+      [ngClass]="{ 'opt-text-black': last }"
+    >
+      {{ breadcrumbEl?.breadcrumb }}
+    </h6>
+
+    <span class="breadcrumb-separator" *ngIf="!last">/</span>
+  </div>
+</div>

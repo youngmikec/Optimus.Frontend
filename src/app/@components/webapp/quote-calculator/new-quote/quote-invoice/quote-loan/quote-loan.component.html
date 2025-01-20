@@ -1,0 +1,269 @@
+<section class="d-flex align-items-center border-bottom pb-3">
+  <h6 class="opt-heading-6 fw-700 mb-0">{{ applicantName }}</h6>
+  <span class="px-2 ms-2 status rounded">New Request</span>
+</section>
+
+<section id="loans">
+  <div class="mt-3">
+    <div class="row mb-3 px-2 g-2">
+      <div class="col-sm-6 col-xl-4">
+        <div class="card card__first py-3 px-3">
+          <div class="d-flex">
+            <div class="mt-3">
+              <img
+                src="/assets/icons/sale-overview/loans/loan-icon.svg"
+                alt="loan-icon"
+              />
+            </div>
+
+            <div class="ms-2">
+              <h3 *ngIf="loanItem">
+                {{
+                  loanItem.amount
+                    | currency : loanItem.currencyCode : 'symbol-narrow'
+                }}
+              </h3>
+              <h3 *ngIf="!loanItem">0.00</h3>
+              <p>Total Loan</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-sm-6 col-xl-4">
+        <div class="card py-3 px-3">
+          <div class="d-flex">
+            <div class="mt-3">
+              <img
+                src="/assets/icons/sale-overview/loans/approved-loan-icon.svg"
+                alt="loan-icon"
+              />
+            </div>
+
+            <div class="ms-2">
+              <h3 *ngIf="loanItem">
+                {{
+                  loanItem.balanceAmount
+                    | currency : loanItem.currencyCode : 'symbol-narrow'
+                }}
+              </h3>
+              <h3 *ngIf="!loanItem">0.00</h3>
+
+              <p class="card__text">Outstanding Loan</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-sm-6 col-xl-4">
+        <div class="card py-3 px-3">
+          <div class="d-flex">
+            <div
+              mat-button
+              class="mt-3"
+              matRipple
+              [matMenuTriggerFor]="moreOptions"
+            >
+              <img
+                src="assets/icons/sale-overview/loans/approved-loan-icon.svg"
+                alt="loan-icon"
+              />
+            </div>
+            <mat-menu #moreOptions="matMenu">
+              <button mat-menu-item>Repay Loan</button>
+              <button mat-menu-item>View Details</button>
+            </mat-menu>
+
+            <div class="ms-2">
+              <h3 *ngIf="loanItem">
+                {{
+                  loanItem.amount - loanItem.balanceAmount
+                    | currency : loanItem.currencyCode : 'symbol-narrow'
+                }}
+              </h3>
+              <h3 *ngIf="!loanItem">0.00</h3>
+
+              <p class="card__text">Repaid Loan</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="list-section">
+      <mat-tab-group>
+        <mat-tab label="Open Loans">
+          <div class="request-loan d-flex justify-content-between mt-4 px-2">
+            <h3>Loans</h3>
+          </div>
+
+          <div class="d-flex justify-content-center">
+            <div class="mt-5" *ngIf="showEmptyState">
+              <img src="/assets/icons/empty-state-icon.svg" alt="no files" />
+
+              <div>
+                <p class="card__text ms-3">No loan record yet.</p>
+              </div>
+            </div>
+          </div>
+
+          <div *ngIf="!showEmptyState">
+            <ng-container *ngIf="dataSource !== null; else noTableData">
+              <div class="mt-3 w-100">
+                <div class="table-responsive">
+                  <table mat-table [dataSource]="dataSource">
+                    <!-- Phase Column -->
+                    <ng-container matColumnDef="loanId">
+                      <th mat-header-cell *matHeaderCellDef>Loan ID</th>
+
+                      <td mat-cell *matCellDef="let row">{{ row.id }}</td>
+                    </ng-container>
+
+                    <!-- duration Column -->
+                    <ng-container matColumnDef="loanAmount">
+                      <th mat-header-cell *matHeaderCellDef>Loan Amount</th>
+
+                      <td mat-cell *matCellDef="let row">
+                        {{ row.amount | currency : row.currencyCode }}
+                      </td>
+                    </ng-container>
+
+                    <!-- last modified date Column -->
+                    <ng-container matColumnDef="balanceAmount">
+                      <th mat-header-cell *matHeaderCellDef>Balance Amount</th>
+
+                      <td mat-cell *matCellDef="let row">
+                        {{ row.balanceAmount | currency : row.currencyCode }}
+                      </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="createdDate">
+                      <th mat-header-cell *matHeaderCellDef>Created Date</th>
+
+                      <td mat-cell *matCellDef="let row">
+                        {{ row.createdDate | date : 'dd MMM, yyyy' }}
+                      </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="createdBy">
+                      <th mat-header-cell *matHeaderCellDef>Created By</th>
+
+                      <td mat-cell *matCellDef="let row">
+                        {{ row.createdBy }}
+                      </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="status">
+                      <th mat-header-cell *matHeaderCellDef>Status</th>
+
+                      <td mat-cell *matCellDef="let row">
+                        <span
+                          [ngClass]="{
+                            'status-pending': row.loanStatus === 1,
+                            'status-approved': row.loanStatus !== 1
+                          }"
+                        >
+                          {{ row.loanStatusDesc }}
+                        </span>
+                      </td>
+                    </ng-container>
+
+                    <!-- Actions Column -->
+                    <ng-container matColumnDef="actions">
+                      <th mat-header-cell *matHeaderCellDef>Actions</th>
+
+                      <td mat-cell *matCellDef="let row">
+                        <span
+                          class="action-text"
+                          [ngClass]="{
+                            disabled: paymentsSchedulePlan$ | async
+                          }"
+                          role="button"
+                          (click)="toggleAction('paymentPlan', row)"
+                          >Schedule Payment Plan
+                        </span>
+                        <span class="ml-4">
+                          <img
+                            alt="More"
+                            src="assets/icons/more-icon.svg"
+                            [matMenuTriggerFor]="menu"
+                          />
+                          <mat-menu #menu="matMenu">
+                            <ng-container
+                              *ngIf="
+                                paymentsSchedulePlan$
+                                  | async as paymentsSchedulePlan
+                              "
+                            >
+                              <button
+                                mat-menu-item
+                                (click)="selectLoan(paymentsSchedulePlan)"
+                              >
+                                Repay Loan
+                              </button>
+                            </ng-container>
+
+                            <button
+                              [disabled]="
+                                (paymentsSchedulePlan$ | async) === null
+                              "
+                              mat-menu-item
+                              (click)="toggleAction('viewCreatedPlan', row)"
+                            >
+                              View Details
+                            </button>
+                          </mat-menu>
+                        </span>
+                      </td>
+                    </ng-container>
+
+                    <!-- Table Rows -->
+                    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+
+                    <tr
+                      mat-row
+                      *matRowDef="let row; columns: displayedColumns"
+                    ></tr>
+
+                    <tr class="mat-row" *matNoDataRow>
+                      <td class="mat-cell" colspan="4">No data Found"</td>
+                    </tr>
+                  </table>
+                </div>
+              </div>
+            </ng-container>
+
+            <ng-template #noTableData>
+              <app-table-loader></app-table-loader>
+            </ng-template>
+          </div>
+        </mat-tab>
+        <!-- <mat-tab label="Closed Loans">
+          <p>Closed loans</p>
+        </mat-tab> -->
+      </mat-tab-group>
+    </div>
+  </div>
+</section>
+
+<ng-container [ngSwitch]="loanActions">
+  <app-payment-plan-modal
+    *ngSwitchCase="'paymentPlan'"
+    @slideInOutFromRight
+    (closePaymentPlan)="toggleAction('paymentPlan')"
+    [loan]="selectedLoan!"
+    [selectedApplicationQuote]="selectedApplicationQuote"
+    [selectedCountry]="selectedContry"
+  ></app-payment-plan-modal>
+
+  <app-view-payments-schedule-modal
+    *ngSwitchCase="'viewCreatedPlan'"
+    @slideInOutFromRight
+    (closePaymentPlan)="toggleAction('viewCreatedPlan')"
+    [loan]="selectedLoan!"
+    [selectedApplicationQuote]="selectedApplicationQuote"
+    [selectedCountry]="selectedContry"
+  ></app-view-payments-schedule-modal>
+</ng-container>
+
+<!-- <app-quote-document-view></app-quote-document-view> -->

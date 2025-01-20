@@ -1,0 +1,126 @@
+<ng-container *ngIf="{ isCreateSuccess: isCreateSuccess$ | async } as obs">
+  <mat-dialog-content>
+    <section>
+      <div class="main-header">
+        <div></div>
+
+        <div matRipple class="close-icon-container" (click)="closeDialog()">
+          <img
+            src="/assets/icons/modal-close-icon.svg"
+            alt="modal close icon"
+          />
+        </div>
+      </div>
+
+      <ng-container *ngIf="!obs.isCreateSuccess && step === '1'; else nextPage">
+        <div class="check-icon">
+          <img src="assets/images/check-blue.svg" alt="Check" />
+        </div>
+        <div class="dialog-content mt-4">
+          Are you sure you want to create this invoice?
+          <ng-container *ngIf="100 - data.remainingPercentage > 0">
+            A loan will be created for the
+            <span class="fw-700"> {{ 100 - data.remainingPercentage }}% </span>
+            balance of the required deposit.
+          </ng-container>
+        </div>
+      </ng-container>
+
+      <ng-template #nextPage>
+        <div class="check-icon">
+          <img src="assets/images/check-blue.svg" alt="Check" />
+        </div>
+        <div class="dialog-content mt-4">
+          <ng-container
+            *ngIf="
+              100 - data.remainingPercentage > 0;
+              else invoiceCreatedSucess
+            "
+          >
+            A loan has been created for the remaining
+            <span class="fw-700"> {{ 100 - data.remainingPercentage }}% </span>
+            of your down payment. Kindly proceed to schedule a payment plan
+          </ng-container>
+
+          <ng-template #invoiceCreatedSucess>
+            Invoice created successfully
+          </ng-template>
+        </div>
+      </ng-template>
+
+      <div class="cta-container">
+        <a
+          mat-button
+          matRipple
+          rel="noopener noreferrer"
+          [routerLink]="step === '1' ? '' : null"
+          [target]="step === '1' ? '' : '_blank'"
+          type="button"
+          class="btn opt-btn-primary-outline"
+          (click)="step === '1' ? closeDialog() : goToInvoiceInNewTab()"
+        >
+          <ng-container
+            *ngIf="!obs.isCreateSuccess && step === '1'; else viewInvoice"
+          >
+            Cancel
+          </ng-container>
+          <ng-template #viewInvoice>View Invoice</ng-template>
+        </a>
+        <!-- <button
+          matRipple
+          type="button"
+          class="btn opt-btn-primary-outline"
+          (click)="step === '1' ? closeDialog() : goToInvoice()"
+        >
+          <ng-container
+            *ngIf="!obs.isCreateSuccess && step === '1'; else viewInvoice"
+          >
+            Cancel
+          </ng-container>
+          <ng-template #viewInvoice>View Invoice</ng-template>
+        </button> -->
+
+        <a
+          matRipple
+          mat-button
+          class="btn opt-btn-primary"
+          rel="noopener noreferrer"
+          [disabled]="isLoading"
+          [routerLink]="step === '1' ? '' : null"
+          [target]="step === '1' ? '' : '_blank'"
+          (click)="step === '1' ? createInvoice() : goToPaymentPlan()"
+          *ngIf="
+            step === '1' || (step === '2' && 100 - data.remainingPercentage > 0)
+          "
+        >
+          <span class="btn-flex">
+            <ng-container *ngIf="step === '1'"> Create Invoice </ng-container>
+            <ng-container *ngIf="step === '2'">
+              Schedule Payment Plan
+            </ng-container>
+            <ng-container *ngIf="isLoading">
+              <app-button-loader></app-button-loader>
+            </ng-container>
+          </span>
+        </a>
+        <!-- <button
+          matRipple
+          class="btn opt-btn-primary"
+          [disabled]="isLoading"
+          (click)="step === '1' ? createInvoice()"
+          *ngIf="
+            step === '1' || (step === '2' && 100 - data.remainingPercentage > 0)
+          "
+        >
+          <ng-container *ngIf="step === '1'"> Create Invoice </ng-container>
+          <ng-container *ngIf="step === '2'">
+            Schedule Payment Plan
+          </ng-container>
+          <ng-container *ngIf="isLoading">
+            <app-button-loader></app-button-loader>
+          </ng-container>
+        </button> -->
+      </div>
+    </section>
+  </mat-dialog-content>
+</ng-container>

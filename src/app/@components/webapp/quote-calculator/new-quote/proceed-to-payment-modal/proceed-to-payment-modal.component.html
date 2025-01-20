@@ -1,0 +1,155 @@
+<section id="main">
+  <div class="header">
+    <div
+      class="d-flex justify-items-center align-items-center flex-column w-100 mt-4"
+    >
+      <img
+        src="assets/images/check-blue.svg"
+        alt="Check"
+        *ngIf="view === 'readyToBuy' || view === 'authorisation'"
+      />
+      <h6 class="opt-heading-6 fw-600 mb-0 mt-2" *ngIf="view === 'readyToBuy'">
+        Generate Invoice
+      </h6>
+
+      <h6
+        class="opt-heading-6 fw-600 mb-0 mt-2"
+        *ngIf="view === 'authorisation'"
+      >
+        Authorisation Sent
+      </h6>
+      <h6 class="opt-heading-6 fw-600 mb-0 mt-2" *ngIf="view === 'uploadDoc'">
+        Upload Document
+      </h6>
+    </div>
+
+    <div matRipple class="close-icon-container" (click)="closeDialog()">
+      <img src="/assets/icons/modal-close-icon.svg" alt="modal close icon" />
+    </div>
+  </div>
+
+  <ng-container>
+    <div class="amount-container mb-3">
+      <div
+        class="opt-para-1 mb-1 d-flex flex-column"
+        *ngIf="view === 'readyToBuy'"
+      >
+        <p>Select how you want to start your application</p>
+        <div class="opt-para-1 mt-2">Total amount to be paid</div>
+        <div class="content">
+          {{ countryFeeToDisplay | number }}
+          {{ data.selectedCurrency.currencyCode }}
+          <br />
+          {{ data.localFeeAmount | number }}
+          {{ data.localFeeCurrency }}
+        </div>
+      </div>
+    </div>
+    <div class="amount-container mb-3">
+      <div
+        class="opt-para-1 mb-1 d-flex flex-column"
+        *ngIf="view === 'authorisation'"
+      >
+        <p>
+          Your request for authorisation has been sent successfully. You will
+          receive an email notification.
+        </p>
+      </div>
+    </div>
+
+    <div class="amount-container mb-3">
+      <div
+        class="opt-para-1 mb-1 d-flex flex-column"
+        *ngIf="view === 'uploadDoc'"
+      >
+        <p>Kindly upload applicant's quote and applicant profile.</p>
+      </div>
+    </div>
+  </ng-container>
+
+  <ng-container *ngIf="view === 'uploadDoc' && (docExist$ | async) === false">
+    <input
+      type="file"
+      style="display: none"
+      #fileRef
+      autocomplete="off"
+      (change)="onFileChange($event)"
+    />
+
+    <div (click)="fileRef.click()" class="upload-container">
+      <img src="assets/images/upload-icon.svg" alt="Upload Icon" />
+      <p>
+        Click here to upload document from local storage or
+        <span class="drop-file">drop a file here</span>
+      </p>
+    </div>
+  </ng-container>
+
+  <ng-container *ngIf="view === 'uploadDoc' && (docExist$ | async) === true">
+    <div class="upload-wrapper">
+      <div class="uploaded-document">
+        <img src="assets/images/doc-uploaded.svg" alt="Uploaded Document" />
+        <p>{{ fileName }}</p>
+        <p (click)="removeFxn()" class="remove-text">Remove</p>
+      </div>
+
+      <div class="progress-container">
+        <span class="fs-6">{{ fileSize }}</span>
+        <div class="d-flex align-items-center">
+          <mat-progress-bar
+            mode="determinate"
+            [value]="progressValue"
+            class="progress-bar"
+            [style.background-color]="'#1D1D1D'"
+          ></mat-progress-bar>
+          <span class="progressValue">{{ progressValue }}%</span>
+        </div>
+      </div>
+    </div>
+  </ng-container>
+
+  <div class="cta-container">
+    <button
+      [disabled]="view === 'readyToBuy' && authorizationStatus === 1"
+      matRipple
+      type="button"
+      class="btn opt-btn-primary-outline"
+      (click)="
+        view === 'readyToBuy' ? navigateBack('uploadDoc') : closeDialog()
+      "
+      *ngIf="view === 'readyToBuy' || view === 'uploadDoc'"
+    >
+      <ng-container *ngIf="view === 'readyToBuy'">
+        Request Authorisation
+      </ng-container>
+
+      <ng-container *ngIf="view === 'uploadDoc'"> Cancel </ng-container>
+    </button>
+
+    <button
+      (click)="view === 'readyToBuy' ? goToCreateNewInvoice() : proceed()"
+      *ngIf="
+        (view === 'readyToBuy' &&
+          permissionService.hasPermission('Create Invoices')) ||
+        view === 'uploadDoc'
+      "
+      matRipple
+      class="btn opt-btn-primary"
+      [disabled]="
+        view === 'uploadDoc' && (docExist$ | async)
+          ? false
+          : view === 'readyToBuy'
+          ? false
+          : true
+      "
+    >
+      <ng-container *ngIf="view === 'readyToBuy'">Generate</ng-container>
+
+      <ng-container *ngIf="view === 'uploadDoc'"> Confirm </ng-container>
+
+      <ng-container *ngIf="isLoading | async">
+        <app-button-loader></app-button-loader>
+      </ng-container>
+    </button>
+  </div>
+</section>

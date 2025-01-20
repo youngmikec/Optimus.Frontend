@@ -1,0 +1,50 @@
+@use '../../../../@core/styles/abstracts' as *;
+
+.invoice-confirmed {
+  color: $opt-primary;
+  background-color: $opt-primary-50;
+  font-size: 0.75rem;
+  font-weight: 400;
+  border-radius: 0.3125rem;
+  padding: 0.125rem 0.625rem;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+.invoice-ongoing {
+  color: $opt-warning-500;
+  background-color: $opt-warning-50;
+  font-size: 0.75rem;
+  font-weight: 400;
+  border-radius: 0.3125rem;
+  padding: 0.125rem 0.625rem;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+.invoice-stage {
+  color: $opt-secondary;
+  background-color: $opt-secondary-50;
+  font-size: 0.75rem;
+  font-weight: 400;
+  border-radius: 0.3125rem;
+  padding: 0.125rem 0.625rem;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+.mat-row:hover {
+  background-color: #fdfdfd;
+  cursor: pointer;
+}
+
+.country-flag {
+  width: 1.5rem;
+  height: 1.125rem;
+}

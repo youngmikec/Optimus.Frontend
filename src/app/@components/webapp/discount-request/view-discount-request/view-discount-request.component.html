@@ -1,0 +1,186 @@
+<section id="view-content-wrapper">
+  <div class="view-content-header">
+    <h6 class="opt-para-1 fw-600 mb-0">View Discount</h6>
+
+    <div matRipple class="close-icon-container" (click)="closeDialog()">
+      <img src="/assets/icons/modal-close-icon.svg" alt="modal close icon" />
+    </div>
+  </div>
+
+  <div class="row mb-4">
+    <div class="col-md-6 mb-3">
+      <div class="">
+        <p class="opt-para-1 fw-600 mb-1">Request ID</p>
+        <p class="opt-para-1 fw-300 text-gray mb-1">
+          {{ discountRequest.id }}
+        </p>
+      </div>
+    </div>
+    <div class="col-md-6 mb-3">
+      <div>
+        <p class="opt-para-1 fw-600 mb-1">Country</p>
+        <p class="opt-para-1 fw-300 text-gray mb-1">
+          {{ discountRequest.discount.countryName }}
+        </p>
+      </div>
+    </div>
+    <div class="col-md-6 mb-3">
+      <div>
+        <p class="opt-para-1 fw-600 mb-1">Requested By</p>
+        <p class="opt-para-1 fw-300 text-gray mb-1">
+          {{ discountRequest.createdBy }}
+        </p>
+      </div>
+    </div>
+    <div class="col-md-6 mb-3">
+      <div>
+        <p class="opt-para-1 fw-600 mb-1">Migration Route</p>
+        <p class="opt-para-1 fw-300 text-gray mb-1">
+          {{ discountRequest.discount.migrationRouteName }}
+        </p>
+      </div>
+    </div>
+    <div class="col-md-6 mb-3">
+      <div>
+        <p class="opt-para-1 fw-600 mb-1">Discount Type</p>
+        <p class="opt-para-1 fw-300 text-gray mb-1">
+          {{
+            discountRequest.discount.discountType === 2
+              ? 'Flat Fee'
+              : 'Percentage %'
+          }}
+        </p>
+      </div>
+    </div>
+    <div class="col-md-6 mb-3">
+      <div>
+        <p class="opt-para-1 fw-600 mb-1">Discount Amount</p>
+        <p class="opt-para-1 fw-300 text-gray mb-1">
+          {{
+            discountRequest.discount.discountType === 1
+              ? discountRequest.discount.discountPercentage + ' %'
+              : (discountRequest.discount.flatAmount | currency : 'USD')
+          }}
+        </p>
+      </div>
+    </div>
+    <div class="col-md-6 mb-3">
+      <div>
+        <p class="opt-para-1 fw-600 mb-1">Start Date</p>
+        <p class="opt-para-1 fw-300 text-gray mb-1">
+          {{ discountRequest.discount.startDate | date }}
+        </p>
+      </div>
+    </div>
+    <div class="col-md-6 mb-3">
+      <div>
+        <p class="opt-para-1 fw-600 mb-1">End Date</p>
+        <p class="opt-para-1 fw-300 text-gray mb-1">
+          {{ discountRequest.discount.endDate | date }}
+        </p>
+      </div>
+    </div>
+    <div class="col-md-6 mb-3">
+      <div>
+        <p class="opt-para-1 fw-600 mb-1">Status</p>
+        <span
+          [ngClass]="{
+            'status-active': discountRequest.discountRequestStatus === 1,
+            'status-pending': discountRequest.discountRequestStatus === 2,
+            'status-inactive':
+              discountRequest.discountRequestStatus === 3 ||
+              discountRequest.discountRequestStatus === 4
+          }"
+        >
+          <ng-container>{{
+            discountRequest.discountRequestStatusDesc
+          }}</ng-container>
+          <!-- <ng-container *ngIf="discountRequest.status === 2"
+            >Pending</ng-container
+          >
+          <ng-container *ngIf="discountRequest.status === 3"
+            >Declined</ng-container
+          >
+          <ng-container *ngIf="discountRequest.status === 4"
+            >Not Required</ng-container
+          > -->
+        </span>
+      </div>
+    </div>
+  </div>
+
+  <form class="mb-4" [formGroup]="approvalForm">
+    <div
+      class="input-style1 input-width mb-1"
+      *ngIf="discountRequest?.discount?.discountType === 2"
+    >
+      <label class="input-label">Approved Discount Amount</label>
+
+      <mat-form-field appearance="outline" [style.width.%]="100">
+        <input
+          matInput
+          formControlName="approvedDiscountAmount"
+          placeholder="Input percentage/amount approved"
+        />
+
+        <mat-error
+          *ngIf="approvalFormControls['approvedDiscountAmount'].invalid"
+        >
+          <img
+            src="/assets/icons/error.svg"
+            alt=""
+            class="img-fluid error-icon"
+          />
+          {{ getErrorMessage('approvedDiscountAmount') }}
+        </mat-error>
+      </mat-form-field>
+    </div>
+
+    <div
+      class="input-style1 input-width mb-1"
+      *ngIf="discountRequest?.discount?.discountType === 1"
+    >
+      <label class="input-label">Approved Discount Percentage</label>
+
+      <mat-form-field appearance="outline" [style.width.%]="100">
+        <input
+          matInput
+          formControlName="approvedDiscountPercentage"
+          placeholder="Input percentage/amount approved"
+          [disabled]="!isStatusPending"
+        />
+
+        <mat-error
+          *ngIf="approvalFormControls['approvedDiscountPercentage'].invalid"
+        >
+          <img
+            src="/assets/icons/error.svg"
+            alt=""
+            class="img-fluid error-icon"
+          />
+          {{ getErrorMessage('approvedDiscountPercentage') }}
+        </mat-error>
+      </mat-form-field>
+    </div>
+  </form>
+
+  <div *ngIf="isStatusPending" class="cta-container">
+    <!-- class="btn opt-btn-primary-outline" -->
+    <button
+      matRipple
+      type="button"
+      class="btn topbar-buttons1 opt-btn-primary-outline"
+      (click)="toggleAction('reject', discountRequest)"
+    >
+      <ng-container> Reject </ng-container>
+    </button>
+
+    <button
+      (click)="toggleAction('approve', discountRequest)"
+      matRipple
+      class="btn opt-btn-primary"
+    >
+      <ng-container> Approve </ng-container>
+    </button>
+  </div>
+</section>

@@ -1,0 +1,273 @@
+<section id="create-currency">
+  <div class="create-currency-header">
+    <p class="opt-para-2 fw-700 mb-0">
+      <ng-container *ngIf="data?.instance !== 'update'">
+        Create Currency Conversion
+      </ng-container>
+      <ng-container *ngIf="data?.instance === 'update'"
+        >Edit Currency Conversion</ng-container
+      >
+    </p>
+
+    <div matRipple class="close-icon-container" (click)="closeDialog()">
+      <img src="/assets/icons/modal-close-icon.svg" alt="modal close icon" />
+    </div>
+  </div>
+
+  <form [formGroup]="manageCurrencyConvertForm" (ngSubmit)="onSubmit()">
+    <div class="input-style1">
+      <label class="input-label input-required">Base Currency</label>
+
+      <mat-form-field appearance="outline" [style.width.%]="100">
+        <mat-select
+          name="baseCurrency"
+          formControlName="baseCurrencyCode"
+          placeholder="Select Currency"
+          (selectionChange)="selectChangeHandler($event)"
+        >
+          <ng-container>
+            <mat-option
+              [value]="baseCurrency.currencyCode"
+              *ngFor="let baseCurrency of allCurrencyCodes"
+            >
+              {{ baseCurrency.currencyCode }}
+            </mat-option>
+          </ng-container>
+        </mat-select>
+        <mat-error
+          *ngIf="manageCurrencyConvertFormControls['baseCurrencyCode'].invalid"
+        >
+          <img
+            src="/assets/icons/error.svg"
+            alt=""
+            class="img-fluid error-icon"
+          />
+          {{ getErrorMessage('baseCurrencyCode') }}
+        </mat-error>
+      </mat-form-field>
+    </div>
+
+    <div class="arrow-icon d-flex justify-content-center">
+      <img src="assets/icons/arrow-swap.svg" alt="" />
+    </div>
+
+    <div class="input-style1">
+      <label class="input-label input-required"> Conversion Currency</label>
+
+      <mat-form-field appearance="outline" [style.width.%]="100">
+        <mat-select
+          name="baseCurrency"
+          formControlName="variableCurrencyCode"
+          placeholder="Select Currency"
+          (selectionChange)="selectChangeHandler2($event)"
+        >
+          <mat-option
+            *ngFor="let conversionCurrency of allCurrencyCodes"
+            [value]="conversionCurrency.currencyCode"
+          >
+            {{ conversionCurrency.currencyCode }}
+          </mat-option>
+        </mat-select>
+        <!-- [(ngModel)]="selectedConversionCurr" -->
+        <mat-error
+          *ngIf="
+            manageCurrencyConvertFormControls['variableCurrencyCode'].invalid
+          "
+        >
+          <img
+            src="/assets/icons/error.svg"
+            alt=""
+            class="img-fluid error-icon"
+          />
+          {{ getErrorMessage('variableCurrencyCode') }}
+        </mat-error>
+      </mat-form-field>
+    </div>
+
+    <div class="rates-content">
+      <div class="rate">
+        <p class="opt-para-1 mb-1 input-required">Current Rate</p>
+        <div class="rate-container">
+          <div class="period-selection-row">
+            <div class="row g-0 input-group1">
+              <div class="col-7">
+                <div class="input-style1">
+                  <mat-form-field appearance="outline" [style.width.%]="100">
+                    <input type="number" matInput formControlName="baseRate" />
+                    <mat-error
+                      *ngIf="
+                        manageCurrencyConvertFormControls['baseRate'].invalid
+                      "
+                    >
+                      <img
+                        src="/assets/icons/error.svg"
+                        alt=""
+                        class="img-fluid error-icon"
+                      />
+                      {{ getErrorMessage('baseRate') }}
+                    </mat-error>
+                  </mat-form-field>
+                </div>
+              </div>
+              <div class="col-5">
+                <div class="input-style1">
+                  <mat-form-field appearance="outline" [style.width.%]="100">
+                    <input
+                      type="text"
+                      matInput
+                      [value]="selectedBaseCurr"
+                      formControlName="selectedBaseCurr"
+                    />
+                  </mat-form-field>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <p class="opt-para-1 mb-0 w-auto equals">=</p>
+
+          <div class="period-selection-row">
+            <div class="row g-0 input-group1">
+              <div class="col-7">
+                <div class="input-style1">
+                  <mat-form-field appearance="outline" [style.width.%]="100">
+                    <input type="number" matInput formControlName="lastRate" />
+                    <mat-error
+                      *ngIf="
+                        manageCurrencyConvertFormControls['lastRate'].invalid
+                      "
+                    >
+                      <img
+                        src="/assets/icons/error.svg"
+                        alt=""
+                        class="img-fluid error-icon"
+                      />
+                      {{ getErrorMessage('lastRate') }}
+                    </mat-error>
+                  </mat-form-field>
+                </div>
+              </div>
+              <div class="col-5">
+                <div class="input-style1">
+                  <mat-form-field appearance="outline" [style.width.%]="100">
+                    <input
+                      type="text"
+                      matInput
+                      [value]="selectedConversionCurr"
+                      formControlName="selectedConversionCurr"
+                    />
+                  </mat-form-field>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="rate" *ngIf="data?.instance === 'update'">
+        <p class="opt-para-1 mb-1 input-required">
+          New Rate For {{ currentDateTime | date : 'MM/dd/yyyy' }}
+        </p>
+        <div class="rate-container">
+          <div class="period-selection-row">
+            <div class="row g-0 input-group1">
+              <div class="col-7">
+                <div class="input-style1">
+                  <mat-form-field appearance="outline" [style.width.%]="100">
+                    <input type="number" matInput formControlName="baseRate" />
+                    <mat-error
+                      *ngIf="
+                        manageCurrencyConvertFormControls['baseRate'].invalid
+                      "
+                    >
+                      <img
+                        src="/assets/icons/error.svg"
+                        alt=""
+                        class="img-fluid error-icon"
+                      />
+                      {{ getErrorMessage('baseRate') }}
+                    </mat-error>
+                  </mat-form-field>
+                </div>
+              </div>
+              <div class="col-5">
+                <div class="input-style1">
+                  <mat-form-field appearance="outline" [style.width.%]="100">
+                    <input
+                      type="text"
+                      matInput
+                      [value]="selectedBaseCurr"
+                      formControlName="selectedBaseCurr"
+                    />
+                  </mat-form-field>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <p class="opt-para-1 mb-0 w-auto equals">=</p>
+
+          <div class="period-selection-row">
+            <div class="row g-0 input-group1">
+              <div class="col-7">
+                <div class="input-style1">
+                  <mat-form-field appearance="outline" [style.width.%]="100">
+                    <input type="number" matInput formControlName="rate" />
+                    <mat-error
+                      *ngIf="manageCurrencyConvertFormControls['rate'].invalid"
+                    >
+                      <img
+                        src="/assets/icons/error.svg"
+                        alt=""
+                        class="img-fluid error-icon"
+                      />
+                      {{ getErrorMessage('rate') }}
+                    </mat-error>
+                  </mat-form-field>
+                </div>
+              </div>
+              <div class="col-5">
+                <div class="input-style1">
+                  <mat-form-field appearance="outline" [style.width.%]="100">
+                    <input
+                      type="text"
+                      matInput
+                      [value]="selectedConversionCurr"
+                      formControlName="selectedConversionCurr"
+                    />
+                  </mat-form-field>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="cta-container">
+      <button
+        matRipple
+        type="button"
+        class="btn opt-btn-primary-outline"
+        (click)="closeDialog()"
+      >
+        Cancel
+      </button>
+
+      <button
+        matRipple
+        class="btn opt-btn-primary"
+        [disabled]="
+          manageCurrencyConvertForm.invalid || (isLoading | async) !== false
+        "
+      >
+        <ng-container *ngIf="data.instance === 'update'">Save</ng-container>
+        <ng-container *ngIf="data.instance === 'create'">Create</ng-container>
+
+        <ng-container *ngIf="(isLoading | async) !== false">
+          <app-button-loader></app-button-loader>
+        </ng-container>
+      </button>
+    </div>
+  </form>
+</section>

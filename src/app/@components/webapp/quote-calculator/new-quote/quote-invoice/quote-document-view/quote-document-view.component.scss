@@ -1,0 +1,39 @@
+// @use '../../../../../../@core/styles/abstracts' as *;
+
+// :host {
+//   position: fixed;
+//   right: 0;
+//   top: 0;
+//   height: 100vh;
+//   border: 0.1rem solid #e7eaee;
+//   z-index: 999999;
+//   width: 40rem;
+//   background: #fff;
+//   box-shadow: -1px 3px 23px -3px lightgrey;
+//   overflow-y: auto;
+//   padding: 1rem 1.5rem;
+
+// 	.icons-container {
+// 		position: absolute;
+//     top: 1px;
+//     right: 3px;
+//   }
+
+//   .close {
+//     cursor: pointer;
+//   }
+// }
+
+// ::ng-deep.mat-dialog-container {
+//   transform: translateX(calc(100% - 48%)) !important;
+// }
+
+.header {
+  height: 3rem;
+}
+
+@media print {
+  .header {
+    display: none;
+  }
+}

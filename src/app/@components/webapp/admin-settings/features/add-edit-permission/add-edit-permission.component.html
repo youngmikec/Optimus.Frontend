@@ -1,0 +1,130 @@
+<section id="add-edit-permission">
+  <div class="d-flex align-items-center justify-content-between">
+    <h6 class="opt-para-2 mb-0">
+      <ng-container *ngIf="data.type === 'create'">
+        Add New Permission
+      </ng-container>
+      <ng-container *ngIf="data.type === 'edit'">
+        Edit Permission
+      </ng-container>
+    </h6>
+
+    <div matRipple class="close-icon-container" (click)="closeDialog()">
+      <img src="/assets/icons/modal-close-icon.svg" alt="modal close icon" />
+    </div>
+  </div>
+
+  <form [formGroup]="addEditPermissionForm" (ngSubmit)="onSubmit()">
+    <div class="input-style1 mt-4">
+      <label class="input-label">Permission Name</label>
+
+      <mat-form-field appearance="outline" [style.width.%]="100">
+        <input
+          matInput
+          placeholder="Enter permission name"
+          formControlName="permissionName"
+        />
+
+        <mat-error
+          *ngIf="addEditPermissionFormControls['permissionName'].invalid"
+        >
+          <img
+            src="/assets/icons/error.svg"
+            alt=""
+            class="img-fluid error-icon"
+          />
+
+          {{ getErrorMessage('permissionName') }}
+        </mat-error>
+      </mat-form-field>
+    </div>
+
+    <div class="input-style1">
+      <label class="input-label">Feature Name</label>
+
+      <mat-form-field appearance="outline" [style.width.%]="100">
+        <mat-select formControlName="featureName">
+          <mat-option [value]="feature.id" *ngFor="let feature of features">
+            {{ feature.name }}
+          </mat-option>
+        </mat-select>
+
+        <mat-error *ngIf="addEditPermissionFormControls['featureName'].invalid">
+          <img
+            src="/assets/icons/error.svg"
+            alt=""
+            class="img-fluid error-icon"
+          />
+
+          {{ getErrorMessage('featureName') }}
+        </mat-error>
+      </mat-form-field>
+    </div>
+
+    <div class="input-style1">
+      <label class="input-label">Access Level</label>
+      <div class="access-level">
+        <div class="d-flex align-items-center mb-2">
+          <mat-checkbox
+            color="primary"
+            class="me-3"
+            (change)="selectAccessLevel($event)"
+            [checked]="superAdminValue"
+            value="3"
+          >
+          </mat-checkbox>
+          <p class="opt-para-1 mb-0">Super Admin</p>
+        </div>
+        <div class="d-flex align-items-center mb-2">
+          <mat-checkbox
+            color="primary"
+            class="me-3"
+            (change)="selectAccessLevel($event)"
+            [checked]="regularUserValue"
+            value="1"
+          >
+          </mat-checkbox>
+          <p class="opt-para-1 mb-0">Regular Users</p>
+        </div>
+        <div class="d-flex align-items-center mb-2">
+          <mat-checkbox
+            color="primary"
+            class="me-3"
+            (change)="selectAccessLevel($event)"
+            [checked]="adminValue"
+            value="2"
+          >
+          </mat-checkbox>
+          <p class="opt-para-1 mb-0">Admin</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="d-flex justify-content-between mt-5">
+      <button
+        matRipple
+        type="button"
+        class="btn opt-btn-primary-outline"
+        (click)="closeDialog()"
+      >
+        Cancel
+      </button>
+      <button
+        matRipple
+        class="btn opt-btn-primary"
+        [disabled]="
+          addEditPermissionForm.invalid || (isLoading | async) !== false
+        "
+      >
+        <ng-container *ngIf="data.type === 'edit'">Save</ng-container>
+        <ng-container *ngIf="data.type === 'create'">Create</ng-container>
+
+        <ng-container *ngIf="(isLoading | async) !== false">
+          <app-button-loader></app-button-loader>
+        </ng-container>
+      </button>
+    </div>
+  </form>
+</section>
+<!-- <mat-dialog-content>
+</mat-dialog-content> -->

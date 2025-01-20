@@ -1,0 +1,66 @@
+#manage-contact-category {
+  .create-family-sub-header {
+    font-size: 0.8rem;
+  }
+
+  .manage-contact-category-header {
+    display: flex;
+    justify-content: space-between;
+    gap: 1.25rem;
+    margin-bottom: 1.25rem;
+  }
+
+  .access-level {
+    display: grid;
+    grid-template-columns: auto auto;
+    justify-content: space-between;
+    margin-bottom: 3.5rem;
+  }
+
+  .cta-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+    gap: 0.625rem;
+    margin-top: 0.625rem;
+  }
+
+  .currency-input-container {
+    display: flex;
+    justify-content: space-between;
+
+    .currency-input {
+      width: 5.938rem;
+    }
+  }
+
+  .rates-content {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+    margin-bottom: 2.375rem;
+  }
+
+  .flex-inputs {
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+
+    .inputs-items {
+      width: 10rem;
+    }
+  }
+
+  .radio-label {
+    padding-right: 1.563rem;
+  }
+
+  .radio-label1 {
+    padding-right: 0.3rem;
+  }
+
+  .footer-button {
+    margin-top: 2.375rem;
+  }
+}

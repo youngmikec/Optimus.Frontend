@@ -1,0 +1,221 @@
+@use '../../../../../@core/styles/abstracts/media-query' as *;
+
+#document-questions {
+  background-color: #f7f8f9;
+  border-color: #e8e8e8;
+
+  .cursor-pointer {
+    cursor: pointer;
+  }
+
+  .sidebar {
+    .nav-link {
+      color: #fff;
+    }
+  }
+
+  .ng-dropdown-panel .ng-dropdown-panel-items .ng-option {
+    background: #ebf0ff;
+    padding-left: 10px;
+    padding: 10px;
+  }
+
+  .ng-dropdown-panel .ng-dropdown-panel-items .ng-option:hover {
+    background: #f7d1d2;
+    padding-left: 10px;
+  }
+
+  .ng-dropdown-panel .scroll-host {
+    background: #ebf0ff;
+    border-radius: 10px;
+    border-top-left-radius: 0px;
+    border-top-right-radius: 0px;
+  }
+
+  .ng-select.ng-select-multiple
+    .ng-select-container
+    .ng-value-container
+    .ng-value {
+    white-space: nowrap;
+    background: #ebf0ff;
+    margin: 5px 5px;
+    padding: 0px 13px;
+    border-radius: 10px;
+    margin-left: 10px;
+  }
+
+  .ng-select.ng-select-multiple
+    .ng-select-container
+    .ng-value-container
+    .ng-value
+    .ng-value-icon {
+    cursor: pointer;
+    margin-right: 10px;
+  }
+
+  .ng-select .ng-select-container .ng-value-container .ng-input > input {
+    padding: 0.5rem 0 0.5rem 0;
+  }
+
+  .ng-select .ng-clear-wrapper {
+    display: none;
+  }
+
+  .mat-chip.mat-standard-chip {
+    background-color: #ebf0ff !important;
+    color: #000 !important;
+  }
+
+  .mat-standard-chip {
+    transition: box-shadow 280ms cubic-bezier(0.4, 0, 0.2, 1);
+    display: inline-flex;
+    padding: 7px 12px;
+    border-radius: 6px;
+    align-items: center;
+    cursor: default;
+    min-height: 32px;
+    height: 1px;
+  }
+
+  .feature-container {
+    .docuntent-list-section {
+      width: 100%;
+    }
+
+    .feature-list-section {
+      padding: 0 0 0 1rem;
+
+      .btn:hover {
+        svg path {
+          stroke: var(--opt-white);
+        }
+      }
+
+      @include opt-media-query-max(opt-md) {
+        padding: 0;
+      }
+    }
+
+    .feature-list-card {
+      border-right: 0.0625rem solid var(--opt-neutral-100);
+      // padding: 2rem 2rem 3rem 0;
+      height: 80vh;
+
+      overflow-y: auto;
+      overflow-x: hidden;
+
+      .list-group-item {
+        border-radius: 0;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 0.5rem 1rem;
+        transition: 0.25s all ease;
+        cursor: pointer;
+        border-color: var(--opt-neutral-100);
+        min-height: 2.6875rem;
+
+        .name {
+          margin-right: 0.7rem;
+          min-width: 9.375rem;
+        }
+
+        &:hover {
+          background: #f7f7f7;
+        }
+      }
+
+      .active-document {
+        background-color: #f7d1d2;
+
+        .name {
+          font-weight: 500;
+        }
+      }
+
+      @include opt-media-query-max(opt-sm) {
+        height: 25rem;
+        padding: 1rem 0.5rem 2rem 0;
+      }
+    }
+
+    .permission-list-section {
+      .scrollable-container {
+        overflow: scroll;
+        -webkit-overflow-scrolling: touch;
+        white-space: nowrap;
+        width: 100%;
+      }
+
+      .permission-container {
+        margin-top: 1.2rem;
+
+        .permission-header,
+        .permission-item {
+          padding: 0.5rem 1rem;
+          width: 100%;
+        }
+
+        .permission-header {
+          display: flex;
+          flex-wrap: wrap;
+          justify-content: space-between;
+          align-items: center;
+          gap: 1rem;
+          margin-bottom: 1rem;
+        }
+
+        .permission-item {
+          display: grid;
+          grid-template-columns: 4fr 6fr 2fr;
+          gap: 1rem;
+          margin-bottom: 0.7rem;
+          border-bottom: 0.0625rem solid var(--opt-neutral-100);
+
+          .icon-section {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-left: auto;
+
+            .trash-container,
+            .edit-container {
+              cursor: pointer;
+              height: 1.375rem;
+              width: 1.375rem;
+              display: inline-flex;
+              justify-content: center;
+              align-items: center;
+              border-radius: 20%;
+              -webkit-user-select: none;
+              -moz-user-select: none;
+              -ms-user-select: none;
+              user-select: none;
+
+              img {
+                -webkit-user-drag: none;
+              }
+            }
+          }
+        }
+      }
+    }
+
+    @include opt-media-query-max(opt-sm) {
+      grid-template-columns: 100%;
+      overflow-y: auto;
+    }
+  }
+}
+
+.truncate {
+  width: 250px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.form-section {
+  height: 75vh;
+  overflow: scroll;
+}

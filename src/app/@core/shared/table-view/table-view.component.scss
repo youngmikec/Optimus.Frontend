@@ -1,0 +1,36 @@
+@use '../../../@core/styles/abstracts' as *;
+
+.table-view-container {
+  height: 100vh;
+  overflow-y: scroll;
+  position: relative;
+}
+
+.description {
+  color: $opt-neutral-500;
+  font-size: 14px;
+  margin: 0.54rem auto;
+}
+
+.button-section {
+  background-color: #fff;
+  position: absolute;
+  bottom: 1.7rem;
+  min-width: 50%;
+  z-index: 10;
+  padding: 0.8rem 0;
+  border-top: 3px solid $opt-neutral-100;
+}
+
+.btn-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 1.625rem;
+  margin-top: 0.625rem;
+}
+
+// mat-checkbox {
+//     color: $opt-primary;
+// }

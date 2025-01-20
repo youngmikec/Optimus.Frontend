@@ -1,0 +1,96 @@
+<section id="repay-loan">
+  <div class="manage-contact-category-header">
+    <h6 mat-dialog-title class="opt-heading-6 fw-700 mb-0">Repay Loan</h6>
+
+    <div matRipple class="close-icon-container" (click)="closeDialog()">
+      <img src="/assets/icons/modal-close-icon.svg" alt="modal close icon" />
+    </div>
+  </div>
+
+  <div class="content">
+    <p>Ensure that Optiva has received this repayment. quote loan ni se</p>
+
+    <form [formGroup]="repayLoanForm">
+      <div class="attachement col-md-12 mt-2">
+        <input
+          type="file"
+          formControlName="attachment"
+          #fileInput
+          [style.display]="'none'"
+          (change)="onFileSelected($event)"
+        />
+        <div
+          class="col-12 open-file"
+          type="button"
+          (click)="fileInput.click()"
+          *ngIf="!fileInfo.name"
+        >
+          <span>
+            <img
+              src="assets/icons/general/download-icon.svg"
+              alt="download icon"
+            />
+          </span>
+          <span class="opt-caption"
+            >Click here to upload proof of payment from local storage or drop a
+            file here.</span
+          >
+        </div>
+      </div>
+
+      <div class="col-12" *ngIf="fileInfo.name">
+        <div class="opened-file opt-caption">
+          <span>
+            <img src="assets/icons/sale-overview/meeting/pdf-icon.svg" alt="" />
+          </span>
+          <span class="fw-600">{{ fileInfo.name }}</span>
+          <span *ngIf="fileInfo.size">{{ fileInfo.size }}</span>
+          <span
+            role="button"
+            class="opt-caption remove-file"
+            (click)="clearFile()"
+            >remove</span
+          >
+        </div>
+      </div>
+
+      <div class="input-style1 mb-3">
+        <label class="input-label">Enter Amount in receipt</label>
+
+        <mat-form-field appearance="outline" [style.width.%]="100">
+          <input type="number" matInput formControlName="amount" />
+        </mat-form-field>
+
+        <!-- <label class="input-label">Receipt Number</label>
+
+        <mat-form-field appearance="outline" [style.width.%]="100">
+          <input matInput formControlName="receiptNumber" />
+        </mat-form-field> -->
+      </div>
+
+      <div class="cta-container">
+        <button
+          matRipple
+          type="button"
+          class="btn opt-btn-primary-outline"
+          (click)="closeDialog()"
+        >
+          Cancel
+        </button>
+
+        <button
+          matRipple
+          class="btn opt-btn-primary"
+          [disabled]="repayLoanForm.invalid"
+          (click)="createLoanPayment()"
+        >
+          Send for confirmation
+
+          <ng-container *ngIf="isLoading | async">
+            <app-button-loader></app-button-loader>
+          </ng-container>
+        </button>
+      </div>
+    </form>
+  </div>
+</section>

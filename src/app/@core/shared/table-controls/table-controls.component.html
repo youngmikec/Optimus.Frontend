@@ -1,0 +1,26 @@
+<div class="table-controls">
+  <div class="input-style1 input-no-error">
+    <mat-form-field appearance="outline" [style.width.%]="100">
+      <span matPrefix class="img-fluid">
+        <img src="/assets/icons/search.svg" alt="icon" />
+      </span>
+
+      <input
+        matInput
+        [formControl]="searchControl"
+        [placeholder]="placeholder"
+      />
+    </mat-form-field>
+  </div>
+
+  <button matRipple class="btn opt-btn-neutral opt-btn-with-icon">
+    <span class="img-fluid"
+      ><img src="/assets/icons/filter-icon.svg" alt="filter-icon"
+    /></span>
+    Filters
+  </button>
+
+  <button matRipple class="btn opt-btn-primary" (click)="triggerCreate()">
+    {{ createButtonLabel }}
+  </button>
+</div>

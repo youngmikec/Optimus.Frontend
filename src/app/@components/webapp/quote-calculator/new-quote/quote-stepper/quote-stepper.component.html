@@ -1,0 +1,430 @@
+<section>
+  <!-- <form> -->
+  <mat-vertical-stepper
+    *ngIf="displayStepper"
+    animationDuration="500000ms"
+    (selectionChange)="stepChanged($event)"
+    orientation="vertical"
+    [linear]="false"
+    #stepper
+  >
+    <ng-container *ngFor="let item of stepperInfo; let i = index">
+      <mat-step>
+        <div class="step-wrapper">
+          <ng-container *ngIf="item.type === formBuilderTypes['WELCOME']">
+            <div class="step-wrapper__welcome">
+              <h6 class="mt-5 opt-para-2 fw-700">Questionnaire</h6>
+              <img
+                class="mt-5"
+                src="assets/images/welcome-to-team.svg"
+                alt="Questionnaire Image"
+              />
+              <p class="opt-para-1">Let’s go!!! 🤩🤩🤩</p>
+            </div>
+          </ng-container>
+
+          <ng-container *ngIf="item.type !== formBuilderTypes['WELCOME']">
+            <h6 class="opt-para-1 fw-600">Questionnaire</h6>
+
+            <!-- Show Previous Question When Needed -->
+            <div class="previous-question">
+              <ng-container *ngIf="item.show_previous_question">
+                <div>
+                  <div class="mb-1">{{ stepperInfo[i - 1].question }}</div>
+                  <div class="previous-options-button-container">
+                    <button
+                      class="previous-options-button"
+                      *ngIf="i > 1"
+                      matStepperPrevious
+                    >
+                      <svg
+                        width="16"
+                        height="16"
+                        viewBox="0 0 16 16"
+                        fill="none"
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <path
+                          d="M10.336 0.337581L10.336 0.337808L10.3483 0.336063C10.4097 0.32729 10.4403 0.33619 10.5688 0.373477C10.5878 0.378987 10.6089 0.385118 10.6326 0.391902C10.829 0.464645 10.9901 0.609917 11.0826 0.797929C11.1766 0.988862 11.1925 1.20887 11.1269 1.4113L11.1269 1.41129L11.1254 1.41601C11.0329 1.71657 10.7633 2.62839 10.5166 3.5374C10.3933 3.99179 10.2749 4.44841 10.187 4.8289C10.103 5.1931 10.0364 5.52983 10.0364 5.71819C10.0364 6.46067 10.6759 7.19395 11.5126 7.19395H14.9411C15.3972 7.19395 15.7507 7.5475 15.7507 8.00304C15.7507 8.00066 15.7507 8.00911 15.7472 8.03333C15.744 8.05583 15.7388 8.08555 15.731 8.12317C15.7156 8.19849 15.692 8.29607 15.6606 8.41455C15.5979 8.65111 15.5075 8.95832 15.3977 9.31326C15.1782 10.0224 14.885 10.9103 14.591 11.7806C14.2972 12.6503 14.0033 13.5004 13.7828 14.1331C13.6726 14.4494 13.5807 14.7114 13.5164 14.8942L13.4418 15.1059L13.4222 15.1615L13.4202 15.1672C13.2844 15.4615 12.9898 15.6667 12.6554 15.6667H4.98875V7.17654C5.57419 7.11419 6.11044 6.88279 6.53678 6.45661C6.622 6.37142 6.72244 6.22276 6.82194 6.0637C6.92811 5.89397 7.05354 5.6786 7.1904 5.43469C7.46441 4.94634 7.7906 4.33219 8.11116 3.71563C8.70277 2.57775 9.27961 1.42312 9.48201 1.01799C9.49825 0.985475 9.51208 0.95779 9.52332 0.935328C9.70762 0.587435 10.028 0.369988 10.336 0.337581ZM2.03637 15.6667H0.417318V7.19395H2.03637V15.6667Z"
+                          fill="#0235CD"
+                          stroke="#0235CD"
+                          stroke-width="0.666667"
+                        />
+                      </svg>
+                      <span>Yes</span>
+                    </button>
+
+                    <button
+                      class="previous-options-button"
+                      *ngIf="i > 1"
+                      matStepperPrevious
+                    >
+                      <svg
+                        width="16"
+                        height="16"
+                        viewBox="0 0 16 16"
+                        fill="none"
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <path
+                          d="M5.74798 15.6624L5.74795 15.6622L5.73573 15.6639C5.6743 15.6727 5.64364 15.6638 5.51519 15.6265C5.49621 15.621 5.47509 15.6149 5.45143 15.6081C5.25503 15.5354 5.09389 15.3901 5.00134 15.2021C4.90735 15.0111 4.89148 14.7911 4.95709 14.5887L4.95713 14.5887L4.95858 14.584C5.0511 14.2834 5.32071 13.3716 5.56741 12.4626C5.69073 12.0082 5.80913 11.5516 5.89694 11.1711C5.98099 10.8069 6.04762 10.4702 6.04762 10.2818C6.04762 9.53933 5.4081 8.80605 4.57143 8.80605H1.14286C0.686832 8.80605 0.333333 8.4525 0.333333 7.99696C0.333333 7.99934 0.333328 7.99089 0.336771 7.96667C0.339968 7.94417 0.345202 7.91445 0.35294 7.87683C0.368429 7.80151 0.391999 7.70393 0.423382 7.58545C0.486042 7.34889 0.576467 7.04168 0.686295 6.68674C0.905736 5.97756 1.19895 5.08965 1.49294 4.21941C1.78677 3.34966 2.08069 2.49962 2.3012 1.86689C2.41143 1.55056 2.50329 1.28864 2.56758 1.10583L2.64217 0.894073L2.6618 0.838502L2.66383 0.832786C2.79957 0.538531 3.09417 0.333333 3.42857 0.333333H11.0952V8.82346C10.5098 8.88581 9.97354 9.11721 9.5472 9.54339C9.46199 9.62858 9.36154 9.77724 9.26205 9.9363C9.15587 10.106 9.03045 10.3214 8.89359 10.5653C8.61957 11.0537 8.29338 11.6678 7.97282 12.2844C7.38121 13.4223 6.80437 14.5769 6.60197 14.982C6.58573 15.0145 6.5719 15.0422 6.56067 15.0647C6.37636 15.4126 6.05596 15.63 5.74798 15.6624ZM14.0476 0.333333H15.6667V8.80605H14.0476V0.333333Z"
+                          stroke="#0235CD"
+                          stroke-width="0.666667"
+                        />
+                      </svg>
+                      <span>No</span>
+                    </button>
+                  </div>
+                </div>
+              </ng-container>
+            </div>
+
+            <div class="p-3">
+              <p class="tagline opt-caption opt-text-neutral">
+                {{ item.tagline }}
+              </p>
+
+              <h3 class="mb-4 opt-heading-4 fw-600">
+                {{ constructLabel(item) }}
+              </h3>
+
+              <!-- COUNTRY -->
+              <ng-container *ngIf="item.type === formBuilderTypes['COUNTRY']">
+                <div class="step-wrapper__dropdown">
+                  <mat-form-field
+                    class="example-full-width show-errors"
+                    appearance="outline"
+                    [style.width.%]="100"
+                  >
+                    <mat-select
+                      (selectionChange)="onCountrySelect($event)"
+                      placeholder="{{ item.placeholder }}"
+                      [(ngModel)]="selectedCountry"
+                    >
+                      <mat-option *ngFor="let i of countryList" [value]="i">
+                        {{ i.name }}
+                      </mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                  <mat-error
+                    class="select-coutry-dropdown mt-1 mb-2"
+                    *ngIf="showMigrationError === true"
+                  >
+                    <img
+                      src="/assets/icons/error.svg"
+                      alt=""
+                      class="img-fluid error-icon"
+                    />
+                    Country selected does not have a migration route.
+                    <div
+                      class="error-button"
+                      [routerLink]="
+                        '/app/account-settings/country-setup/dashboard/' +
+                        selectedCountry.id +
+                        '/' +
+                        selectedCountry.name +
+                        '/' +
+                        'migrationRoutes'
+                      "
+                    >
+                      Create one
+                    </div>
+                  </mat-error>
+                </div>
+              </ng-container>
+
+              <!-- DROPDOWN -->
+              <ng-container *ngIf="item.type === formBuilderTypes['DROPDOWN']">
+                <div class="step-wrapper__dropdown">
+                  <mat-form-field appearance="outline" [style.width.%]="100">
+                    <mat-select placeholder="{{ item.placeholder }}">
+                      <mat-option *ngFor="let i of item.options" [value]="i.id">
+                        {{ i.name }}
+                      </mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                </div>
+              </ng-container>
+
+              <!-- MIGRATION ROUTE QUESTION -->
+              <ng-container *ngIf="item.type === formBuilderTypes['ROUTE']">
+                <div class="step-wrapper__select">
+                  <app-quote-select
+                    (selectedOption)="selectedMigrationRoute($event)"
+                    [options]="countryMigrationList"
+                  ></app-quote-select>
+                  <mat-error
+                    class="select-coutry-dropdown mt-1 mb-2"
+                    *ngIf="showQuestionError === true"
+                  >
+                    <img
+                      src="/assets/icons/error.svg"
+                      alt=""
+                      class="img-fluid error-icon"
+                    />
+                    The Route selected does not have questions.
+                    <div
+                      class="error-button"
+                      *ngIf="selectedCountry"
+                      [routerLink]="
+                        '/app/admin-settings/country-setup/dashboard/' +
+                        selectedCountry.id +
+                        '/' +
+                        selectedCountry.name +
+                        '/migrationRoutes/route-dashboard/' +
+                        selectedRoute.id +
+                        '/' +
+                        selectedRoute.name
+                      "
+                    >
+                      Configure here
+                    </div>
+                  </mat-error>
+                </div>
+              </ng-container>
+
+              <!-- SELECT -->
+              <ng-container *ngIf="item.type === formBuilderTypes['SELECT']">
+                <div class="step-wrapper__select">
+                  <app-quote-select
+                    (selectedOption)="getSelectedValue($event, 'select')"
+                    [answer]="item.answer"
+                    [options]="item.options"
+                  ></app-quote-select>
+                </div>
+              </ng-container>
+
+              <!-- SINGLE SELECT -->
+              <ng-container
+                *ngIf="item.type === formBuilderTypes['SingleSelection']"
+              >
+                <div class="step-wrapper__select">
+                  <app-quote-select
+                    [type]="'SingleSelection'"
+                    [options]="item.questionOptions"
+                    [answer]="item.answer"
+                    (selectedOption)="
+                      getSelectedValue($event, 'SingleSelection')
+                    "
+                  ></app-quote-select>
+                </div>
+              </ng-container>
+
+              <!-- REAL ESTATE SELECT -->
+              <ng-container *ngIf="item.type === 'RealEstateInvestmentType'">
+                <div class="step-wrapper__select">
+                  <app-quote-select
+                    [type]="'RealEstateInvestmentType'"
+                    [options]="item.questionOptions"
+                    [answer]="item.answer"
+                    (selectedOption)="
+                      getSelectedValue($event, 'RealEstateInvestmentType')
+                    "
+                  ></app-quote-select>
+                </div>
+              </ng-container>
+
+              <ng-container
+                *ngIf="item.type === formBuilderTypes['FamilyMemberType']"
+              >
+                <div class="step-wrapper__select">
+                  <app-quote-select
+                    [type]="'SELECT2'"
+                    [options]="item.options"
+                    [answer]="item.answer"
+                    (selectedOption)="
+                      getSelectedValue($event, 'FamilyMemberType')
+                    "
+                  ></app-quote-select>
+                </div>
+              </ng-container>
+
+              <!-- TRUE OR FALSE -->
+              <ng-container
+                *ngIf="item.type === formBuilderTypes['TrueOrFalse']"
+              >
+                <div class="step-wrapper__radio">
+                  <app-quote-select
+                    [type]="'TRUEFALSE'"
+                    [options]="item.options"
+                    [answer]="item.answer"
+                    (selectedOption2)="getSelectedValue($event, 'TrueOrFalse')"
+                  ></app-quote-select>
+                </div>
+              </ng-container>
+
+              <!-- RADIO BUTTON -->
+              <ng-container *ngIf="item.type === formBuilderTypes['RADIO']">
+                <div class="step-wrapper__select">
+                  <app-quote-select
+                    [options]="item.options"
+                    [answer]="item.answer"
+                    (selectedOption)="getSelectedValue($event, 'RADIO')"
+                  ></app-quote-select>
+                </div>
+              </ng-container>
+
+              <!-- CHECKBOX -->
+              <ng-container *ngIf="item.type === formBuilderTypes['CHECKBOX']">
+                <div class="step-wrapper__checkbox">
+                  <div *ngFor="let checkboxItem of item.options">
+                    <mat-checkbox>{{ checkboxItem.name }}</mat-checkbox>
+                  </div>
+                </div>
+              </ng-container>
+
+              <!-- FREE-TEXT -->
+              <ng-container *ngIf="item.type === formBuilderTypes['FreeText']">
+                <div class="step-wrapper__dropdown">
+                  <mat-form-field appearance="outline" [style.width.%]="100">
+                    <textarea
+                      matInput
+                      placeholder="Provide answer"
+                      rows="5"
+                      [(ngModel)]="freeTextValue"
+                      (input)="onFreeTextChange($event.target)"
+                    ></textarea>
+                  </mat-form-field>
+                </div>
+              </ng-container>
+
+              <!-- RANGE -->
+              <ng-container *ngIf="item.type === formBuilderTypes['Number']">
+                <div class="step-wrapper__range">
+                  <mat-form-field appearance="outline" [style.width.%]="100">
+                    <input
+                      type="number"
+                      matInput
+                      placeholder="Enter Number"
+                      [(ngModel)]="item.answer2"
+                      (input)="onRangeChange($event.target)"
+                    />
+                  </mat-form-field>
+                  <mat-slider
+                    [max]="100"
+                    [min]="1"
+                    [step]="1"
+                    [(ngModel)]="item.answer2"
+                    [max]="100"
+                    [min]="0"
+                    [step]="1"
+                    (change)="onRangeChange($event)"
+                  >
+                    <input matSliderThumb />
+                  </mat-slider>
+                </div>
+              </ng-container>
+
+              <ng-container
+                *ngIf="item.type === formBuilderTypes['MultiSelection']"
+              >
+                <div class="step-wrapper__select">
+                  <app-quote-select
+                    (selectedOption)="
+                      getSelectedValue($event, 'MultiSelection')
+                    "
+                    [answer]="item.answer"
+                    [type]="'SELECT2'"
+                    [options]="item.options"
+                  ></app-quote-select>
+                  <mat-error
+                    class="select-coutry-dropdown mt-1 mb-2"
+                    *ngIf="showMultiQuestionError === true"
+                  >
+                    <img
+                      src="/assets/icons/error.svg"
+                      alt=""
+                      class="img-fluid error-icon"
+                    />
+                    This Question does not have any options.
+                  </mat-error>
+                </div>
+              </ng-container>
+
+              <ng-container *ngIf="item.type === formBuilderTypes['Confirm']">
+                <div class="step-wrapper__welcome">
+                  <img
+                    src="assets/images/confirm-quote.svg"
+                    alt="Questionnaire Image"
+                  />
+                  <p class="opt-para-1 fw-600">Congratulations!!! 🤩🤩🤩</p>
+                  <p class="opt-para-1">
+                    You've gotten to the end of the questionnaire
+                  </p>
+                </div>
+              </ng-container>
+
+              <div class="btn-section">
+                <!-- for first step -->
+                <button
+                  (click)="previousPage()"
+                  class="btn first-back-btn"
+                  *ngIf="i === 1"
+                >
+                  Back
+                </button>
+                <button
+                  class="btn opt-btn-neutral back-btn"
+                  *ngIf="i > 1"
+                  (click)="goToPreviousQuestion(item)"
+                >
+                  Back
+                </button>
+
+                <!-- 
+                      editingApplicationQuote !== true
+                      (i > 2 &&
+                      haveAnswered === false &&
+                      i < stepperInfo.length - 1) ||
+                      !selectedCountry ||
+                      -->
+
+                <button
+                  class="btn opt-btn-primary"
+                  *ngIf="
+                    i < stepperInfo.length - 1 ||
+                    item.type === formBuilderTypes['ROUTE']
+                  "
+                  [disabled]="
+                    (i > 1 && !selectedRoute) ||
+                    !selectedCountry ||
+                    showQuestionError === true ||
+                    showMigrationError === true ||
+                    (isLoading | async) !== false ||
+                    (isRouteSuccess | async) !== false ||
+                    (isApplicationLoading | async) !== false
+                  "
+                  (click)="stepperNext(item, i)"
+                >
+                  <ng-container
+                    *ngIf="
+                      (isLoading | async) !== false ||
+                      (isApplicationLoading | async) !== false
+                    "
+                  >
+                    <app-button-loader></app-button-loader>
+                  </ng-container>
+                  Continue
+                </button>
+
+                <!-- end of the questions -->
+                <button
+                  class="btn opt-btn-primary"
+                  *ngIf="i > 2 && i === stepperInfo.length - 1"
+                  (click)="stepperNext(item, i)"
+                  [disabled]="(isLoadingQuestion | async) !== false"
+                >
+                  Confirm Quote
+                  <ng-container *ngIf="(isLoadingQuestion | async) !== false">
+                    <app-button-loader></app-button-loader>
+                  </ng-container>
+                </button>
+              </div>
+            </div>
+          </ng-container>
+        </div>
+      </mat-step>
+    </ng-container>
+  </mat-vertical-stepper>
+  <!-- </form> -->
+</section>

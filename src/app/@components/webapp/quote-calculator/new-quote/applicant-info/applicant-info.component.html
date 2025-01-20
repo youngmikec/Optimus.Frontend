@@ -1,0 +1,240 @@
+<section id="applicant-info-wrapper">
+  <div class="applicant-info-header">
+    <ng-container *ngIf="isFormBuilder">
+      <h3 class="opt-para-2 fw-700 mb-2">Applicant's Info</h3>
+      <p class="opt-caption">
+        Please provide the following basic information and proceed to
+        questionnaire.
+      </p>
+    </ng-container>
+
+    <ng-container *ngIf="!isFormBuilder">
+      <h3 class="opt-heading-3 fw-700 mb-0">
+        Applicant's
+        <span>Info</span>
+      </h3>
+
+      <p class="opt-para-1">
+        Please provide the following basic information and proceed to
+        questionnaire.
+      </p>
+    </ng-container>
+  </div>
+
+  <form [formGroup]="newApplicantForm" (ngSubmit)="onSubmit()">
+    <div class="input-style1 mb-1">
+      <label class="input-label">Applicant ID</label>
+
+      <mat-form-field appearance="outline" [style.width.%]="100">
+        <input
+          type="text"
+          placeholder="Select applicant ID"
+          matInput
+          formControlName="id"
+          [matAutocomplete]="auto"
+          (change)="onInputfieldChange($event, 'id')"
+        />
+        <span matSuffix><img src="assets/icons/arrow-down.svg" alt="" /></span>
+
+        <mat-autocomplete
+          #auto="matAutocomplete"
+          (optionSelected)="onApplicantChange($event, 'id')"
+        >
+          <mat-option
+            *ngFor="let option of filteredIdOptions | async"
+            [value]="option.id"
+          >
+            {{ option.id }}
+          </mat-option>
+        </mat-autocomplete>
+      </mat-form-field>
+    </div>
+
+    <div class="input-style1 mb-1">
+      <label class="input-label">Phone Number</label>
+
+      <div class="select-input-style">
+        <mat-form-field
+          appearance="outline"
+          [style.width.%]="100"
+          class="select-field"
+        >
+          <input
+            #countryCode
+            type="text"
+            matInput
+            placeholder="234"
+            formControlName="countryCode"
+            [matAutocomplete]="forCountryCode"
+            (input)="onFilterCountryCode(countryCode.value)"
+          />
+
+          <mat-autocomplete
+            class="country-code"
+            autoActiveFirstOption
+            #forCountryCode="matAutocomplete"
+          >
+            <ng-container
+              *ngIf="
+                (allFilteredCountryCodes | async) !== null;
+                else noCountryCodes
+              "
+            >
+              <mat-option
+                *ngFor="let countryCode of allFilteredCountryCodes | async"
+                class="country-code"
+                value="{{ countryCode.dialCode }}"
+              >
+                <div class="country-code-container">
+                  <!-- <img [src]="countryCode.flag" alt="" class="flag" /> -->
+
+                  <p class="country">{{ countryCode.name }} <span></span></p>
+
+                  <p class="code">({{ countryCode.dialCode }})</p>
+                </div>
+              </mat-option>
+            </ng-container>
+
+            <ng-template #noCountryCodes>
+              <mat-option disabled>Loading Country Codes...</mat-option>
+            </ng-template>
+          </mat-autocomplete>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" [style.width.%]="100">
+          <input
+            type="text"
+            placeholder="Enter Phone Number"
+            aria-label="Number"
+            matInput
+            formControlName="phone"
+            [matAutocomplete]="phoneAuto"
+            (change)="onInputfieldChange($event, 'phone')"
+          />
+          <span matSuffix
+            ><img src="assets/icons/arrow-down.svg" alt=""
+          /></span>
+
+          <mat-autocomplete
+            #phoneAuto="matAutocomplete"
+            (optionSelected)="onApplicantChange($event, 'phone')"
+          >
+            <mat-option
+              *ngFor="let option of filteredPhoneOptions | async"
+              [value]="option.mobileNo"
+            >
+              {{ option.mobileNo }}
+            </mat-option>
+          </mat-autocomplete>
+          <mat-error *ngIf="newUserFormControls['phone'].invalid">
+            <img
+              src="/assets/icons/error.svg"
+              alt=""
+              class="img-fluid error-icon"
+            />
+            {{ getErrorMessage('phone') }}
+          </mat-error>
+        </mat-form-field>
+      </div>
+    </div>
+
+    <div class="input-style1 mb-1">
+      <label class="input-label">Email address</label>
+
+      <mat-form-field appearance="outline" [style.width.%]="100">
+        <input
+          matInput
+          placeholder="Enter email address"
+          type="email"
+          formControlName="email"
+          [matAutocomplete]="emailAutocomplete"
+          (change)="onInputfieldChange($event, 'email')"
+        />
+        <span matSuffix><img src="assets/icons/arrow-down.svg" alt="" /></span>
+
+        <mat-autocomplete
+          #emailAutocomplete="matAutocomplete"
+          (optionSelected)="onApplicantChange($event, 'email')"
+        >
+          <mat-option
+            *ngFor="let option of filteredEmailOptions | async"
+            [value]="option.email"
+          >
+            {{ option.email }}
+          </mat-option>
+        </mat-autocomplete>
+
+        <mat-error *ngIf="newUserFormControls['email'].invalid">
+          <img
+            src="/assets/icons/error.svg"
+            alt=""
+            class="img-fluid error-icon"
+          />
+          {{ getErrorMessage('email') }}
+        </mat-error>
+      </mat-form-field>
+    </div>
+
+    <div class="input-style1 mb-1">
+      <label class="input-label">Last Name</label>
+
+      <mat-form-field appearance="outline" [style.width.%]="100">
+        <input
+          type="text"
+          matInput
+          formControlName="lastName"
+          placeholder="Enter Last Name"
+        />
+
+        <mat-error *ngIf="newUserFormControls['lastName'].invalid">
+          <img
+            src="/assets/icons/error.svg"
+            alt=""
+            class="img-fluid error-icon"
+          />
+          {{ getErrorMessage('lastName') }}
+        </mat-error>
+      </mat-form-field>
+    </div>
+
+    <div class="input-style1 mb-3">
+      <label class="input-label">First Name</label>
+
+      <mat-form-field appearance="outline" [style.width.%]="100">
+        <input
+          type="text"
+          matInput
+          formControlName="firstName"
+          placeholder="Enter First Name"
+        />
+
+        <mat-error *ngIf="newUserFormControls['firstName'].invalid">
+          <img
+            src="/assets/icons/error.svg"
+            alt=""
+            class="img-fluid error-icon"
+          />
+          {{ getErrorMessage('firstName') }}
+        </mat-error>
+      </mat-form-field>
+    </div>
+
+    <div *ngIf="!isFormBuilder" class="btn-container">
+      <button
+        matRipple
+        class="btn opt-btn-primary"
+        [disabled]="newApplicantForm.invalid || (isLoading | async) !== false"
+      >
+        <span class="text">Start Questionnaire</span>
+        <span class="img-fluid"
+          ><img src="/assets/icons/arrow-right-light.svg" alt="filter-icon"
+        /></span>
+        <ng-container
+          *ngIf="loading !== false || (isLoading | async) !== false"
+        >
+          <app-button-loader></app-button-loader>
+        </ng-container>
+      </button>
+    </div>
+  </form>
+</section>

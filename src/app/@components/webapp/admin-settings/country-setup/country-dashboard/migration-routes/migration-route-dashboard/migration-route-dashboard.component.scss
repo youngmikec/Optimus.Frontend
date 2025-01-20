@@ -1,0 +1,187 @@
+@use '../../../../../../../@core/styles/abstracts/media-query' as *;
+
+#country {
+  // background: #f7f7f7;
+
+  .country-list-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    flex-wrap: wrap;
+    gap: 1.25rem;
+    margin-bottom: 1.5rem;
+
+    @include opt-media-query-max(opt-xsm) {
+      margin-bottom: 1.25rem;
+    }
+
+    .header-group {
+      display: flex;
+      gap: 2rem;
+      vertical-align: top;
+
+      .image-container {
+        height: 3.75;
+
+        .country-flag {
+          width: 5rem;
+        }
+      }
+
+      .country-flag-label {
+        text-align: center;
+        font-size: 0.875rem;
+      }
+
+      .header-text-container {
+        display: flex;
+        gap: 0.8rem;
+      }
+
+      .new-feature-btn {
+        background-color: var(--opt-primary-color-50);
+        border: 1px solid var(--opt-primary-color);
+        color: var(--opt-neutral-900);
+      }
+    }
+
+    .table-controls {
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+    }
+  }
+
+  .status-active,
+  .status-pending,
+  .status-inactive {
+    font-size: 0.75rem;
+    font-weight: 400;
+    border-radius: 0.3125rem;
+    padding: 0.125rem 0.625rem;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+  }
+
+  .status-active {
+    background-color: var(--opt-primary-color-100);
+    color: var(--opt-primary-color);
+  }
+
+  .status-pending {
+    background-color: var(--opt-warning-50);
+    color: var(--opt-warning);
+  }
+
+  .status-inactive {
+    background-color: var(--opt-neutral-100);
+    color: var(--opt-neutral-500);
+  }
+
+  .country-progress-grid {
+    // display: grid;
+    // grid-template-columns: 21.063rem auto;
+    // gap: 1.625rem;
+
+    @include opt-media-query-max(opt-md) {
+      grid-template-columns: 1fr;
+    }
+
+    .country-container {
+      margin-top: 0.5rem;
+
+      .country-container-card {
+        box-shadow: 0px 10px 25px rgba(232, 232, 232, 0.5);
+        border-radius: 16px;
+        padding: 1.5rem 0;
+      }
+
+      .chart-label {
+        margin-left: 1.5rem;
+      }
+
+      #chart {
+        .apex-chart {
+          width: fit-content;
+          position: relative;
+
+          .apex-chart-label {
+            position: absolute;
+            top: 40%;
+            left: 35%;
+          }
+        }
+      }
+
+      .country {
+        overflow-y: scroll;
+        max-height: 56.25rem;
+
+        .country-country {
+          display: flex;
+
+          .feature-grid {
+            margin: 1rem auto;
+            width: 90%;
+            padding: 0.563rem 1rem;
+            transition: background 0.25s ease;
+
+            align-items: center;
+            background: var(--opt-primary-color-50);
+            border-radius: 0.313rem;
+
+            .feature-name {
+              font-size: 0.75rem;
+              line-height: 1.25rem;
+              font-weight: 400;
+              color: var(--opt-neutral-900);
+              margin-bottom: 0rem;
+
+              span {
+                text-decoration: underline;
+                color: #0235cd;
+                cursor: pointer;
+              }
+            }
+          }
+        }
+      }
+    }
+
+    .dashboard-menus-container {
+      .dashboard-menus-items {
+        gap: 1.5rem;
+        margin-top: 0.5rem;
+        background-color: var(--opt-white);
+        padding: 1rem 1.0625rem;
+        border-radius: 1rem;
+        box-shadow: 0px 0.625rem 1.5625rem rgba(192, 192, 192, 0.5);
+        transition-duration: 0.4s;
+      }
+
+      .route-container {
+        // height: 21.875rem;
+        // max-height: 26rem;
+        overflow-y: scroll;
+        overflow-x: hidden;
+      }
+
+      .dashboard-menus-content {
+        display: flex;
+        justify-content: space-between;
+      }
+
+      .dashboard-menus-button-container {
+        display: flex;
+        align-items: flex-end;
+      }
+    }
+
+    .table-container {
+      margin-top: 1.5rem !important;
+    }
+  }
+}

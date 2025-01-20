@@ -1,0 +1,141 @@
+<div class="row">
+  <div
+    [ngClass]="{
+      'col-lg-12': !viewFileData,
+      'col-lg-8 col-md-7': viewFileData
+    }"
+  >
+    <div id="breadcrumb">
+      <div class="d-flex align-items-center gap-3">
+        <span class="img-fluid pe-2" (click)="goBack()">
+          <img src="/assets/icons/user.svg" alt="filter-icon" />
+        </span>
+
+        <span class="breadcrumb-separator">
+          <img src="/assets/icons/chevron-right.svg" alt="filter-icon" />
+        </span>
+
+        <h6 class="applicant-name">
+          {{ folderData.name }}
+        </h6>
+
+        <span class="breadcrumb-separator">
+          <img src="/assets/icons/chevron-right.svg" alt="filter-icon" />
+        </span>
+
+        <h6 class="folder-name">
+          {{ folderData?.folderName }}
+          <span class="mx-3 folder-status">
+            <span class="corresponding" *ngIf="folderData.isCorresponding"
+              >Corresponding</span
+            >
+            <span class="alternate" *ngIf="!folderData.isCorresponding"
+              >Alternative</span
+            >
+          </span>
+        </h6>
+      </div>
+
+      <button
+        class="btn btn-primary ms-2"
+        (click)="fileInputRef.click()"
+        *ngIf="
+          permissionService.hasPermission([
+            'Upload Document',
+            'Upload Alternative Document'
+          ])
+        "
+      >
+        Upload
+        <input
+          type="file"
+          style="display: none"
+          #fileInputRef
+          (change)="uploadDocument($event)"
+        />
+      </button>
+    </div>
+
+    <div
+      *ngIf="dataSource !== null && dataSource; else noTableData"
+      class="table-responsive"
+    >
+      <table
+        mat-table
+        [dataSource]="dataSource"
+        matSort
+        class="table-responsive"
+      >
+        <ng-container matColumnDef="familyMemberDocument">
+          <th mat-header-cell *matHeaderCellDef>Title</th>
+          <td matRipple mat-cell *matCellDef="let row" class="cursor">
+            {{ row.familyMemberDocument.documentName }}
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="createdDate">
+          <th mat-header-cell *matHeaderCellDef>Created Date</th>
+          <td matRipple mat-cell *matCellDef="let row" class="cursor">
+            {{ row.createdDate | date }}
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="createdBy">
+          <th mat-header-cell *matHeaderCellDef>CreatedBy</th>
+          <td matRipple mat-cell *matCellDef="let row" class="cursor">
+            {{ row.createdBy }}
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="lastModifiedDate">
+          <th mat-header-cell *matHeaderCellDef>Last Modified Date</th>
+          <td matRipple mat-cell *matCellDef="let row" class="cursor">
+            {{ row.lastModifiedDate | date }}
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="documentVersion">
+          <th mat-header-cell *matHeaderCellDef>Version</th>
+          <td matRipple mat-cell *matCellDef="let row" class="cursor">
+            {{ row.familyMemberDocument.documentVersion }}
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="nextOfficer">
+          <th mat-header-cell *matHeaderCellDef>Next Actor</th>
+          <td matRipple mat-cell *matCellDef="let row" class="cursor">
+            {{ row.nextOfficer }}
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="documentStatusDesc">
+          <th mat-header-cell *matHeaderCellDef>Status</th>
+          <td matRipple mat-cell *matCellDef="let row" class="cursor">
+            {{ row.documentStatusDesc }}
+          </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr
+          mat-row
+          *matRowDef="let row; columns: displayedColumns"
+          (click)="viewFileDetails(row)"
+        ></tr>
+      </table>
+    </div>
+
+    <ng-template #noTableData>
+      <app-table-loader></app-table-loader>
+    </ng-template>
+  </div>
+
+  <!-- File Details -->
+  <div class="col-lg-4 col-md-5" *ngIf="viewFileData" @slideInRight>
+    <app-file-details
+      [documentPhase]="documentPhase"
+      [fileData]="fileData"
+      [fileExtension]="fileExt"
+      (collapse)="viewFileData = false"
+    ></app-file-details>
+  </div>
+</div>

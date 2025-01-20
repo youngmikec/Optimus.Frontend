@@ -1,0 +1,38 @@
+.comment {
+  border: 1px solid #e7eaee;
+  padding: 0.3rem;
+  border-radius: 8px;
+  transition: all 0.2s ease;
+  position: relative;
+}
+
+.comment-focused {
+  border-color: #0235cd !important;
+}
+
+.comment ::ng-deep.ql-container {
+  border: 0;
+}
+
+.comment ::ng-deep.ql-toolbar {
+  border: 0;
+  border-top: 1px solid #e7eaee;
+}
+
+.custom-actions {
+  gap: 0.5rem;
+  display: flex;
+  justify-content: end;
+  align-items: center;
+  position: absolute;
+  right: 0.5rem;
+  bottom: 0.5rem;
+}
+
+.reference-button {
+  img {
+    width: 2rem;
+    height: 2rem;
+    border-radius: 50%;
+  }
+}

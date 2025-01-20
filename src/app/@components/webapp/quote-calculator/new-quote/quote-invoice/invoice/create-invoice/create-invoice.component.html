@@ -1,0 +1,1431 @@
+<section id="manage-contact-category">
+  <div class="manage-contact-category-header">
+    <h6 class="opt-heading-6 fw-600 mb-0">Create Invoice</h6>
+
+    <div matRipple class="close-icon-container">
+      <button
+        matRipple
+        matTooltip="Create an Invoice"
+        matTooltipClass="custom-tooltip"
+        class="btn opt-btn-primary"
+        mat-button
+        [matMenuTriggerFor]="menu"
+        [disabled]="
+          createInvoiceForm.invalid ||
+          (isLoading | async) !== false ||
+          !signature
+        "
+      >
+        Create Invoice
+        <ng-container *ngIf="(isLoading | async) !== false">
+          <app-button-loader></app-button-loader>
+        </ng-container>
+      </button>
+      <mat-menu #menu="matMenu">
+        <button mat-menu-item (click)="onSubmit('create')">Create only</button>
+        <button mat-menu-item (click)="onSubmit('download')">
+          Create and Download
+        </button>
+        <button mat-menu-item (click)="openSendToApplicantModal()">
+          Create and Send
+        </button>
+      </mat-menu>
+    </div>
+  </div>
+</section>
+
+<section id="create-invoice-container">
+  <form [formGroup]="createInvoiceForm">
+    <div class="left-section">
+      <div class="mb-4">
+        <div class="opt-para-1 fw-600 mb-2">
+          PROGRAM:
+          <!-- {{
+            (selectedApplicationQuote?.application?.migrationRoute
+              ?.countryName ??
+              '') +
+              ' '
+          }} -->
+          {{
+            selectedApplicationQuote?.application?.migrationRoute
+              ?.description ?? ''
+          }}
+        </div>
+        <p class="input-label">
+          The total program cost is
+          <span class="color-secondary">
+            <b>
+              {{ totalProgramCost | number }}
+              {{ selectedCountry?.currency?.currencyCode }}</b
+            >
+          </span>
+        </p>
+      </div>
+
+      <div class="mb-3">
+        <span class="opt-para-1 fw-600">
+          <span class="opt-para-1 fw-600">BANK DETAILS</span>
+          <span class="opt-para-1 fw-500 color-neutral-500">
+            (Select a Naira and any other bank account to receive this payment)
+            <!-- (Select a Dollar and any Other bank account to receive this payment) -->
+          </span>
+        </span>
+      </div>
+
+      <div class="row">
+        <div class="col-md-12">
+          <div class="input-style1 mb-1">
+            <label class="input-label">Select No of Accounts</label>
+            <mat-form-field appearance="outline" [style.width.%]="100">
+              <mat-select
+                formControlName="numOfBankAcounts"
+                (selectionChange)="onNumOfBankAccountsChange()"
+              >
+                <mat-option
+                  [value]="account"
+                  *ngFor="let account of numOfBanksArray"
+                >
+                  <span>{{ account }}</span>
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+        </div>
+      </div>
+
+      <div class="row mb-1" *ngIf="numOfBankAcounts === 1">
+        <ng-container>
+          <div class="col-md-12">
+            <div class="input-style1 mb-1">
+              <label class="input-label">Select Your Preferred Currency</label>
+              <mat-form-field appearance="outline" [style.width.%]="100">
+                <mat-select
+                  placeholder="Applicant Preferred Currency"
+                  formControlName="invoiceCurrencyId"
+                  (selectionChange)="onCurrencyChange()"
+                >
+                  <mat-option
+                    [value]="currency.id"
+                    *ngFor="let currency of formattedCurrencyList"
+                  >
+                    <span>{{ currency.name }}</span>
+                  </mat-option>
+                </mat-select>
+                <mat-error
+                  *ngIf="createInvoiceFormControls['invoiceCurrencyId'].invalid"
+                >
+                  <img
+                    src="/assets/icons/error.svg"
+                    alt=""
+                    class="img-fluid error-icon"
+                  />
+                  {{ getErrorMessage('invoiceCurrencyId') }}
+                  <!-- <ng-container
+                    *ngIf="
+                      selectedExchangeRate && selectedExchangeRate.length < 1
+                    "
+                  >
+                    There is no exchange rate for this currency.
+                    <span
+                      class="set-exchange-rate-button"
+                      role="button"
+                      (click)="onCreateCurrencyConversion()"
+                    >
+                      Click here to set exchange rate
+                    </span>
+                  </ng-container> -->
+                </mat-error>
+              </mat-form-field>
+            </div>
+          </div>
+        </ng-container>
+      </div>
+
+      <ng-container *ngIf="numOfBankAcounts === 1">
+        <div class="row">
+          <div class="col-md-12">
+            <div class="input-style1 mb-1">
+              <label class="input-label">Account</label>
+              <mat-form-field appearance="outline" [style.width.%]="100">
+                <mat-select
+                  placeholder="Account"
+                  formControlName="nairaBankAccount"
+                  (selectionChange)="onNairaAccountChange()"
+                >
+                  <mat-option
+                    [value]="account"
+                    *ngFor="let account of activeBankAccounts"
+                  >
+                    <span>{{ account.bankName }}</span>
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+          </div>
+        </div>
+      </ng-container>
+
+      <!-- <div class="row" *ngIf="numOfBankAcounts === 2"> -->
+      <div class="row" *ngIf="numOfBankAcounts > 1">
+        <div class="col-md-12">
+          <div class="input-style1 mb-1">
+            <label class="input-label">Naira Account</label>
+            <mat-form-field appearance="outline" [style.width.%]="100">
+              <mat-select
+                placeholder="Naira Account"
+                formControlName="nairaBankAccount"
+                (selectionChange)="onNairaAccountChange()"
+              >
+                <mat-option
+                  [value]="account"
+                  *ngFor="let account of activeNairaBankAccounts"
+                >
+                  <span>{{ account.bankName }}</span>
+                </mat-option>
+              </mat-select>
+              <mat-error
+                *ngIf="createInvoiceFormControls['nairaBankAccount'].invalid"
+              >
+                <img
+                  src="/assets/icons/error.svg"
+                  alt=""
+                  class="img-fluid error-icon"
+                />
+                {{ getErrorMessage('nairaBankAccount') }}
+              </mat-error>
+            </mat-form-field>
+          </div>
+        </div>
+      </div>
+
+      <ng-container
+        *ngIf="
+          (numOfBankAcounts === 2 && programType === 1) ||
+          numOfBankAcounts === 3
+        "
+      >
+        <div class="row">
+          <div class="col-md-12">
+            <div class="input-style1 mb-1">
+              <label class="input-label"
+                >Second Bank Account ({{ secondBankCurrency }})</label
+              >
+              <mat-form-field appearance="outline" [style.width.%]="100">
+                <mat-select
+                  placeholder="Account"
+                  formControlName="secondBankAccount"
+                  (selectionChange)="onSecondAccountChange()"
+                >
+                  <mat-option
+                    [value]="account"
+                    *ngFor="let account of secondBankOptions"
+                  >
+                    <span>{{ account.bankName }}</span>
+                  </mat-option>
+                </mat-select>
+                <mat-error
+                  *ngIf="createInvoiceFormControls['secondBankAccount'].invalid"
+                >
+                  <img
+                    src="/assets/icons/error.svg"
+                    alt=""
+                    class="img-fluid error-icon"
+                  />
+                  {{ getErrorMessage('secondBankAccount') }}
+                </mat-error>
+              </mat-form-field>
+            </div>
+          </div>
+        </div>
+      </ng-container>
+
+      <ng-container *ngIf="numOfBankAcounts >= 2 && programType === 2">
+        <div class="row">
+          <div class="col-md-12">
+            <div class="input-style1 mb-1">
+              <label
+                class="input-label"
+                *ngIf="numOfBankAcounts === 2 && programType === 2"
+                >Second Bank Account ({{ optionalBankCurrency }})</label
+              >
+              <label
+                class="input-label"
+                *ngIf="numOfBankAcounts === 3 && programType === 2"
+                >Third Bank Account ({{ optionalBankCurrency }})</label
+              >
+              <mat-form-field appearance="outline" [style.width.%]="100">
+                <mat-select
+                  placeholder="Account"
+                  formControlName="optionalThirdBankAccount"
+                  (selectionChange)="onOptionalAccountChange()"
+                >
+                  <mat-option
+                    [value]="account"
+                    *ngFor="let account of optionalBankOptions"
+                  >
+                    <span>{{ account.bankName }}</span>
+                  </mat-option>
+                </mat-select>
+                <mat-error
+                  *ngIf="
+                    createInvoiceFormControls['optionalThirdBankAccount']
+                      .invalid
+                  "
+                >
+                  <img
+                    src="/assets/icons/error.svg"
+                    alt=""
+                    class="img-fluid error-icon"
+                  />
+                  {{ getErrorMessage('optionalThirdBankAccount') }}
+                </mat-error>
+              </mat-form-field>
+            </div>
+          </div>
+        </div>
+      </ng-container>
+
+      <!-- <ng-container>
+        <div class="row">
+          <div class="col-md-12">
+            <div class="input-style1 mb-1">
+              <label class="input-label">Account</label>
+              <mat-form-field appearance="outline" [style.width.%]="100">
+                <mat-select
+                  placeholder="Account"
+                  formControlName="bankAccount"
+                  (selectionChange)="
+                    selectedCurrency && selectedCurrency.currencyCode === 'NGN'
+                      ? onNairaAccountChange()
+                      : onForiegnAccountChange()
+                  "
+                >
+                  <mat-option
+                    [value]="account"
+                    *ngFor="let account of activeBankAccounts"
+                  >
+                    <span>{{ account.bankName }}</span>
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+          </div>
+        </div>
+      </ng-container> -->
+
+      <div class="highlight-section mb-3">
+        <img src="/assets/icons/info-circle.svg" />
+        <span class="opt-para-1 fw-500">
+          The current conversion rate of
+          {{ selectedExchangeRate?.baseCurrencyCode || 'USD' }} against
+
+          {{ selectedExchangeRate?.variableCurrencyCode || 'NGN' }}
+          <!-- {{
+            selectedCurrency?.currencyCode ||
+              selectedCountry?.currency?.currencyCode
+          }} -->
+          is 1 {{ selectedExchangeRate?.baseCurrencyCode || 'USD' }} =
+          {{ selectedExchangeRate?.rate || defaultExchangeRate }}
+          {{ selectedExchangeRate?.variableCurrencyCode || 'NGN' }}
+          <!-- {{
+            selectedCurrency?.currencyCode ||
+              selectedCountry?.currency?.currencyCode
+          }}. -->
+        </span>
+        <span
+          class="set-exchange-rate-button"
+          role="button"
+          (click)="onCreateCurrencyConversion(selectedExchangeRate)"
+          *ngIf="permissionService.hasPermission('Confirm Invoice')"
+        >
+          (change)
+        </span>
+      </div>
+
+      <div
+        class="highlight-section mb-3"
+        *ngIf="selectedEuroExchangeRate && programType === 2"
+      >
+        <img src="/assets/icons/info-circle.svg" />
+        <span class="opt-para-1 fw-500">
+          The current conversion rate of
+          {{ selectedEuroExchangeRate.baseCurrencyCode || 'EUR' }} against
+
+          {{ selectedEuroExchangeRate.variableCurrencyCode || 'USD' }}
+
+          is 1 {{ selectedEuroExchangeRate.baseCurrencyCode || 'EUR' }} =
+          {{ selectedEuroExchangeRate.rate || defaultExchangeRate }}
+          {{ selectedEuroExchangeRate.variableCurrencyCode || 'USD' }}
+        </span>
+        <span
+          class="set-exchange-rate-button"
+          role="button"
+          (click)="onCreateCurrencyConversion(selectedEuroExchangeRate)"
+          *ngIf="permissionService.hasPermission('Confirm Invoice')"
+        >
+          (change)
+        </span>
+      </div>
+
+      <div class="invoice-list-grid-header">
+        <div>
+          <div class="input-style1">
+            <label class="input-label">Total minimum down payment</label>
+          </div>
+        </div>
+
+        <div>
+          <div class="input-style1 text-right">
+            <label class="input-label">
+              <!-- AMOUNT ({{
+                selectedCurrency?.currencyCode ||
+                  selectedCountry?.currency?.currencyCode
+              }}) -->
+              AMOUNT
+            </label>
+          </div>
+        </div>
+      </div>
+
+      <div>
+        <ng-container *ngFor="let arrayItem of invoiceItems; let i = index">
+          <div class="invoice-list-grid">
+            <div>
+              <div class="input-style1">
+                <mat-form-field appearance="outline" [style.width.%]="100">
+                  <input
+                    type="text"
+                    matInput
+                    placeholder="%"
+                    [value]="arrayItem.percent + '%'"
+                    [disabled]="true"
+                  />
+                </mat-form-field>
+              </div>
+            </div>
+
+            <div>of</div>
+
+            <div>
+              <div class="input-style1">
+                <mat-form-field appearance="outline" [style.width.%]="100">
+                  <input
+                    type="text"
+                    matInput
+                    placeholder="ITEM"
+                    [value]="arrayItem.name"
+                    [disabled]="arrayItem.name"
+                  />
+                </mat-form-field>
+              </div>
+            </div>
+
+            <div>
+              <div class="input-style1">
+                <mat-form-field appearance="outline" [style.width.%]="100">
+                  <input
+                    type="number"
+                    matInput
+                    placeholder="AMOUNT (€)"
+                    [value]="arrayItem.amount"
+                    [disabled]="true"
+                  />
+                  <span matSuffix class="opt-para-1">
+                    {{ arrayItem.currency }}
+                  </span>
+                </mat-form-field>
+              </div>
+            </div>
+          </div>
+        </ng-container>
+      </div>
+
+      <div class="row mb-1">
+        <div class="col-md-9 justify-content-end d-flex">
+          <span class="opt-para-1 fw-600">Total due now</span>
+        </div>
+
+        <div class="col-md-3 justify-content-start d-flex ps-5">
+          <span class="opt-para-1 fw-600"
+            >{{ totalQuoteGenerated | number }}
+            {{ baseCurrencyCode }}
+          </span>
+        </div>
+      </div>
+
+      <div class="row mb-3">
+        <div class="col-md-9 justify-content-end d-flex">
+          <span class="opt-para-1 fw-600"> </span>
+        </div>
+
+        <div class="col-md-3 justify-content-start d-flex ps-5">
+          <span class="opt-para-1 fw-600"
+            >{{ invoiceItems[1].amount | number }}
+            NGN
+          </span>
+        </div>
+      </div>
+
+      <div class="invoice-list-grid-header">
+        <div>
+          <div class="input-style1">
+            <!-- <label class="input-label">Indicate the amount the customer wants to pay</label> -->
+            <label class="input-label"
+              >Indicate the amount the customer wants to pay from the total
+              minimum down payment above</label
+            >
+          </div>
+        </div>
+
+        <div>
+          <div class="input-style1 text-right">
+            <label class="input-label"> AMOUNT </label>
+          </div>
+        </div>
+      </div>
+
+      <div class="invoice-list-grid">
+        <div>
+          <div class="input-style1">
+            <mat-form-field appearance="outline" [style.width.%]="100">
+              <input
+                type="number"
+                matInput
+                max="100"
+                placeholder="%"
+                formControlName="invoiceQuotationPercentage"
+              />
+              <mat-error
+                *ngIf="
+                  createInvoiceFormControls['invoiceQuotationPercentage']
+                    .invalid
+                "
+              >
+                <img
+                  src="/assets/icons/error.svg"
+                  alt=""
+                  class="img-fluid error-icon text-sm"
+                />
+                <small>{{
+                  getErrorMessage('invoiceQuotationPercentage')
+                }}</small>
+              </mat-error>
+            </mat-form-field>
+          </div>
+        </div>
+
+        <div>of</div>
+
+        <div>
+          <div class="input-style1">
+            <mat-form-field appearance="outline" [style.width.%]="100">
+              <input
+                type="text"
+                matInput
+                placeholder="Enter description"
+                formControlName="invoiceQuotationDescription"
+              />
+              <mat-error
+                *ngIf="
+                  createInvoiceFormControls['invoiceQuotationDescription']
+                    .invalid
+                "
+              >
+                <img
+                  src="/assets/icons/error.svg"
+                  alt=""
+                  class="img-fluid error-icon"
+                />
+                {{ getErrorMessage('invoiceQuotationDescription') }}
+              </mat-error>
+            </mat-form-field>
+          </div>
+        </div>
+
+        <div>
+          <div class="input-style1">
+            <mat-form-field appearance="outline" [style.width.%]="100">
+              <input
+                type="number"
+                matInput
+                placeholder="00.00"
+                formControlName="invoiceQuotationAmount"
+              />
+              <span matSuffix class="opt-para-1">
+                {{ baseCurrencyCode }}
+              </span>
+            </mat-form-field>
+          </div>
+        </div>
+      </div>
+
+      <div class="invoice-list-grid mt-5">
+        <div>
+          <div class="input-style1">
+            <mat-form-field appearance="outline" [style.width.%]="100">
+              <input
+                type="number"
+                matInput
+                max="100"
+                placeholder="%"
+                formControlName="localInvoiceQuotationPercentage"
+              />
+              <mat-error
+                *ngIf="
+                  createInvoiceFormControls['localInvoiceQuotationPercentage']
+                    .invalid
+                "
+              >
+                <img
+                  src="/assets/icons/error.svg"
+                  alt=""
+                  class="img-fluid error-icon"
+                />
+                <small>{{
+                  getErrorMessage('localInvoiceQuotationPercentage')
+                }}</small>
+              </mat-error>
+            </mat-form-field>
+          </div>
+        </div>
+
+        <div>of</div>
+
+        <div>
+          <div class="input-style1">
+            <mat-form-field appearance="outline" [style.width.%]="100">
+              <input
+                type="text"
+                matInput
+                placeholder="Enter description"
+                formControlName="localInvoiceQuotationDescription"
+              />
+              <mat-error
+                *ngIf="
+                  createInvoiceFormControls['localInvoiceQuotationDescription']
+                    .invalid
+                "
+              >
+                <img
+                  src="/assets/icons/error.svg"
+                  alt=""
+                  class="img-fluid error-icon"
+                />
+                {{ getErrorMessage('localInvoiceQuotationDescription') }}
+              </mat-error>
+            </mat-form-field>
+          </div>
+        </div>
+
+        <div>
+          <div class="input-style1">
+            <mat-form-field appearance="outline" [style.width.%]="100">
+              <input
+                type="number"
+                matInput
+                placeholder="00.00"
+                formControlName="localInvoiceQuotationAmount"
+              />
+              <span matSuffix class="opt-para-1"> NGN </span>
+            </mat-form-field>
+          </div>
+        </div>
+      </div>
+
+      <ng-container
+        *ngIf="
+          getInvoiceQuotation()[0].amount &&
+          getInvoiceQuotation()[0].amount < totalQuoteGenerated
+        "
+      >
+        <div class="mt-5">
+          <p class="opt-caption">
+            Kindly note that a loan would be automatically created for the
+            remaining
+            <span class="fw-700">
+              {{ 100 - getInvoiceQuotation()[0].percentage }}%
+            </span>
+            of the country fee amount.
+            <span *ngIf="100 - getInvoiceQuotation()[1].percentage !== 0">
+              And
+              <span class="fw-700"
+                >{{ 100 - getInvoiceQuotation()[1].percentage }}%</span
+              >
+              of local processing fee.
+            </span>
+          </p>
+        </div>
+      </ng-container>
+
+      <div class="mb-2 signature-container" (click)="openSignatureModal()">
+        <div class="opt-para-1 fw-600">SIGNATURE</div>
+        <p class="opt-caption">Click here to add ...</p>
+        <ng-container *ngIf="signaturePreview">
+          <div class="signature-preview-container">
+            <img [src]="signaturePreview" alt="" />
+          </div>
+        </ng-container>
+        <div>
+          <svg
+            width="151"
+            height="2"
+            viewBox="0 0 151 2"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path d="M0 1L151 0.999987" stroke="black" stroke-dasharray="2 2" />
+          </svg>
+        </div>
+        <mat-error *ngIf="createInvoiceForm.dirty && !signature">
+          <img
+            src="/assets/icons/error.svg"
+            alt=""
+            class="img-fluid error-icon"
+          />
+          Signature is required
+        </mat-error>
+      </div>
+    </div>
+  </form>
+
+  <div class="right-section">
+    <section id="quote-invoice">
+      <div class="main">
+        <!-- <div class="list-section mb-4">
+          <div class="d-flex justify-content-start gap-4">
+            <p
+              class="tab"
+              [class.active]="invoiceReceiptType === 'country'"
+              (click)="setInvoiceType('country')"
+            >
+              Country Fee Invoice
+            </p>
+            <p
+              class="tab"
+              [class.active]="invoiceReceiptType === 'local'"
+              (click)="setInvoiceType('local')"
+            >
+              Local Processing Fee Invoice
+            </p>
+          </div>
+        </div> -->
+        <div class="quote-invoice-header">
+          <img src="assets/images/quote-logo.png" alt="quote-logo" />
+
+          <div class="header-right">Invoice No.: 00000</div>
+        </div>
+
+        <div class="quote-content-section-1">
+          <div class="section-1-content">
+            <div class="content-1">
+              <div>
+                <div class="header fw-600">
+                  {{ selectedApplicationQuote?.application?.applicant?.name }}
+                </div>
+                <div class="content">
+                  {{ selectedApplicationQuote?.application?.applicant?.state }},
+                  {{
+                    selectedApplicationQuote?.application?.applicant?.country
+                  }}
+                </div>
+                <div>
+                  <svg
+                    width="16"
+                    height="16"
+                    viewBox="0 0 16 16"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      d="M7.36537 9.96536L6.13203 11.1987C5.87203 11.4587 5.4587 11.4587 5.19203 11.2054C5.1187 11.132 5.04536 11.0654 4.97203 10.992C4.28536 10.2987 3.66536 9.57203 3.11203 8.81203C2.56536 8.05203 2.12536 7.29203 1.80536 6.5387C1.49203 5.7787 1.33203 5.05203 1.33203 4.3587C1.33203 3.90536 1.41203 3.47203 1.57203 3.07203C1.73203 2.66536 1.98536 2.29203 2.3387 1.9587C2.76536 1.5387 3.23203 1.33203 3.72536 1.33203C3.91203 1.33203 4.0987 1.37203 4.26536 1.45203C4.4387 1.53203 4.59203 1.65203 4.71203 1.82536L6.2587 4.00536C6.3787 4.17203 6.46536 4.32536 6.52536 4.47203C6.58536 4.61203 6.6187 4.75203 6.6187 4.8787C6.6187 5.0387 6.57203 5.1987 6.4787 5.35203C6.39203 5.50536 6.26536 5.66536 6.10536 5.82536L5.5987 6.35203C5.52536 6.42536 5.49203 6.51203 5.49203 6.6187C5.49203 6.67203 5.4987 6.7187 5.51203 6.77203C5.53203 6.82536 5.55203 6.86536 5.56536 6.90536C5.68537 7.12536 5.89203 7.41203 6.18536 7.7587C6.48536 8.10536 6.80536 8.4587 7.15203 8.81203C7.2187 8.8787 7.29203 8.94536 7.3587 9.01203C7.62536 9.27203 7.63203 9.6987 7.36537 9.96536Z"
+                      fill="#292D32"
+                    />
+                    <path
+                      d="M14.649 12.2194C14.649 12.406 14.6157 12.5994 14.549 12.786C14.529 12.8394 14.509 12.8927 14.4823 12.946C14.369 13.186 14.2223 13.4127 14.029 13.626C13.7023 13.986 13.3423 14.246 12.9357 14.4127C12.929 14.4127 12.9223 14.4194 12.9157 14.4194C12.5223 14.5794 12.0957 14.666 11.6357 14.666C10.9557 14.666 10.229 14.506 9.46234 14.1794C8.69568 13.8527 7.92901 13.4127 7.16901 12.8594C6.90901 12.666 6.64901 12.4727 6.40234 12.266L8.58234 10.086C8.76901 10.226 8.93568 10.3327 9.07568 10.406C9.10901 10.4194 9.14901 10.4394 9.19568 10.4594C9.24901 10.4794 9.30234 10.486 9.36234 10.486C9.47568 10.486 9.56234 10.446 9.63568 10.3727L10.1423 9.87271C10.309 9.70604 10.469 9.57938 10.6223 9.49938C10.7757 9.40604 10.929 9.35938 11.0957 9.35938C11.2223 9.35938 11.3557 9.38604 11.5023 9.44604C11.649 9.50604 11.8023 9.59271 11.969 9.70604L14.1757 11.2727C14.349 11.3927 14.469 11.5327 14.5423 11.6994C14.609 11.866 14.649 12.0327 14.649 12.2194Z"
+                      fill="#292D32"
+                    />
+                  </svg>
+                  <span
+                    class="content"
+                    *ngIf="
+                      selectedApplicationQuote?.application?.applicant
+                        ?.countryCode
+                    "
+                  >
+                    :
+                    {{
+                      '+' +
+                        selectedApplicationQuote?.application?.applicant
+                          ?.countryCode
+                    }}
+                  </span>
+                  <span class="content">
+                    :
+                    {{
+                      selectedApplicationQuote?.application?.applicant?.mobileNo
+                    }}
+                  </span>
+                </div>
+                <div>
+                  <svg
+                    width="16"
+                    height="16"
+                    viewBox="0 0 16 16"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      d="M11.332 2.33203H4.66536C2.66536 2.33203 1.33203 3.33203 1.33203 5.66536V10.332C1.33203 12.6654 2.66536 13.6654 4.66536 13.6654H11.332C13.332 13.6654 14.6654 12.6654 14.6654 10.332V5.66536C14.6654 3.33203 13.332 2.33203 11.332 2.33203ZM11.6454 6.39203L9.5587 8.0587C9.1187 8.41203 8.5587 8.58536 7.9987 8.58536C7.4387 8.58536 6.87203 8.41203 6.4387 8.0587L4.35203 6.39203C4.1387 6.2187 4.10536 5.8987 4.27203 5.68536C4.44536 5.47203 4.7587 5.43203 4.97203 5.60536L7.0587 7.27203C7.56536 7.6787 8.42536 7.6787 8.93203 7.27203L11.0187 5.60536C11.232 5.43203 11.552 5.46536 11.7187 5.68536C11.892 5.8987 11.8587 6.2187 11.6454 6.39203Z"
+                      fill="#292D32"
+                    />
+                  </svg>
+                  <span class="content2"
+                    >:
+                    {{
+                      selectedApplicationQuote?.application?.applicant?.email
+                    }}
+                  </span>
+                </div>
+              </div>
+            </div>
+            <div class="right-content">
+              {{ selectedApplicationQuote?.application?.createdDate | date }}
+            </div>
+
+            <div class="section-2">
+              <div class="section-2-header">
+                <div class="fw-600">
+                  <!-- {{
+                    invoiceReceiptType === 'country'
+                      ? 'Country Fee'
+                      : 'Local Processing Fee'
+                  }} -->
+                  INVOICE
+                </div>
+              </div>
+            </div>
+
+            <div class="main-section">
+              <div class="table-container">
+                <table>
+                  <tr class="header">
+                    <th class="fw-600">PROGRAM</th>
+                    <th class="fw-600">DESCRIPTION</th>
+                    <th class="fw-600">QTY</th>
+                    <th
+                      class="fw-600"
+                      *ngIf="numOfBankAcounts <= 2"
+                      colspan="2"
+                    >
+                      AMOUNT
+                    </th>
+                    <th
+                      class="fw-600"
+                      *ngIf="programType === 2 && numOfBankAcounts > 2"
+                      colspan="3"
+                    >
+                      AMOUNT
+                    </th>
+                  </tr>
+                  <tr class="header">
+                    <td colspan="3"></td>
+                    <th *ngIf="numOfBankAcounts <= 2">
+                      {{
+                        programType === 1
+                          ? secondBankCurrency
+                          : optionalBankCurrency
+                      }}
+                    </th>
+                    <th *ngIf="numOfBankAcounts > 2 && programType === 2">
+                      {{ optionalBankCurrency }}
+                    </th>
+
+                    <th *ngIf="numOfBankAcounts > 2 && programType === 2">
+                      {{ secondBankCurrency }}
+                    </th>
+
+                    <th style="text-align: left">NGN</th>
+                    <!-- <th style="text-align: left">USD</th> -->
+                  </tr>
+                  <tr class="header1">
+                    <td>
+                      <div class="main-content-container">
+                        <a>
+                          <span
+                            class="main-content"
+                            [title]="
+                              selectedApplicationQuote?.application
+                                ?.migrationRoute?.description ?? ''
+                            "
+                          >
+                            <!-- {{
+                              selectedApplicationQuote?.application
+                                ?.migrationRoute?.countryName ?? ''
+                            }}
+                            Citizenship by
+                            {{
+                              selectedApplicationQuote?.application
+                                ?.migrationRoute?.name ?? ''
+                            }} -->
+                            {{
+                              selectedApplicationQuote?.application
+                                ?.migrationRoute?.description
+                            }}
+                          </span>
+                        </a>
+                      </div>
+                    </td>
+                    <td>
+                      <div class="first-row-content">
+                        Part payment for processing of the
+                        {{
+                          selectedApplicationQuote?.application?.migrationRoute
+                            ?.countryName ?? ''
+                        }}
+                        Citizenship by
+                        {{
+                          selectedApplicationQuote?.application?.migrationRoute
+                            ?.name ?? ''
+                        }}
+                        Program application for the family of
+                        {{
+                          selectedApplicationQuote?.application?.applicant
+                            ?.name
+                        }}.
+                        <div>The payment is as follows:</div>
+                      </div>
+                    </td>
+
+                    <td style="text-align: center">{{ familySize }}</td>
+
+                    <td *ngIf="programType === 2">
+                      {{
+                        calculateCurrencyEquivalent(
+                          countryFee,
+                          optionalBankCurrency,
+                          'USD'
+                        )
+                          | currency
+                            : optionalBankCurrency || 'number'
+                            : 'symbol-narrow'
+                      }}
+                    </td>
+
+                    <td
+                      *ngIf="
+                        (numOfBankAcounts > 2 && programType === 2) ||
+                        (numOfBankAcounts <= 2 && programType === 1)
+                      "
+                    >
+                      {{ countryFee | currency : 'USD' }}
+                    </td>
+
+                    <td *ngIf="numOfBankAcounts <= 3">
+                      {{
+                        localProcessingFee | currency : 'NGN' : 'symbol-narrow'
+                      }}
+                    </td>
+                  </tr>
+
+                  <tr class="total-column">
+                    <!-- <td class="opt-para-1 fw-900"></td> -->
+                    <td class="opt-para-1 fw-900" colspan="3">
+                      TOTAL PAYABLE IN USD
+                    </td>
+                    <td
+                      class="opt-para-1 fw-700 left"
+                      *ngIf="
+                        programType === 2 && optionalBankCurrency !== 'USD'
+                      "
+                    >
+                      <!-- {{ totalQuoteGenerated | currency : 'USD' }} -->
+                      <span style="text-align: left">
+                        {{ countryFee | currency : 'USD' }}
+                      </span>
+                      <br />
+                      <span style="text-align: left">
+                        {{
+                          countryFeeInNGN | currency : 'NGN' : 'symbol-narrow'
+                        }}
+                      </span>
+                    </td>
+
+                    <td
+                      class="opt-para-1 fw-700"
+                      *ngIf="
+                        (numOfBankAcounts > 2 && programType === 2) ||
+                        (numOfBankAcounts <= 2 && programType === 1)
+                      "
+                    >
+                      <!-- {{ totalQuoteGenerated | currency : 'USD' }} -->
+                      {{ countryFee | currency : 'USD' }}
+                      <br />
+
+                      {{ countryFeeInNGN | currency : 'NGN' : 'symbol-narrow' }}
+                    </td>
+
+                    <td class="opt-para-1 fw-700">
+                      {{ '--' }}
+                      <br />
+                      {{
+                        localProcessingFee | currency : 'NGN' : 'symbol-narrow'
+                      }}
+                    </td>
+                  </tr>
+
+                  <tr class="grand-total-column">
+                    <td class="opt-para-1 fw-900" colspan="3">
+                      *TOTAL PAYABLE IN NAIRA
+                    </td>
+                    <td
+                      class="opt-para-1 fw-900"
+                      *ngIf="numOfBankAcounts <= 2"
+                      colspan="2"
+                    >
+                      {{ totalPayable | currency : 'NGN' : 'symbol-narrow' }}
+                    </td>
+                    <td
+                      class="opt-para-1 fw-900"
+                      *ngIf="numOfBankAcounts > 2"
+                      colspan="3"
+                    >
+                      {{ totalPayable | currency : 'NGN' : 'symbol-narrow' }}
+                    </td>
+                  </tr>
+                </table>
+              </div>
+
+              <div class="list-section">
+                <div class="my-4">
+                  <p class="opt-caption text-danger mb-1 fw-600">
+                    NGN
+                    {{
+                      selectedExchangeRate
+                        ? selectedExchangeRate.rate * 1
+                        : (defaultExchangeRate * 1
+                          | currency : 'NGN' : 'symbol-narrow')
+                    }}
+                    = USD 1
+                  </p>
+                </div>
+                <div className="mb-2 mt-4">
+                  <p class="opt-caption text-danger mb-1 fw-600">Disclaimer:</p>
+                  <p class="text-danger mb-1">
+                    For accurate pricing, please request a new invoice prior to
+                    making a payment.
+                  </p>
+                  <p class="text-danger">
+                    *Naira payment is subject to the exchange rate, which
+                    expires at the close of each business day.
+                  </p>
+                </div>
+
+                <!-- <div>
+                  Inflow 1 {{ selectedCountry?.currency?.currencyCode }} =
+                  {{ selectedExchangeRate?.rate }}
+                  {{ selectedCurrency?.currencyCode }}
+                </div> -->
+                <!-- <span>
+                  Kindly send us evidence of payment so that a receipt can be
+                  issued accordingly
+                </span>
+                <div>
+                  Naira payment is subject to exchange rate which expires at the
+                  close of each business day
+                </div> -->
+              </div>
+            </div>
+          </div>
+
+          <div class="bank-account-section">
+            <div class="list-section2 mb-2">
+              Please make payment in favor of:
+            </div>
+
+            <div class="table-container">
+              <!-- <table
+                *ngIf="
+                  !selectedCurrency || selectedCurrency.currencyCode === 'NGN'
+                "
+              >
+                <tr class="header">
+                  <th></th>
+                  <th class="fw-600">NAIRA ACCOUNT</th>
+                </tr>
+
+                <tr
+                  class="main-content"
+                  *ngFor="let item of bankAccountDetails"
+                >
+                  <td>
+                    <span class="fw-700">{{ item.fieldName }}</span>
+                  </td>
+                  <td>
+                    <span>{{ item?.nairaValue }}</span>
+                  </td>
+                </tr>
+              </table> -->
+              <table>
+                <thead>
+                  <tr class="header">
+                    <th></th>
+                    <th class="fw-600" *ngIf="numOfBankAcounts === 1">
+                      {{ selectedCurrency?.name ?? 'Bank' }} ACCOUNT
+                    </th>
+                    <th class="fw-600" *ngIf="numOfBankAcounts > 1">
+                      NAIRA ACCOUNT
+                    </th>
+                    <!-- <th class="fw-600" *ngIf="numOfBankAcounts === 2 && programType === 1">
+                      {{ secondBankCurrency === 'EUR' ? 'EURO' : 'DOLLAR' }}
+                      ACCOUNT
+                    </th>
+                    <th class="fw-600" *ngIf="numOfBankAcounts === 2 && programType === 2">
+                      {{ optionalBankCurrency === 'EUR' ? 'EURO' : 'DOLLAR' }}
+                      ACCOUNT
+                    </th> -->
+                    <th
+                      class="fw-600"
+                      *ngIf="
+                        numOfBankAcounts === 2 &&
+                        (programType === 1 || programType === 2)
+                      "
+                    >
+                      {{
+                        (programType === 1
+                          ? secondBankCurrency
+                          : optionalBankCurrency) === 'EUR'
+                          ? 'EURO'
+                          : 'DOLLAR'
+                      }}
+                      ACCOUNT
+                    </th>
+                    <th
+                      class="fw-600"
+                      *ngIf="numOfBankAcounts > 2 && programType === 2"
+                    >
+                      {{ secondBankCurrency === 'EUR' ? 'EURO' : 'DOLLAR' }}
+                      ACCOUNT
+                    </th>
+                    <th
+                      class="fw-600"
+                      *ngIf="numOfBankAcounts > 2 && programType === 2"
+                    >
+                      {{ optionalBankCurrency === 'EUR' ? 'EURO' : 'DOLLAR' }}
+                      ACCOUNT
+                    </th>
+                    <!-- <th class="fw-600" *ngIf="selectedCurrency">
+                      {{
+                        selectedCurrency &&
+                        selectedCurrency.currencyCode !== 'NGN'
+                          ? this.selectedCurrency.name
+                          : 'NAIRA'
+                      }}
+                      ACCOUNT
+                    </th> -->
+                  </tr>
+                </thead>
+
+                <tr
+                  class="main-content"
+                  *ngFor="let item of bankAccountDetails"
+                >
+                  <td>
+                    <span class="fw-700">{{ item.fieldName }}</span>
+                  </td>
+                  <td *ngIf="numOfBankAcounts >= 1">
+                    <span>{{ item?.nairaValue }}</span>
+                  </td>
+                  <td
+                    *ngIf="
+                      numOfBankAcounts === 2 &&
+                      (programType === 1 || programType === 2)
+                    "
+                  >
+                    <span>{{
+                      programType === 1
+                        ? item?.secondBankValue
+                        : item?.optionalBankValue
+                    }}</span>
+                  </td>
+                  <td *ngIf="numOfBankAcounts > 2 && programType === 2">
+                    <span>{{ item?.secondBankValue }}</span>
+                  </td>
+                  <td *ngIf="numOfBankAcounts > 2 && programType === 2">
+                    <span>{{ item?.optionalBankValue }}</span>
+                  </td>
+                  <!-- <td *ngIf="selectedCurrency">
+                    <span>
+                      {{
+                        selectedCurrency &&
+                        selectedCurrency.currencyCode === 'NGN'
+                          ? item?.nairaValue
+                          : item?.foriegnAccountValue
+                      }}
+                    </span>
+                  </td> -->
+                </tr>
+              </table>
+
+              <!-- <table
+                *ngIf="
+                  selectedCurrency && selectedCurrency.currencyCode !== 'NGN'
+                "
+              >
+                <tr class="header">
+                  <th></th>
+                  <th class="fw-600">
+                    {{ this.selectedCurrency.name }} ACCOUNT
+                  </th>
+                </tr>
+
+                <tr
+                  class="main-content"
+                  *ngFor="let item of bankAccountDetails"
+                >
+                  <td>
+                    <span class="fw-700">{{ item.fieldName }}</span>
+                  </td>
+                  <td>
+                    <span>{{ item?.foriegnAccountValue }}</span>
+                  </td>
+                </tr>
+                <tr
+                  class="main-content2"
+                  *ngFor="let item of otherBankAccountDetails"
+                >
+                  <td>
+                    <span class="fw-700">{{ item.fieldName }}</span>
+                  </td>
+                  <td>
+                    <span>{{ item?.foriegnAccountValue }}</span>
+                  </td>
+                </tr>
+              </table> -->
+            </div>
+
+            <div class="list-section">
+              <div>
+                *** For dollar payments, please select all bank charges to be
+                borne by the payer when paying
+              </div>
+              <!-- <span>
+                *** Please state “Invoice No 01805” on the wire transfer as
+                narration.
+              </span> -->
+              <span style="margin-top: 10px">
+                Kindly send us evidence of payment so that a receipt can be
+                issued accordingly.
+              </span>
+            </div>
+
+            <div class="signature-section">
+              <div class="signature-preview-container" *ngIf="signaturePreview">
+                <img [src]="signaturePreview" />
+                <div>AUTHORIZED SIGNATORY</div>
+              </div>
+            </div>
+
+            <div class="end-section">
+              If you have any questions concerning this invoice, please contact
+              us directly via phone or email. Thank you for your business!
+            </div>
+          </div>
+
+          <div class="section-3">
+            <div class="row">
+              <div class="item" *ngFor="let item of locationList">
+                <div>
+                  <div
+                    class="footer-item-header d-flex gap-1 justify-center align-items-center"
+                  >
+                    <svg
+                      width="11"
+                      height="11"
+                      viewBox="0 0 11 11"
+                      fill="none"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        d="M5.50031 6.15688C6.29008 6.15688 6.93031 5.51664 6.93031 4.72688C6.93031 3.93711 6.29008 3.29688 5.50031 3.29688C4.71055 3.29688 4.07031 3.93711 4.07031 4.72688C4.07031 5.51664 4.71055 6.15688 5.50031 6.15688Z"
+                        stroke="#CC2529"
+                        stroke-width="1.5"
+                      />
+                      <path
+                        d="M1.66009 3.89255C2.56301 -0.0766135 8.44342 -0.0720301 9.34176 3.89714C9.86884 6.22547 8.42051 8.1963 7.15092 9.41547C6.22967 10.3046 4.77217 10.3046 3.84634 9.41547C2.58134 8.1963 1.13301 6.22089 1.66009 3.89255Z"
+                        stroke="#CC2529"
+                        stroke-width="1.5"
+                      />
+                    </svg>
+
+                    {{ item.title }}
+                  </div>
+                  <div class="footer-item-content">{{ item.one }}</div>
+                  <div class="footer-item-content">{{ item.two }}</div>
+                  <div class="footer-item-content">{{ item.three }}</div>
+                  <div class="footer-item-content">{{ item.four }}</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="section-4">
+            <div class="d-flex gap-1">
+              <svg
+                width="11"
+                height="14"
+                viewBox="0 0 15 18"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M14.0002 5V13C14.0002 16.2 13.2002 17 10.0002 17H5.2002C2.0002 17 1.2002 16.2 1.2002 13V5C1.2002 1.8 2.0002 1 5.2002 1H10.0002C13.2002 1 14.0002 1.8 14.0002 5Z"
+                  stroke="#CC2529"
+                  stroke-width="1.5"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                />
+                <path
+                  d="M9.2 3.80078H6"
+                  stroke="#CC2529"
+                  stroke-width="1.5"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                />
+                <path
+                  d="M7.60035 14.6792C8.28518 14.6792 8.84035 14.1241 8.84035 13.4392C8.84035 12.7544 8.28518 12.1992 7.60035 12.1992C6.91552 12.1992 6.36035 12.7544 6.36035 13.4392C6.36035 14.1241 6.91552 14.6792 7.60035 14.6792Z"
+                  stroke="#CC2529"
+                  stroke-width="1.5"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                />
+              </svg>
+              <span>+234 1 330 3100</span>
+            </div>
+            <div class="d-flex gap-1">
+              <!-- <svg
+                width="11"
+                height="14"
+                viewBox="0 0 15 18"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M14.0002 5V13C14.0002 16.2 13.2002 17 10.0002 17H5.2002C2.0002 17 1.2002 16.2 1.2002 13V5C1.2002 1.8 2.0002 1 5.2002 1H10.0002C13.2002 1 14.0002 1.8 14.0002 5Z"
+                  stroke="#CC2529"
+                  stroke-width="1.5"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                />
+                <path
+                  d="M9.2 3.80078H6"
+                  stroke="#CC2529"
+                  stroke-width="1.5"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                />
+                <path
+                  d="M7.60035 14.6792C8.28518 14.6792 8.84035 14.1241 8.84035 13.4392C8.84035 12.7544 8.28518 12.1992 7.60035 12.1992C6.91552 12.1992 6.36035 12.7544 6.36035 13.4392C6.36035 14.1241 6.91552 14.6792 7.60035 14.6792Z"
+                  stroke="#CC2529"
+                  stroke-width="1.5"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                />
+              </svg> -->
+              <svg
+                width="17"
+                height="18"
+                viewBox="0 0 32 32"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M16 0C7.16 0 0 7.16 0 16c0 2.84.74 5.52 2.04 7.84L0 32l8.4-2.2C11.52 31.26 13.68 32 16 32c8.84 0 16-7.16 16-16S24.84 0 16 0zm8.74 23.38c-.3.84-1.76 1.64-2.4 1.74-.6.1-1.36.14-2.18-.1-.84-.24-1.92-.62-3.36-1.22-5.94-2.6-9.78-8.88-10.08-9.3-.3-.42-2.4-3.18-2.4-6.08 0-2.9 1.6-4.34 2.18-4.94.34-.34.88-.46 1.34-.46.4 0 .8.02 1.14.06.38.04.86-.14 1.34.1.46.22 1.34.78 1.46.82.12.04.24.08.34.34.1.26.4.98.52 1.32.14.34.22.54.34.78.18.32.04.64-.1.88-.18.3-.38.52-.58.78-.14.18-.28.36-.4.58-.1.2-.02.4.04.54.12.24.56.88 1.2 1.42.82.72 1.48.98 1.72 1.1.24.12.38.1.54-.06.14-.14.62-.72.78-.98.16-.24.32-.24.54-.16.24.08 1.46.68 2.74 1.34 1.88.92 2.62 1.46 3.02 2.3.42.84.42 1.56.34 1.72z"
+                  fill="#25D366"
+                />
+              </svg>
+
+              <span>+234 1 330 3130</span>
+            </div>
+            <div class="d-flex gap-1">
+              <svg
+                width="13"
+                height="12"
+                viewBox="0 0 17 16"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M11.832 2.33203H5.16536C3.16536 2.33203 1.83203 3.33203 1.83203 5.66536V10.332C1.83203 12.6654 3.16536 13.6654 5.16536 13.6654H11.832C13.832 13.6654 15.1654 12.6654 15.1654 10.332V5.66536C15.1654 3.33203 13.832 2.33203 11.832 2.33203ZM12.1454 6.39203L10.0587 8.0587C9.6187 8.41203 9.0587 8.58536 8.4987 8.58536C7.9387 8.58536 7.37203 8.41203 6.9387 8.0587L4.85203 6.39203C4.6387 6.2187 4.60536 5.8987 4.77203 5.68536C4.94536 5.47203 5.2587 5.43203 5.47203 5.60536L7.5587 7.27203C8.06536 7.6787 8.92536 7.6787 9.43203 7.27203L11.5187 5.60536C11.732 5.43203 12.052 5.46536 12.2187 5.68536C12.392 5.8987 12.3587 6.2187 12.1454 6.39203Z"
+                  fill="#CC2529"
+                />
+              </svg>
+              <span>{{ 'Corporateplanning@OptivaCP.com' }}</span>
+            </div>
+            <div class="d-flex gap-1">
+              <svg
+                width="13"
+                height="12"
+                viewBox="0 0 17 16"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M5.89984 13.9412C5.87984 13.9412 5.85318 13.9545 5.83318 13.9545C4.53984 13.3145 3.48651 12.2545 2.83984 10.9612C2.83984 10.9412 2.85318 10.9145 2.85318 10.8945C3.66651 11.1345 4.50651 11.3145 5.33984 11.4545C5.48651 12.2945 5.65984 13.1279 5.89984 13.9412Z"
+                  fill="#CC2529"
+                />
+                <path
+                  d="M14.7602 10.9679C14.1002 12.2945 13.0002 13.3679 11.6602 14.0145C11.9135 13.1679 12.1268 12.3145 12.2668 11.4545C13.1068 11.3145 13.9335 11.1345 14.7468 10.8945C14.7402 10.9212 14.7602 10.9479 14.7602 10.9679Z"
+                  fill="#CC2529"
+                />
+                <path
+                  d="M14.8135 5.14161C13.9735 4.88828 13.1268 4.68161 12.2668 4.53495C12.1268 3.67495 11.9202 2.82161 11.6602 1.98828C13.0402 2.64828 14.1535 3.76161 14.8135 5.14161Z"
+                  fill="#CC2529"
+                />
+                <path
+                  d="M5.90044 2.05906C5.66044 2.8724 5.48711 3.69906 5.34711 4.53906C4.48711 4.6724 3.63378 4.88573 2.78711 5.13906C3.43378 3.79906 4.50711 2.69906 5.83378 2.03906C5.85378 2.03906 5.88044 2.05906 5.90044 2.05906Z"
+                  fill="#CC2529"
+                />
+                <path
+                  d="M11.126 4.39203C9.57932 4.2187 8.01932 4.2187 6.47266 4.39203C6.63932 3.4787 6.85266 2.56536 7.15266 1.68536C7.16599 1.63203 7.15932 1.59203 7.16599 1.5387C7.69266 1.41203 8.23266 1.33203 8.79932 1.33203C9.35932 1.33203 9.90599 1.41203 10.426 1.5387C10.4327 1.59203 10.4327 1.63203 10.446 1.68536C10.746 2.57203 10.9593 3.4787 11.126 4.39203Z"
+                  fill="#CC2529"
+                />
+                <path
+                  d="M5.19281 10.3291C4.27281 10.1624 3.36615 9.94911 2.48615 9.64911C2.43281 9.63578 2.39281 9.64245 2.33948 9.63578C2.21281 9.10911 2.13281 8.56911 2.13281 8.00245C2.13281 7.44245 2.21281 6.89578 2.33948 6.37578C2.39281 6.36911 2.43281 6.36911 2.48615 6.35578C3.37281 6.06245 4.27281 5.84245 5.19281 5.67578C5.02615 7.22245 5.02615 8.78245 5.19281 10.3291Z"
+                  fill="#CC2529"
+                />
+                <path
+                  d="M15.4663 8.00245C15.4663 8.56911 15.3863 9.10911 15.2596 9.63578C15.2063 9.64245 15.1662 9.63578 15.1129 9.64911C14.2262 9.94245 13.3196 10.1624 12.4062 10.3291C12.5796 8.78245 12.5796 7.22245 12.4062 5.67578C13.3196 5.84245 14.2329 6.05578 15.1129 6.35578C15.1662 6.36911 15.2063 6.37578 15.2596 6.37578C15.3863 6.90245 15.4663 7.44245 15.4663 8.00245Z"
+                  fill="#CC2529"
+                />
+                <path
+                  d="M11.126 11.6055C10.9593 12.5255 10.746 13.4321 10.446 14.3121C10.4327 14.3655 10.4327 14.4055 10.426 14.4588C9.90599 14.5855 9.35932 14.6655 8.79932 14.6655C8.23266 14.6655 7.69266 14.5855 7.16599 14.4588C7.15932 14.4055 7.16599 14.3655 7.15266 14.3121C6.85932 13.4255 6.63932 12.5255 6.47266 11.6055C7.24599 11.6921 8.01932 11.7521 8.79932 11.7521C9.57932 11.7521 10.3593 11.6921 11.126 11.6055Z"
+                  fill="#CC2529"
+                />
+                <path
+                  d="M11.3084 10.5076C9.64097 10.718 7.95799 10.718 6.29059 10.5076C6.08022 8.84019 6.08022 7.15721 6.29059 5.48981C7.95799 5.27944 9.64097 5.27944 11.3084 5.48981C11.5187 7.15721 11.5187 8.84019 11.3084 10.5076Z"
+                  fill="#CC2529"
+                />
+              </svg>
+              <span>www.OptivaCP.com</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+</section>
+
+<ng-container
+  *ngIf="
+    (getApplicationQuoteIsLoading | async) !== false ||
+    (isCountryLoading | async) !== false
+  "
+>
+  <div class="general-loader-container webapp-view">
+    <div class="general-loader-backdrop"></div>
+
+    <div class="general-loader-content">
+      <app-general-loader></app-general-loader>
+    </div>
+  </div>
+</ng-container>

@@ -1,0 +1,393 @@
+<div class="top-menu" id="topMenu">
+  <header #header>
+    <nav class="container-fluid d-flex align-items-center">
+      <div
+        matRipple
+        class="d-lg-none sidebar-toggler-container"
+        (click)="toggleSidebar()"
+      >
+        <svg
+          class="sidebar-toggler"
+          width="24"
+          height="24"
+          viewBox="0 0 24 24"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            d="M21.9697 15V9C21.9697 4 19.9697 2 14.9697 2H8.96973C3.96973 2 1.96973 4 1.96973 9V15C1.96973 20 3.96973 22 8.96973 22H14.9697C19.9697 22 21.9697 20 21.9697 15Z"
+            stroke="#292D32"
+            stroke-width="1.5"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          />
+          <path
+            d="M14.9697 2V22"
+            stroke="#292D32"
+            stroke-width="1.5"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          />
+          <path
+            d="M7.96973 9.44043L10.5297 12.0004L7.96973 14.5604"
+            stroke="#292D32"
+            stroke-width="1.5"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          />
+        </svg>
+      </div>
+
+      <app-navbar-breadcrumb></app-navbar-breadcrumb>
+
+      <div class="ms-auto d-flex gap-3 MuiDialog-container">
+        <!-- NOTIFICATION COMMENTED OUT -->
+        <!-- [matMenuTriggerFor]="notification" -->
+        <!-- <div
+          class="mb-0 small lh-sm me-3 my-auto me-4"
+        >
+          <div class="position-relative my-auto">
+            <img
+              src="/assets/icons/notification.svg"
+              width="20"
+              height="20"
+              alt="avatar"
+            />
+            <span
+              class="position-absolute top-0 start-100 translate-middle badge rounded-pill badge-notification bg-danger"
+              >1</span
+            >
+          </div>
+        </div> -->
+
+        <div class="mr-2">
+          <app-notification-dropdown></app-notification-dropdown>
+        </div>
+
+        <div class="user-profile-section">
+          <div class="name-section me-3">
+            <p class="fw-600 opt-para-1 mb-0">
+              {{ user?.firstName }} {{ user?.lastName }}
+            </p>
+            <p class="fw-400 opt-caption mb-0">{{ user?.role.name }}</p>
+          </div>
+          <div class="avatar-section" [matMenuTriggerFor]="menu">
+            <!-- <img
+              *ngIf="user?.ProfilePicture"
+              [src]="user?.ProfilePicture"
+              width="34"
+              height="34"
+              alt="Profile Picture"
+            /> -->
+
+            <div class="profile-picture-section">
+              <div class="profile-picture-container">
+                <img
+                  *ngIf="user?.profilePicture"
+                  [src]="user?.profilePicture"
+                  alt="Profile Picture"
+                />
+              </div>
+            </div>
+
+            <img
+              src="/assets/icons/down-arrow.svg"
+              class="ms-2"
+              alt="arrow down"
+            />
+          </div>
+        </div>
+      </div>
+    </nav>
+  </header>
+
+  <!-- <div class="notification-row">
+    <div id="notification">
+      <mat-menu #notification>
+        <div class="p-2 pt-0">
+          <h6 class="border-bottom pb-2 mb-0">
+            <div class="d-flex justify-content-between py-2">
+              <strong class="text-gray-dark">Notifications</strong>
+
+              <div matRipple class="close-icon-container">
+                <img
+                  src="/assets/icons/modal-close-icon.svg"
+                  alt="modal close icon"
+                />
+              </div>
+            </div>
+          </h6>
+          <div class="notification-list px-2">
+            <div
+              class="d-flex text-body-secondary pt-3 border-bottom notification-row"
+            >
+              <div class="mb-0 small lh-sm" [matMenuTriggerFor]="notification">
+                <div class="position-relative my-auto">
+                  <div class="note">
+                    <div class="my-2 d-flex align-items-center">
+                      <span class="img-fluid me-2">
+                        <div class="d-flex align-items-center flex-row mb-2">
+                          <div class="text-content">
+                            <div class="icon-text">
+                              <div class="circle-abbreviate">
+                                <p class="fw-400 opt-footer">OJ</p>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </span>
+                    </div>
+                  </div>
+                  <span
+                    class="position-absolute top-10 translate-middle rounded-pill badge-notification bg-blue"
+                    ><span class="unread-notification"></span
+                  ></span>
+                </div>
+              </div>
+
+              <div class="mb-3 w-100">
+                <div class="fw-700 mt-3">
+                  <span class="text-muted">Joel Asemota</span> mentioned you.
+                </div>
+                <div>
+                  <div
+                    class="card-header d-flex align-items-center border rounded-3 mt-2 p-2"
+                  >
+                    <div class="d-flex align-items-center">
+                      <div>
+                        <img src="/assets/icons/pdf_doc.svg" alt="img" />
+                      </div>
+                      <div class="mx-3">
+                        <div class="text-dark font-weight-600 text-sm">
+                          Birth certificate
+                        </div>
+                        <small class="d-block text-muted">20 MB</small>
+                      </div>
+                    </div>
+                    <div class="text-end ms-auto">
+                      <button
+                        type="button"
+                        class="btn btn-sm bg-gradient-primary mb-0"
+                      >
+                        <img src="/assets/icons/down_cicle.svg" alt="img" />
+                      </button>
+                    </div>
+                  </div>
+                  <div
+                    class="card-header d-flex align-items-center border rounded-3 mt-2 p-2"
+                  >
+                    <div class="d-flex align-items-center">
+                      <div>
+                        <img src="/assets/icons/gallery.svg" alt="img" />
+                      </div>
+                      <div class="mx-3">
+                        <div class="text-dark font-weight-600 text-sm">
+                          Bank statement.jpg
+                        </div>
+                        <small class="d-block text-muted">4 KB</small>
+                      </div>
+                    </div>
+                    <div class="text-end ms-auto">
+                      <button
+                        type="button"
+                        class="btn btn-sm bg-gradient-primary mb-0"
+                      >
+                        <img src="/assets/icons/down_cicle.svg" alt="img" />
+                      </button>
+                    </div>
+                  </div>
+                </div>
+                <div class="ps-2 mt-2">3 mins ago</div>
+              </div>
+            </div>
+            <div
+              class="d-flex text-body-secondary pt-3 border-bottom notification-row"
+            >
+              <div class="mb-0 small lh-sm" [matMenuTriggerFor]="notification">
+                <div class="position-relative my-auto">
+                  <div class="note">
+                    <div class="my-2 d-flex align-items-center">
+                      <span class="img-fluid me-2">
+                        <div class="d-flex align-items-center flex-row mb-2">
+                          <div class="text-content">
+                            <div class="icon-text">
+                              <div class="circle-abbreviate">
+                                <p class="fw-400 opt-footer">OJ</p>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </span>
+                    </div>
+                  </div>
+                  <span
+                    class="position-absolute top-10 translate-middle rounded-pill badge-notification bg-blue"
+                    ><span class="unread-notification"></span
+                  ></span>
+                </div>
+              </div>
+
+              <div class="mb-3">
+                <div class="fw-700 mt-3">
+                  <span class="text-muted">Joel Asemota</span> mentioned you.
+                </div>
+                <div class="p-2 rounded notification-message mt-2">
+                  These may include a valid passport, national identification
+                  card, or other government-issued identification documents.
+                </div>
+                <div class="ps-2">3 mins ago</div>
+              </div>
+            </div>
+            <div
+              class="d-flex text-body-secondary pt-3 border-bottom notification-row"
+            >
+              <div class="mb-0 small lh-sm" [matMenuTriggerFor]="notification">
+                <div class="position-relative my-auto">
+                  <div class="note">
+                    <div class="my-2 d-flex align-items-center">
+                      <span class="img-fluid me-2">
+                        <div class="d-flex align-items-center flex-row mb-2">
+                          <div class="text-content">
+                            <div class="icon-text">
+                              <div class="circle-abbreviate">
+                                <p class="fw-400 opt-footer">OJ</p>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </span>
+                    </div>
+                  </div>
+                  <span
+                    class="position-absolute top-10 translate-middle rounded-pill badge-notification bg-blue"
+                    ><span class="unread-notification"></span
+                  ></span>
+                </div>
+              </div>
+
+              <div class="mb-3">
+                <div class="fw-700 mt-3">
+                  <span class="text-muted">Joel Asemota</span> mentioned you.
+                </div>
+                <div class="p-2 rounded notification-message mt-2">
+                  These may include a valid passport, national identification
+                  card, or other government-issued identification documents.
+                </div>
+                <div class="ps-2">3 mins ago</div>
+              </div>
+            </div>
+            <div
+              class="d-flex text-body-secondary pt-3 border-bottom notification-row"
+            >
+              <div class="mb-0 small lh-sm" [matMenuTriggerFor]="notification">
+                <div class="position-relative my-auto">
+                  <div class="note">
+                    <div class="my-2 d-flex align-items-center">
+                      <span class="img-fluid me-2">
+                        <div class="d-flex align-items-center flex-row mb-2">
+                          <div class="text-content">
+                            <div class="icon-text">
+                              <div class="circle-abbreviate">
+                                <p class="fw-400 opt-footer">OJ</p>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </span>
+                    </div>
+                  </div>
+                  <span
+                    class="position-absolute top-10 translate-middle rounded-pill badge-notification bg-blue"
+                    ><span class="unread-notification"></span
+                  ></span>
+                </div>
+              </div>
+
+              <div class="mb-3">
+                <div class="fw-700 mt-3">
+                  <span class="text-muted">Joel Asemota</span> mentioned you.
+                </div>
+                <div class="p-2 rounded notification-message mt-2">
+                  These may include a valid passport, national identification
+                  card, or other government-issued identification documents.
+                </div>
+                <div class="ps-2">3 mins ago</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </mat-menu>
+    </div>
+  </div> -->
+
+  <mat-menu #menu="matMenu" class="user-menu">
+    <div class="d-flex align-items-center avatar-holder">
+      <div class="avatar">
+        <img
+          src="/assets/icons/avatar.svg"
+          width="34"
+          height="34"
+          alt="avatar"
+        />
+      </div>
+      <div class="profile-picture-section">
+        <div class="profile-picture-container">
+          <img
+            *ngIf="user?.profilePicture"
+            [src]="user?.profilePicture"
+            alt="Profile Picture"
+          />
+        </div>
+      </div>
+
+      <div class="mx-3" *ngIf="user">
+        <p
+          *ngIf="user?.firstName || user?.lastName"
+          class="fw-500 afxm-para-1 mb-0 text-truncate name"
+        >
+          {{ user?.firstName }} {{ user?.lastName }}
+        </p>
+
+        <p
+          *ngIf="user?.email"
+          class="fw-400 afxm-caption mb-0 text-truncate email"
+        >
+          {{ user?.email }}
+        </p>
+      </div>
+    </div>
+
+    <div class="description-section">
+      <div class="list-item mb-3">
+        <p class="opt-para-1 fw-500 mb-0">{{ user?.role?.name }}</p>
+        <i>ROLE</i>
+      </div>
+
+      <div class="list-item mb-3">
+        <p class="opt-para-1 fw-500 mb-0">{{ user?.department?.name }}</p>
+        <i>DEPARTMENT</i>
+      </div>
+
+      <div class="list-item mb-3">
+        <p class="opt-para-1 fw-500 mb-0">{{ user?.division?.name }}</p>
+        <i>DIVISION</i>
+      </div>
+
+      <div class="list-item mb-3">
+        <p class="opt-para-1 fw-500 mb-0">{{ user?.unit?.name }}</p>
+        <i>UNIT</i>
+      </div>
+
+      <div class="list-item mb-3">
+        <p class="opt-para-1 fw-500 mb-0">{{ user?.jobTitle }}</p>
+        <i>JOBTITLE</i>
+      </div>
+    </div>
+    <div class="border"></div>
+    <div class="view-profile">
+      <p class="opt-para-1 fw-600" routerLink="/app/admin-settings/profile">
+        View Profile
+      </p>
+    </div>
+  </mat-menu>
+</div>

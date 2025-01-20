@@ -1,0 +1,45 @@
+<section id="contact-category">
+  <div class="contact-category-header">
+    <h6 class="opt-heading-6 fw-700 mb-0">Quotes</h6>
+
+    <div class="table-controls">
+      <div class="input-style1 input-no-error">
+        <mat-form-field appearance="outline" [style.width.%]="100">
+          <span matPrefix class="img-fluid">
+            <img src="/assets/icons/search.svg" alt="icon" />
+          </span>
+
+          <input
+            matInput
+            [(ngModel)]="searchInputParam"
+            placeholder="Search Quote list"
+          />
+        </mat-form-field>
+      </div>
+
+      <button matRipple class="btn opt-btn-neutral opt-btn-with-icon">
+        <span class="img-fluid"
+          ><img src="/assets/icons/filter-icon.svg" alt="filter-icon"
+        /></span>
+        Filters
+      </button>
+
+      <button
+        matRipple
+        class="btn opt-btn-primary"
+        routerLink="quote"
+        *ngIf="permissions[1]"
+      >
+        Calculate New Quote
+      </button>
+    </div>
+  </div>
+
+  <div class="list-section">
+    <mat-tab-group>
+      <mat-tab label="All Quotes">
+        <app-quote [searchString]="searchInputParam"> </app-quote>
+      </mat-tab>
+    </mat-tab-group>
+  </div>
+</section>

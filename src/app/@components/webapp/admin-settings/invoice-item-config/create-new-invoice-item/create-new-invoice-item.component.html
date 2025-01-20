@@ -1,0 +1,233 @@
+<section id="add-edit-section">
+  <div class="text-content mb-3">
+    <div class="d-flex align-items-center justify-content-between">
+      <h6 class="opt-para-2 fw-700 mb-0">
+        {{ data?.instance === 'update' ? 'Edit' : 'Create' }} Invoice Item
+      </h6>
+
+      <div matRipple class="close-icon-container" (click)="closeDialog()">
+        <img src="/assets/icons/modal-close-icon.svg" alt="modal close icon" />
+      </div>
+    </div>
+  </div>
+
+  <form [formGroup]="addEditInvoiceItemForm">
+    <div class="input-style1 mb-1">
+      <label class="input-label input-required">Country</label>
+
+      <mat-form-field appearance="outline" [style.width.%]="100">
+        <mat-select
+          formControlName="countryId"
+          placeholder="Select Country"
+          (selectionChange)="onCountryChange()"
+        >
+          <mat-option [value]="country.id" *ngFor="let country of countryList">
+            {{ country.name }}
+          </mat-option>
+        </mat-select>
+        <mat-error *ngIf="addEditInvoiceItemFormControls['countryId'].invalid">
+          <img
+            src="/assets/icons/error.svg"
+            alt=""
+            class="img-fluid error-icon"
+          />
+          {{ getErrorMessage('countryId') }}
+        </mat-error>
+      </mat-form-field>
+    </div>
+
+    <div class="input-style1 mb-3">
+      <div>
+        <mat-radio-group
+          class="opt-radio-group2 mt-1"
+          formControlName="allMigrationRoute"
+        >
+          <mat-radio-button [value]="true" class="opt-radio-btn">
+            <span class="mat-radio-label-content"
+              >Apply to all migration routes</span
+            >
+          </mat-radio-button>
+
+          <mat-radio-button [value]="false" class="opt-radio-btn">
+            <span class="mat-radio-label-content"
+              >Apply to selected migration routes</span
+            >
+          </mat-radio-button>
+        </mat-radio-group>
+      </div>
+    </div>
+
+    <ng-container
+      *ngIf="!addEditInvoiceItemForm.get('allMigrationRoute')?.value"
+    >
+      <div class="input-style1 mb-1">
+        <label class="input-label input-required">Select Route</label>
+
+        <mat-form-field appearance="outline" [style.width.%]="100">
+          <mat-select formControlName="migrationRouteId" placeholder="Route">
+            <mat-option
+              [value]="route.id"
+              *ngFor="let route of migrationRouteList"
+            >
+              {{ route.name }}
+            </mat-option>
+          </mat-select>
+          <mat-error
+            *ngIf="
+              addEditInvoiceItemFormControls['migrationRouteId'].invalid ||
+              showMigrationError
+            "
+          >
+            <img
+              src="/assets/icons/error.svg"
+              alt=""
+              class="img-fluid error-icon"
+            />
+            {{ getErrorMessage('migrationRouteId') }}
+          </mat-error>
+        </mat-form-field>
+      </div>
+    </ng-container>
+
+    <div class="input-style1 flex-inputs mb-1">
+      <div class="inputs-items">
+        <mat-form-field appearance="outline" [style.width.%]="100">
+          <input
+            type="number"
+            matInput
+            placeholder="%"
+            formControlName="percentageCountryFee"
+          />
+        </mat-form-field>
+      </div>
+
+      <div class="text">of</div>
+
+      <div class="inputs-items2">
+        <mat-form-field appearance="outline" [style.width.%]="100">
+          <input type="text" matInput value="Country fee" [disabled]="true" />
+        </mat-form-field>
+      </div>
+    </div>
+
+    <div class="input-style1 flex-inputs mb-1">
+      <div class="inputs-items">
+        <mat-form-field appearance="outline" [style.width.%]="100">
+          <input
+            type="number"
+            matInput
+            placeholder="%"
+            formControlName="percentageLocalFee"
+          />
+        </mat-form-field>
+      </div>
+
+      <div class="text">of</div>
+
+      <div class="inputs-items2">
+        <mat-form-field appearance="outline" [style.width.%]="100">
+          <input type="text" matInput value="Local fee" [disabled]="true" />
+        </mat-form-field>
+      </div>
+    </div>
+
+    <div class="input-style1 mb-1">
+      <label class="input-label input-required"
+        >Local Processing fee amount</label
+      >
+
+      <mat-form-field appearance="outline" [style.width.%]="100">
+        <input
+          type="number"
+          matInput
+          placeholder="Amount"
+          formControlName="localFeeAmount"
+        />
+        <mat-error
+          *ngIf="addEditInvoiceItemFormControls['localFeeAmount'].invalid"
+        >
+          <img
+            src="/assets/icons/error.svg"
+            alt=""
+            class="img-fluid error-icon"
+          />
+          {{ getErrorMessage('localFeeAmount') }}
+        </mat-error>
+      </mat-form-field>
+    </div>
+
+    <div class="row">
+      <div class="col-md-6">
+        <label class="input-label">Show local fee</label>
+        <div class="input-style1 mb-3">
+          <div>
+            <mat-radio-group
+              class="opt-radio-group2 mt-1"
+              formControlName="isLocalFee"
+            >
+              <mat-radio-button [value]="true" class="opt-radio-btn">
+                <span class="mat-radio-label-content">True</span>
+              </mat-radio-button>
+              <br />
+              <mat-radio-button [value]="false" class="opt-radio-btn">
+                <span class="mat-radio-label-content">False</span>
+              </mat-radio-button>
+            </mat-radio-group>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-6">
+        <label class="input-label">Show Payment Plan</label>
+        <div class="input-style1 mb-3">
+          <div>
+            <mat-radio-group
+              class="opt-radio-group2 mt-1"
+              formControlName="isPaymentPlan"
+            >
+              <mat-radio-button [value]="true" class="opt-radio-btn">
+                <span class="mat-radio-label-content">True</span>
+              </mat-radio-button>
+              <br />
+              <mat-radio-button [value]="false" class="opt-radio-btn">
+                <span class="mat-radio-label-content">False</span>
+              </mat-radio-button>
+            </mat-radio-group>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="d-flex justify-content-between">
+      <button
+        matRipple
+        type="button"
+        class="btn opt-btn-primary-outline"
+        (click)="closeDialog()"
+      >
+        Cancel
+      </button>
+
+      <button
+        matRipple
+        class="btn opt-btn-primary"
+        [disabled]="
+          addEditInvoiceItemForm.invalid || (isLoading | async) !== false
+        "
+        (click)="onSubmit()"
+      >
+        <ng-container *ngIf="data?.instance === 'create'">
+          Create
+        </ng-container>
+
+        <ng-container *ngIf="data?.instance === 'update'"> Save </ng-container>
+
+        <ng-container *ngIf="(isLoading | async) !== false">
+          <app-button-loader></app-button-loader>
+        </ng-container>
+      </button>
+    </div>
+  </form>
+</section>
+<!-- <mat-dialog-content>
+</mat-dialog-content> -->

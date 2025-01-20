@@ -1,0 +1,821 @@
+<section id="account-settings">
+  <div class="profile-account-settings row">
+    <div class="user-profile col-12 col-md-4 col-lg-4">
+      <div class="img-name">
+        <!-- <div class="img-container">
+          <img src="/assets/images/female-avatar.svg" alt="avater/svg" />
+        </div> -->
+        <div class="profile-picture-section">
+          <div class="profile-picture-container">
+            <!-- <img [src]="logoPreview" alt="Profile Picture" /> -->
+
+            <img
+              *ngIf="user?.profilePicture"
+              [src]="user?.profilePicture"
+              alt="Profile Picture"
+            />
+          </div>
+        </div>
+
+        <h6 class="opt-heading-6 fw-700">
+          {{ user?.firstName }} {{ user?.lastName }}
+        </h6>
+      </div>
+
+      <div class="user-desc">
+        <div class="coloured-container">
+          <div class="coloured-bg">
+            <p class="opt-para-1">
+              Roles: <span>{{ user?.role?.name }}</span>
+            </p>
+          </div>
+
+          <div class="rectangle-img">
+            <img src="/assets/icons/rectangle.svg" alt="" />
+          </div>
+
+          <div class="coloured-bg">
+            <p class="opt-para-1">
+              Division: <span>{{ user?.division?.name }}</span>
+            </p>
+          </div>
+        </div>
+
+        <div class="coloured-container">
+          <div class="coloured-bg">
+            <p class="opt-para-1">
+              Department: <span>{{ user?.department?.name }}</span>
+            </p>
+          </div>
+
+          <div class="rectangle-img">
+            <img src="/assets/icons/rectangle.svg" alt="" />
+          </div>
+
+          <div class="coloured-bg">
+            <p class="opt-para-1">
+              Unit: <span>{{ user?.unit?.name }}</span>
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <div class="profile-user-noti">
+        <div
+          class="link-container"
+          matRipple
+          routerLink="profile"
+          routerLinkActive="active"
+        >
+          <div class="link-icon-container">
+            <svg
+              width="20"
+              height="20"
+              viewBox="0 0 20 20"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M10.1333 9.05817C10.05 9.04984 9.95 9.04984 9.85834 9.05817C7.875 8.9915 6.3 7.3665 6.3 5.3665C6.3 3.32484 7.95 1.6665 10 1.6665C12.0417 1.6665 13.7 3.32484 13.7 5.3665C13.6917 7.3665 12.1167 8.9915 10.1333 9.05817Z"
+                stroke="#0235CD"
+                stroke-width="1.25"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              />
+              <path
+                d="M5.96666 12.1335C3.95 13.4835 3.95 15.6835 5.96666 17.0252C8.25833 18.5585 12.0167 18.5585 14.3083 17.0252C16.325 15.6752 16.325 13.4752 14.3083 12.1335C12.025 10.6085 8.26666 10.6085 5.96666 12.1335Z"
+                stroke="#0235CD"
+                stroke-width="1.25"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              />
+            </svg>
+          </div>
+
+          <div class="link-text-container">
+            <p class="link-text">My Profile</p>
+          </div>
+        </div>
+
+        <div class="link-container" routerLinkActive="active" matRipple>
+          <div class="link-icon-container">
+            <svg
+              width="14"
+              height="16"
+              viewBox="0 0 14 16"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M13.3651 11.6624L13.3649 11.6622C13.3303 11.625 13.2927 11.5855 13.2526 11.5435C12.961 11.2377 12.5386 10.7945 12.1895 10.0877C11.791 9.28072 11.4975 8.15865 11.4975 6.5C11.4975 4.32179 9.97426 2.57217 7.89769 2.1408L7.49938 2.05806V1.65125V1C7.49938 0.723649 7.27543 0.5 7.00001 0.5C6.72458 0.5 6.50063 0.723649 6.50063 1V1.65125V2.05806L6.10233 2.1408C4.02576 2.57217 2.50251 4.32179 2.50251 6.5C2.50251 8.15865 2.20905 9.28072 1.8105 10.0877C1.46145 10.7945 1.03899 11.2377 0.747445 11.5435C0.707366 11.5855 0.669762 11.6249 0.635163 11.6621C0.537182 11.7674 0.49926 11.8843 0.499995 11.9966C0.499995 11.9967 0.499995 11.9967 0.499995 11.9967M13.3651 11.6624L0.499995 11.9967M13.3651 11.6624C13.4627 11.7671 13.5008 11.8841 13.5 11.9967L13.5 11.997C13.4984 12.2644 13.2904 12.5 12.9969 12.5H1.00313C0.709839 12.5 0.501814 12.2647 0.499995 11.9967M13.3651 11.6624L0.499995 11.9967M8.41376 14.5C8.2079 15.0827 7.65239 15.5 7.00001 15.5C6.34762 15.5 5.79212 15.0827 5.58625 14.5H8.41376Z"
+                stroke="#0235CD"
+              />
+            </svg>
+          </div>
+
+          <div class="link-text-container d-flex justify-content-between">
+            <p class="link-text">Notification</p>
+            <mat-slide-toggle></mat-slide-toggle>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="account-settings-wrapper col col-sm-8">
+      <div
+        matRipple
+        class="account-setting"
+        routerLink="org-settings"
+        *ngIf="canViewOrgSettings"
+      >
+        <div class="account-setting-icon">
+          <svg
+            width="48"
+            height="48"
+            viewBox="0 0 48 48"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M4 44H44"
+              stroke="#011B69"
+              stroke-width="1.5"
+              stroke-miterlimit="10"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            />
+            <path
+              d="M34 4H14C8 4 6 7.58 6 12V44H42V12C42 7.58 40 4 34 4Z"
+              stroke="var(--opt-primary-color)"
+              stroke-width="1.5"
+              stroke-miterlimit="10"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            />
+            <path
+              d="M14 33H20"
+              stroke="var(--opt-primary-color)"
+              stroke-width="1.5"
+              stroke-miterlimit="10"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            />
+            <path
+              d="M28 33H34"
+              stroke="var(--opt-primary-color)"
+              stroke-width="1.5"
+              stroke-miterlimit="10"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            />
+            <path
+              d="M14 24H20"
+              stroke="#011B69"
+              stroke-width="1.5"
+              stroke-miterlimit="10"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            />
+            <path
+              d="M28 24H34"
+              stroke="#011B69"
+              stroke-width="1.5"
+              stroke-miterlimit="10"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            />
+            <path
+              d="M14 15H20"
+              stroke="#011B69"
+              stroke-width="1.5"
+              stroke-miterlimit="10"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            />
+            <path
+              d="M28 15H34"
+              stroke="#011B69"
+              stroke-width="1.5"
+              stroke-miterlimit="10"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            />
+          </svg>
+        </div>
+
+        <div class="account-setting-content">
+          <h6 class="opt-heading-6 fw-700">Org Settings</h6>
+
+          <p class="opt-para-1">All information of organization set up</p>
+        </div>
+      </div>
+
+      <div
+        matRipple
+        class="account-setting"
+        routerLink="roles-permission"
+        *ngIf="canViewRoles"
+      >
+        <div class="account-setting-icon">
+          <svg
+            width="48"
+            height="48"
+            viewBox="0 0 48 48"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M28.88 38.0996L31.92 41.1396L38 35.0596"
+              stroke="var(--opt-primary-color)"
+              stroke-width="1.5"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            />
+            <path
+              d="M24.3199 21.74C24.1199 21.72 23.8799 21.72 23.6599 21.74C18.8999 21.58 15.1199 17.68 15.1199 12.88C15.0999 7.98 19.0799 4 23.9799 4C28.8799 4 32.8599 7.98 32.8599 12.88C32.8599 17.68 29.0599 21.58 24.3199 21.74Z"
+              stroke="var(--opt-primary-color)"
+              stroke-width="1.5"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            />
+            <path
+              d="M23.98 43.6203C20.34 43.6203 16.72 42.7004 13.96 40.8604C9.11996 37.6204 9.11996 32.3404 13.96 29.1204C19.46 25.4404 28.48 25.4404 33.98 29.1204"
+              stroke="var(--opt-primary-color)"
+              stroke-width="1.5"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            />
+          </svg>
+        </div>
+
+        <div class="account-setting-content">
+          <h6 class="opt-heading-6 fw-700">Roles & Permissions</h6>
+
+          <p class="opt-para-1">
+            All information of roles and permissions set up
+          </p>
+        </div>
+      </div>
+
+      <div
+        matRipple
+        class="account-setting"
+        routerLink="features"
+        *ngIf="canViewFeature"
+      >
+        <div class="account-setting-icon">
+          <svg
+            width="48"
+            height="48"
+            viewBox="0 0 48 48"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M18 44H30C40 44 44 40 44 30V18C44 8 40 4 30 4H18C8 4 4 8 4 18V30C4 40 8 44 18 44Z"
+              stroke="var(--opt-primary-color)"
+              stroke-width="1.5"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            />
+            <path
+              d="M31.14 37.0002V29.2002"
+              stroke="var(--opt-primary-color)"
+              stroke-width="1.5"
+              stroke-miterlimit="10"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            />
+            <path
+              d="M31.14 14.9V11"
+              stroke="var(--opt-primary-color)"
+              stroke-width="1.5"
+              stroke-miterlimit="10"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            />
+            <path
+              d="M31.1399 25.3004C34.0118 25.3004 36.3399 22.9723 36.3399 20.1004C36.3399 17.2285 34.0118 14.9004 31.1399 14.9004C28.2681 14.9004 25.9399 17.2285 25.9399 20.1004C25.9399 22.9723 28.2681 25.3004 31.1399 25.3004Z"
+              stroke="var(--opt-primary-color)"
+              stroke-width="1.5"
+              stroke-miterlimit="10"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            />
+            <path
+              d="M16.86 36.9996V33.0996"
+              stroke="var(--opt-primary-color)"
+              stroke-width="1.5"
+              stroke-miterlimit="10"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            />
+            <path
+              d="M16.86 18.8V11"
+              stroke="var(--opt-primary-color)"
+              stroke-width="1.5"
+              stroke-miterlimit="10"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            />
+            <path
+              d="M16.86 33.1002C19.7319 33.1002 22.06 30.7721 22.06 27.9002C22.06 25.0283 19.7319 22.7002 16.86 22.7002C13.9882 22.7002 11.66 25.0283 11.66 27.9002C11.66 30.7721 13.9882 33.1002 16.86 33.1002Z"
+              stroke="var(--opt-primary-color)"
+              stroke-width="1.5"
+              stroke-miterlimit="10"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            />
+          </svg>
+        </div>
+
+        <div class="account-setting-content">
+          <h6 class="opt-heading-6 fw-700">Features</h6>
+
+          <p class="opt-para-1">Set up feature configuration</p>
+        </div>
+      </div>
+
+      <div
+        matRipple
+        class="account-setting"
+        routerLink="currency-config"
+        *ngIf="canViewCurrency"
+      >
+        <div class="account-setting-icon">
+          <svg
+            width="48"
+            height="48"
+            viewBox="0 0 48 48"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M17.3438 28.6597C17.3438 31.2397 19.3238 33.3197 21.7838 33.3197H26.8037C28.9437 33.3197 30.6838 31.4997 30.6838 29.2597C30.6838 26.8197 29.6238 25.9597 28.0438 25.3997L19.9837 22.5997C18.4037 22.0397 17.3438 21.1797 17.3438 18.7397C17.3438 16.4997 19.0837 14.6797 21.2237 14.6797H26.2437C28.7037 14.6797 30.6838 16.7597 30.6838 19.3397"
+              stroke="var(--opt-primary-color)"
+              stroke-width="1.5"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            />
+            <path
+              d="M24 12V36"
+              stroke="var(--opt-primary-color)"
+              stroke-width="1.5"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            />
+            <path
+              d="M24 44C35.0457 44 44 35.0457 44 24C44 12.9543 35.0457 4 24 4C12.9543 4 4 12.9543 4 24C4 35.0457 12.9543 44 24 44Z"
+              stroke="var(--opt-primary-color)"
+              stroke-width="1.5"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            />
+          </svg>
+        </div>
+
+        <div class="account-setting-content">
+          <h6 class="opt-heading-6 fw-700">Currency Configuration</h6>
+
+          <p class="opt-para-1">Set up currency configuration</p>
+        </div>
+      </div>
+
+      <div
+        matRipple
+        class="account-setting"
+        routerLink="user-management"
+        *ngIf="canViewUserMgmt"
+      >
+        <div class="account-setting-icon">
+          <svg
+            width="48"
+            height="48"
+            viewBox="0 0 48 48"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M36 14.32C35.88 14.3 35.74 14.3 35.62 14.32C32.86 14.22 30.66 11.96 30.66 9.16C30.66 6.3 32.96 4 35.82 4C38.68 4 40.98 6.32 40.98 9.16C40.96 11.96 38.76 14.22 36 14.32Z"
+              stroke="var(--opt-primary-color)"
+              stroke-width="1.5"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            />
+            <path
+              d="M33.94 28.88C36.68 29.34 39.7 28.86 41.82 27.44C44.64 25.56 44.64 22.48 41.82 20.6C39.68 19.18 36.62 18.7 33.88 19.18"
+              stroke="var(--opt-primary-color)"
+              stroke-width="1.5"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            />
+            <path
+              d="M11.94 14.32C12.06 14.3 12.2 14.3 12.32 14.32C15.08 14.22 17.28 11.96 17.28 9.16C17.28 6.3 14.98 4 12.12 4C9.26 4 6.96 6.32 6.96 9.16C6.98 11.96 9.18 14.22 11.94 14.32Z"
+              stroke="var(--opt-primary-color)"
+              stroke-width="1.5"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            />
+            <path
+              d="M14 28.88C11.26 29.34 8.24 28.86 6.12 27.44C3.3 25.56 3.3 22.48 6.12 20.6C8.26 19.18 11.32 18.7 14.06 19.18"
+              stroke="var(--opt-primary-color)"
+              stroke-width="1.5"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            />
+            <path
+              d="M24 29.26C23.88 29.24 23.74 29.24 23.62 29.26C20.86 29.16 18.66 26.9 18.66 24.1C18.66 21.24 20.96 18.94 23.82 18.94C26.68 18.94 28.98 21.26 28.98 24.1C28.96 26.9 26.76 29.18 24 29.26Z"
+              stroke="var(--opt-primary-color)"
+              stroke-width="1.5"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            />
+            <path
+              d="M18.18 35.56C15.36 37.44 15.36 40.52 18.18 42.4C21.38 44.54 26.62 44.54 29.82 42.4C32.64 40.52 32.64 37.44 29.82 35.56C26.64 33.44 21.38 33.44 18.18 35.56Z"
+              stroke="var(--opt-primary-color)"
+              stroke-width="1.5"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            />
+          </svg>
+        </div>
+
+        <div class="account-setting-content">
+          <h6 class="opt-heading-6 fw-700">Users</h6>
+
+          <p class="opt-para-1">All information of user set up</p>
+        </div>
+      </div>
+
+      <div
+        matRipple
+        class="account-setting"
+        routerLink="country-setup"
+        *ngIf="canViewCountry"
+      >
+        <div class="account-setting-icon">
+          <svg
+            width="48"
+            height="48"
+            viewBox="0 0 48 48"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M10.3 4V44"
+              stroke="var(--opt-primary-color)"
+              stroke-width="1.5"
+              stroke-miterlimit="10"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            />
+            <path
+              d="M10.3 8H32.7C38.1 8 39.3 11 35.5 14.8L33.1 17.2C31.5 18.8 31.5 21.4 33.1 22.8L35.5 25.2C39.3 29 37.9 32 32.7 32H10.3"
+              stroke="var(--opt-primary-color)"
+              stroke-width="1.5"
+              stroke-miterlimit="10"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            />
+          </svg>
+        </div>
+
+        <div class="account-setting-content">
+          <h6 class="opt-heading-6 fw-700">Country Setup</h6>
+
+          <p class="opt-para-1">Create and manage country categories</p>
+        </div>
+      </div>
+
+      <div
+        matRipple
+        class="account-setting"
+        routerLink="partner-management"
+        *ngIf="canViewCountry"
+      >
+        <div class="account-setting-icon">
+          <svg
+            width="48"
+            height="48"
+            viewBox="0 0 48 48"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M13.4 36H8.30005C5.44005 36 4 34.56 4 31.7V8.30005C4 5.44005 5.44005 4 8.30005 4H16.9C19.76 4 21.2 5.44005 21.2 8.30005V12"
+              stroke="#0235CD"
+              stroke-width="1.5"
+              stroke-miterlimit="10"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            />
+            <path
+              d="M34.74 16.84V39.16C34.74 42.38 33.14 44 29.92 44H18.24C15.02 44 13.4 42.38 13.4 39.16V16.84C13.4 13.62 15.02 12 18.24 12H29.92C33.14 12 34.74 13.62 34.74 16.84Z"
+              stroke="#0235CD"
+              stroke-width="1.5"
+              stroke-miterlimit="10"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            />
+            <path
+              d="M26.8 12V8.30005C26.8 5.44005 28.24 4 31.1 4H39.7C42.56 4 44 5.44005 44 8.30005V31.7C44 34.56 42.56 36 39.7 36H34.74"
+              stroke="#0235CD"
+              stroke-width="1.5"
+              stroke-miterlimit="10"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            />
+            <path
+              d="M20 22H28"
+              stroke="#0235CD"
+              stroke-width="1.5"
+              stroke-miterlimit="10"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            />
+            <path
+              d="M20 28H28"
+              stroke="#0235CD"
+              stroke-width="1.5"
+              stroke-miterlimit="10"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            />
+            <path
+              d="M24 44V38"
+              stroke="#0235CD"
+              stroke-width="1.5"
+              stroke-miterlimit="10"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            />
+          </svg>
+        </div>
+
+        <div class="account-setting-content">
+          <h6 class="opt-heading-6 fw-700">Partners</h6>
+
+          <p class="opt-para-1">Create and manage all partners</p>
+        </div>
+      </div>
+
+      <div
+        matRipple
+        class="account-setting"
+        routerLink="phase-config"
+        *ngIf="canViewFeature"
+      >
+        <div class="account-setting-icon">
+          <svg
+            width="48"
+            height="48"
+            viewBox="0 0 48 48"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M18 44H30C40 44 44 40 44 30V18C44 8 40 4 30 4H18C8 4 4 8 4 18V30C4 40 8 44 18 44Z"
+              stroke="var(--opt-primary-color)"
+              stroke-width="1.5"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            />
+            <path
+              d="M31.14 37.0002V29.2002"
+              stroke="var(--opt-primary-color)"
+              stroke-width="1.5"
+              stroke-miterlimit="10"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            />
+            <path
+              d="M31.14 14.9V11"
+              stroke="var(--opt-primary-color)"
+              stroke-width="1.5"
+              stroke-miterlimit="10"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            />
+            <path
+              d="M31.1399 25.3004C34.0118 25.3004 36.3399 22.9723 36.3399 20.1004C36.3399 17.2285 34.0118 14.9004 31.1399 14.9004C28.2681 14.9004 25.9399 17.2285 25.9399 20.1004C25.9399 22.9723 28.2681 25.3004 31.1399 25.3004Z"
+              stroke="var(--opt-primary-color)"
+              stroke-width="1.5"
+              stroke-miterlimit="10"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            />
+            <path
+              d="M16.86 36.9996V33.0996"
+              stroke="var(--opt-primary-color)"
+              stroke-width="1.5"
+              stroke-miterlimit="10"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            />
+            <path
+              d="M16.86 18.8V11"
+              stroke="var(--opt-primary-color)"
+              stroke-width="1.5"
+              stroke-miterlimit="10"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            />
+            <path
+              d="M16.86 33.1002C19.7319 33.1002 22.06 30.7721 22.06 27.9002C22.06 25.0283 19.7319 22.7002 16.86 22.7002C13.9882 22.7002 11.66 25.0283 11.66 27.9002C11.66 30.7721 13.9882 33.1002 16.86 33.1002Z"
+              stroke="var(--opt-primary-color)"
+              stroke-width="1.5"
+              stroke-miterlimit="10"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            />
+          </svg>
+        </div>
+
+        <div class="account-setting-content">
+          <h6 class="opt-heading-6 fw-700">Phase Configuration</h6>
+
+          <p class="opt-para-1">All information of phase set up</p>
+        </div>
+      </div>
+      <div
+        matRipple
+        class="account-setting"
+        routerLink="document-config"
+        *ngIf="canViewFeature"
+      >
+        <div class="account-setting-icon">
+          <svg
+            width="48"
+            height="48"
+            viewBox="0 0 48 48"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M44 20V30C44 40 40 44 30 44H18C8 44 4 40 4 30V18C4 8 8 4 18 4H28"
+              stroke="#0235CD"
+              stroke-width="1.5"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            />
+            <path
+              d="M44 20H36C30 20 28 18 28 12V4L44 20Z"
+              stroke="#0235CD"
+              stroke-width="1.5"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            />
+            <path
+              d="M14 26H26"
+              stroke="#0235CD"
+              stroke-width="1.5"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            />
+            <path
+              d="M14 34H22"
+              stroke="#292D32"
+              stroke-width="1.5"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            />
+          </svg>
+        </div>
+
+        <div class="account-setting-content">
+          <h6 class="opt-heading-6 fw-700">Document Configuration</h6>
+
+          <p class="opt-para-1">All information of phase set up</p>
+        </div>
+      </div>
+      <!-- <div matRipple class="account-setting" routerLink="application">
+        <div class="account-setting-icon">
+          <svg
+            width="48"
+            height="48"
+            viewBox="0 0 48 48"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M42 14V34C42 40 39 44 32 44H16C9 44 6 40 6 34V14C6 8 9 4 16 4H32C39 4 42 8 42 14Z"
+              stroke="#011B69"
+              stroke-width="1.5"
+              stroke-miterlimit="10"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            />
+            <path
+              d="M29 9V13C29 15.2 30.8 17 33 17H37"
+              stroke="#011B69"
+              stroke-width="1.5"
+              stroke-miterlimit="10"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            />
+            <path
+              d="M16 26H24"
+              stroke="#011B69"
+              stroke-width="1.5"
+              stroke-miterlimit="10"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            />
+            <path
+              d="M16 34H32"
+              stroke="#011B69"
+              stroke-width="1.5"
+              stroke-miterlimit="10"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            />
+          </svg>
+        </div>
+
+        <div class="account-setting-content">
+          <h6 class="opt-heading-6 fw-700">Application</h6>
+
+          <p class="opt-para-1">All default of organization set up</p>
+        </div>
+      </div> -->
+      <div
+        matRipple
+        class="account-setting"
+        routerLink="invoice-item-config"
+        *ngIf="canViewFeature"
+      >
+        <div class="account-setting-icon">
+          <svg
+            width="48"
+            height="48"
+            viewBox="0 0 48 48"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M18 44H30C40 44 44 40 44 30V18C44 8 40 4 30 4H18C8 4 4 8 4 18V30C4 40 8 44 18 44Z"
+              stroke="var(--opt-primary-color)"
+              stroke-width="1.5"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            />
+            <path
+              d="M31.14 37.0002V29.2002"
+              stroke="var(--opt-primary-color)"
+              stroke-width="1.5"
+              stroke-miterlimit="10"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            />
+            <path
+              d="M31.14 14.9V11"
+              stroke="var(--opt-primary-color)"
+              stroke-width="1.5"
+              stroke-miterlimit="10"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            />
+            <path
+              d="M31.1399 25.3004C34.0118 25.3004 36.3399 22.9723 36.3399 20.1004C36.3399 17.2285 34.0118 14.9004 31.1399 14.9004C28.2681 14.9004 25.9399 17.2285 25.9399 20.1004C25.9399 22.9723 28.2681 25.3004 31.1399 25.3004Z"
+              stroke="var(--opt-primary-color)"
+              stroke-width="1.5"
+              stroke-miterlimit="10"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            />
+            <path
+              d="M16.86 36.9996V33.0996"
+              stroke="var(--opt-primary-color)"
+              stroke-width="1.5"
+              stroke-miterlimit="10"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            />
+            <path
+              d="M16.86 18.8V11"
+              stroke="var(--opt-primary-color)"
+              stroke-width="1.5"
+              stroke-miterlimit="10"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            />
+            <path
+              d="M16.86 33.1002C19.7319 33.1002 22.06 30.7721 22.06 27.9002C22.06 25.0283 19.7319 22.7002 16.86 22.7002C13.9882 22.7002 11.66 25.0283 11.66 27.9002C11.66 30.7721 13.9882 33.1002 16.86 33.1002Z"
+              stroke="var(--opt-primary-color)"
+              stroke-width="1.5"
+              stroke-miterlimit="10"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            />
+          </svg>
+        </div>
+
+        <div class="account-setting-content">
+          <h6 class="opt-heading-6 fw-700">Invoice Item Configuration</h6>
+
+          <p class="opt-para-1">All information of invoice set up</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

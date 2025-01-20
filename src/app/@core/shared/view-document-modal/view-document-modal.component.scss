@@ -1,0 +1,31 @@
+@use '../../../@core/styles/abstracts' as *;
+
+.manage-contact-category-header {
+  display: flex;
+  justify-content: space-between;
+  gap: 1.25rem;
+  margin-bottom: 1.25rem;
+
+  .content-right {
+    display: flex;
+    gap: 1rem;
+
+    .topbar-buttons {
+      padding: 0.2rem 0.5rem !important;
+      background-color: var(--opt-primary-color-50);
+      border: 1px solid $opt-primary-400;
+      color: $opt-primary-400;
+
+      .text {
+        padding-right: 0.25rem;
+      }
+
+      &:disabled {
+        background: var(--opt-neutral-200);
+        color: var(--opt-neutral-400);
+        opacity: 1;
+        cursor: not-allowed;
+      }
+    }
+  }
+}

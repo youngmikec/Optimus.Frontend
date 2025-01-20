@@ -1,0 +1,232 @@
+<section id="manage-contact-category">
+  <div class="manage-contact-category-header">
+    <h6 class="opt-heading-6 fw-600 mb-0">Partner Infomation</h6>
+
+    <div matRipple class="close-icon-container" (click)="closeDialog()">
+      <img src="/assets/icons/modal-close-icon.svg" alt="modal close icon" />
+    </div>
+  </div>
+
+  <div class="section-1 mb-2">
+    <div class="profile-picture-container mb-2">
+      <img
+        [src]="
+          userData.profilePicture !== null && userData.profilePicture
+            ? userData?.profilePicture
+            : '../../../../../../assets/images/userprofile.png'
+        "
+        alt="Profile Picture"
+      />
+    </div>
+
+    <div class="content">
+      <div class="opt-heading-6 fw-700 mb-3">
+        {{ userData?.lastName }} {{ userData?.firstName }}
+      </div>
+      <div class="opt-para-1 mb-2">
+        <svg
+          width="16"
+          height="16"
+          viewBox="0 0 16 16"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            d="M11.333 13.6673H4.66634C2.66634 13.6673 1.33301 12.6673 1.33301 10.334V5.66732C1.33301 3.33398 2.66634 2.33398 4.66634 2.33398H11.333C13.333 2.33398 14.6663 3.33398 14.6663 5.66732V10.334C14.6663 12.6673 13.333 13.6673 11.333 13.6673Z"
+            stroke="#80171A"
+            stroke-width="1.25"
+            stroke-miterlimit="10"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          />
+          <path
+            d="M11.3337 6L9.24699 7.66667C8.56032 8.21333 7.43366 8.21333 6.74699 7.66667L4.66699 6"
+            stroke="#80171A"
+            stroke-width="1.25"
+            stroke-miterlimit="10"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          />
+        </svg>
+        {{ userData?.email }}
+      </div>
+      <div class="opt-para-1">
+        <svg
+          width="16"
+          height="16"
+          viewBox="0 0 16 16"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            d="M14.6463 12.2207C14.6463 12.4607 14.593 12.7073 14.4797 12.9473C14.3663 13.1873 14.2197 13.414 14.0263 13.6273C13.6997 13.9873 13.3397 14.2473 12.933 14.414C12.533 14.5807 12.0997 14.6673 11.633 14.6673C10.953 14.6673 10.2263 14.5073 9.45967 14.1807C8.69301 13.854 7.92634 13.414 7.16634 12.8607C6.39967 12.3007 5.67301 11.6807 4.97967 10.994C4.29301 10.3007 3.67301 9.57398 3.11967 8.81398C2.57301 8.05398 2.13301 7.29398 1.81301 6.54065C1.49301 5.78065 1.33301 5.05398 1.33301 4.36065C1.33301 3.90732 1.41301 3.47398 1.57301 3.07398C1.73301 2.66732 1.98634 2.29398 2.33967 1.96065C2.76634 1.54065 3.23301 1.33398 3.72634 1.33398C3.91301 1.33398 4.09967 1.37398 4.26634 1.45398C4.43967 1.53398 4.59301 1.65398 4.71301 1.82732L6.25967 4.00732C6.37967 4.17398 6.46634 4.32732 6.52634 4.47398C6.58634 4.61398 6.61967 4.75398 6.61967 4.88065C6.61967 5.04065 6.57301 5.20065 6.47967 5.35398C6.39301 5.50732 6.26634 5.66732 6.10634 5.82732L5.59967 6.35398C5.52634 6.42732 5.49301 6.51398 5.49301 6.62065C5.49301 6.67398 5.49967 6.72065 5.51301 6.77398C5.53301 6.82732 5.55301 6.86732 5.56634 6.90732C5.68634 7.12732 5.89301 7.41398 6.18634 7.76065C6.48634 8.10732 6.80634 8.46065 7.15301 8.81398C7.51301 9.16732 7.85967 9.49398 8.21301 9.79398C8.55967 10.0873 8.84634 10.2873 9.07301 10.4073C9.10634 10.4207 9.14634 10.4407 9.19301 10.4607C9.24634 10.4807 9.29967 10.4873 9.35967 10.4873C9.47301 10.4873 9.55967 10.4473 9.63301 10.374L10.1397 9.87398C10.3063 9.70732 10.4663 9.58065 10.6197 9.50065C10.773 9.40732 10.9263 9.36065 11.093 9.36065C11.2197 9.36065 11.353 9.38732 11.4997 9.44732C11.6463 9.50732 11.7997 9.59398 11.9663 9.70732L14.173 11.274C14.3463 11.394 14.4663 11.534 14.5397 11.7007C14.6063 11.8673 14.6463 12.034 14.6463 12.2207Z"
+            stroke="#80171A"
+            stroke-width="1.25"
+            stroke-miterlimit="10"
+          />
+        </svg>
+        {{ userData?.phoneNumber }}
+      </div>
+    </div>
+  </div>
+
+  <div class="section-2 mb-4">
+    <div class="content-container mb-2">
+      <div class="left opt-para-1">
+        Alternative Contact:
+        <span class="opt-para-1 fw-600">{{ userData?.phoneNumber }}</span>
+      </div>
+      <!-- <svg
+        width="8"
+        height="8"
+        viewBox="0 0 8 8"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <rect width="8" height="8" rx="2" fill="#E8E8E8" />
+      </svg> -->
+      <!-- <div class="right opt-para-1">
+        Country:
+        <span class="opt-para-1 fw-600">{{ userData?.division?.name }}</span>
+      </div> -->
+    </div>
+
+    <div class="content-container mb-2">
+      <div class="left opt-para-1">
+        Country:
+        <span class="opt-para-1 fw-600">Nigeria</span>
+        <!-- <span class="opt-para-1 fw-600">{{ userData?.department?.name }}</span> -->
+      </div>
+      <!-- <svg
+        width="8"
+        height="8"
+        viewBox="0 0 8 8"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <rect width="8" height="8" rx="2" fill="#E8E8E8" />
+      </svg>
+      <div class="right opt-para-1">
+        Unit: <span class="opt-para-1 fw-600">{{ userData?.unit?.name }}</span>
+      </div> -->
+    </div>
+
+    <div class="content-container mb-2">
+      <div class="left opt-para-1">
+        Company Name:
+        <!-- <span class="opt-para-1 fw-600">{{ userData?.branch?.name }}</span> -->
+        <span class="opt-para-1 fw-600">Revent Technologies</span>
+      </div>
+      <!-- <svg
+        width="8"
+        height="8"
+        viewBox="0 0 8 8"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <rect width="8" height="8" rx="2" fill="#E8E8E8" />
+      </svg>
+      <div class="right opt-para-1">
+        Job Title:
+        <span class="opt-para-1 fw-600">{{ userData?.jobTitle }}</span>
+      </div> -->
+    </div>
+
+    <div class="content-container">
+      <div class="left1 opt-para-1">
+        Status:
+        <span class="opt-para-1 fw-600">{{ userData?.branch.statusDesc }}</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="section-3">
+    <div class="container">
+      <div class="opt-para-2 fw-600 mb-2"></div>
+      <div>
+        <div class="item" *ngFor="let item of userData?.userDevice">
+          <div class="left">
+            <svg
+              width="32"
+              height="32"
+              viewBox="0 0 32 32"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <circle cx="16" cy="16" r="16" fill="#F7F8F9" />
+              <g clip-path="url(#clip0_10529_31143)">
+                <path
+                  d="M19.333 9.33398H12.6663C12.2061 9.33398 11.833 9.70708 11.833 10.1673V21.834C11.833 22.2942 12.2061 22.6673 12.6663 22.6673H19.333C19.7932 22.6673 20.1663 22.2942 20.1663 21.834V10.1673C20.1663 9.70708 19.7932 9.33398 19.333 9.33398Z"
+                  stroke="#0235CD"
+                  stroke-width="1.25"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                />
+                <path
+                  d="M15.167 10.166H16.8337"
+                  stroke="#0235CD"
+                  stroke-width="1.25"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                />
+                <path
+                  d="M16 20.166V20.1743"
+                  stroke="#0235CD"
+                  stroke-width="1.25"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                />
+              </g>
+              <defs>
+                <clipPath id="clip0_10529_31143">
+                  <rect
+                    width="20"
+                    height="20"
+                    fill="white"
+                    transform="translate(6 6)"
+                  />
+                </clipPath>
+              </defs>
+            </svg>
+            <div class="opt-para-1">
+              {{ item?.deviceName }}
+              <div class="opt-caption">
+                <i>Last logged in: </i>
+              </div>
+            </div>
+          </div>
+          <div class="right" (click)="toggleUserStatus(false, userData, item)">
+            <i>remove</i>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section-4">
+    <div class="container">
+      <div class="button1 mb-2">
+        <button
+          (click)="closeDialog()"
+          [routerLink]="
+            '/app/admin-settings/partner-management/edit/' +
+            userData.partnerUserId
+          "
+        >
+          Edit
+        </button>
+      </div>
+      <div class="button2">
+        <button
+          (click)="
+            onToggle(userData.partnerUserId, userData.userId, userData.status)
+          "
+        >
+          <span>{{
+            userData.status === 'Active' ? 'Deactivate' : 'Activate'
+          }}</span>
+        </button>
+      </div>
+    </div>
+  </div>
+</section>

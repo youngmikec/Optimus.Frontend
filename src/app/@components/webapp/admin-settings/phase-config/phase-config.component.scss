@@ -1,0 +1,33 @@
+@use '../../../../@core/styles/abstracts/media-query' as *;
+
+#phase-config {
+  .default {
+    color: var(--opt-primary-color);
+  }
+}
+/* stylelint-disable-next-line rule-empty-line-before */
+th,
+td {
+  padding: 8px;
+  text-align: left;
+}
+
+th {
+  background-color: #f5f5f5;
+}
+
+tr:nth-child(even) {
+  background-color: #f9f9f9;
+}
+
+.active {
+  color: #0235cd;
+  background-color: #ebf0ff;
+  border-radius: 0.5rem;
+}
+
+.inactive {
+  color: #636363;
+  background-color: #e8e8e8;
+  border-radius: 0.5rem;
+}

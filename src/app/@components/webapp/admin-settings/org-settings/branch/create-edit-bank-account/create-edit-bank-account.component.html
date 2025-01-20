@@ -1,0 +1,655 @@
+<mat-dialog-content>
+  <section id="openCreateOrEditAccount">
+    <div class="manage-department-header">
+      <div class="text-content">
+        <div class="d-flex align-items-center justify-content-between">
+          <h6 class="opt-para-2 fw-700 mb-0">
+            <ng-container *ngIf="data?.instance !== 'update'">
+              Create Bank Account
+            </ng-container>
+            <ng-container *ngIf="data?.instance === 'update'"
+              >Edit Bank Account</ng-container
+            >
+          </h6>
+        </div>
+      </div>
+
+      <div matRipple class="close-icon-container" (click)="closeDialog()">
+        <img src="/assets/icons/modal-close-icon.svg" alt="modal close icon" />
+      </div>
+    </div>
+
+    <form [formGroup]="manageBankAccountForm" (ngSubmit)="onSubmit()">
+      <div class="row">
+        <div class="col-6">
+          <div class="input-style1 mb-3">
+            <label class="input-label input-required">Bank Name</label>
+
+            <mat-form-field appearance="outline" [style.width.%]="100">
+              <input
+                matInput
+                formControlName="bankName"
+                placeholder="Enter Bank Name"
+              />
+
+              <mat-error
+                *ngIf="manageBankAccountFormControls['bankName'].invalid"
+              >
+                <img
+                  src="/assets/icons/error.svg"
+                  alt=""
+                  class="img-fluid error-icon"
+                />
+
+                {{ getErrorMessage('bankName') }}
+              </mat-error>
+            </mat-form-field>
+          </div>
+        </div>
+
+        <div class="col-6">
+          <div class="input-style1 mb-3">
+            <label class="input-label">Bank Code</label>
+
+            <mat-form-field appearance="outline" [style.width.%]="100">
+              <input
+                matInput
+                formControlName="bankNumber"
+                placeholder="Enter Bank Number"
+              />
+
+              <mat-error
+                *ngIf="manageBankAccountFormControls['bankNumber'].invalid"
+              >
+                <img
+                  src="/assets/icons/error.svg"
+                  alt=""
+                  class="img-fluid error-icon"
+                />
+
+                {{ getErrorMessage('bankNumber') }}
+              </mat-error>
+            </mat-form-field>
+          </div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-6">
+          <div class="input-style1 mb-3">
+            <label class="input-label input-required">Beneficiary</label>
+
+            <mat-form-field appearance="outline" [style.width.%]="100">
+              <input
+                matInput
+                formControlName="beneficiaryName"
+                placeholder="Enter beneficiary nmae"
+              />
+
+              <mat-error
+                *ngIf="manageBankAccountFormControls['beneficiaryName'].invalid"
+              >
+                <img
+                  src="/assets/icons/error.svg"
+                  alt=""
+                  class="img-fluid error-icon"
+                />
+
+                {{ getErrorMessage('beneficiaryName') }}
+              </mat-error>
+            </mat-form-field>
+          </div>
+        </div>
+
+        <div class="col-6">
+          <div class="input-style1 mb-3">
+            <label class="input-label input-required">Account Number</label>
+
+            <mat-form-field appearance="outline" [style.width.%]="100">
+              <input
+                matInput
+                formControlName="accountNumber"
+                placeholder="Enter account number"
+              />
+
+              <mat-error
+                *ngIf="manageBankAccountFormControls['accountNumber'].invalid"
+              >
+                <img
+                  src="/assets/icons/error.svg"
+                  alt=""
+                  class="img-fluid error-icon"
+                />
+
+                {{ getErrorMessage('accountNumber') }}
+              </mat-error>
+            </mat-form-field>
+          </div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-6">
+          <div class="input-style1 mb-3">
+            <label class="input-label">Swift Code</label>
+
+            <mat-form-field appearance="outline" [style.width.%]="100">
+              <input
+                matInput
+                formControlName="swiftCode"
+                placeholder="Enter swift code"
+              />
+
+              <mat-error
+                *ngIf="manageBankAccountFormControls['swiftCode'].invalid"
+              >
+                <img
+                  src="/assets/icons/error.svg"
+                  alt=""
+                  class="img-fluid error-icon"
+                />
+
+                {{ getErrorMessage('swiftCode') }}
+              </mat-error>
+            </mat-form-field>
+          </div>
+        </div>
+
+        <div class="col-6">
+          <div class="input-style1 mb-3">
+            <label class="input-label">Transit Number</label>
+
+            <mat-form-field appearance="outline" [style.width.%]="100">
+              <input
+                matInput
+                formControlName="transitNumber"
+                placeholder="Enter transit number"
+              />
+
+              <mat-error
+                *ngIf="manageBankAccountFormControls['transitNumber'].invalid"
+              >
+                <img
+                  src="/assets/icons/error.svg"
+                  alt=""
+                  class="img-fluid error-icon"
+                />
+
+                {{ getErrorMessage('transitNumber') }}
+              </mat-error>
+            </mat-form-field>
+          </div>
+        </div>
+
+        <div class="col-6">
+          <div class="input-style1 mb-3">
+            <label class="input-label">Currency Type</label>
+
+            <mat-form-field appearance="outline" [style.width.%]="100">
+              <mat-select
+                formControlName="accountCurrencyType"
+                placeholder="Currency Type"
+              >
+                <mat-option
+                  [value]="item.value"
+                  *ngFor="let item of currencyTypeOptions"
+                >
+                  <span>
+                    {{ item.currencyDescription }}
+                  </span>
+                </mat-option>
+              </mat-select>
+
+              <mat-error
+                *ngIf="
+                  manageBankAccountFormControls['accountCurrencyType'].invalid
+                "
+              >
+                <img
+                  src="/assets/icons/error.svg"
+                  alt=""
+                  class="img-fluid error-icon"
+                />
+
+                {{ getErrorMessage('accountCurrencyType') }}
+              </mat-error>
+            </mat-form-field>
+          </div>
+        </div>
+
+        <div class="col-6">
+          <div class="input-style1 mb-3">
+            <div>
+              <label class="input-label">Select Country</label>
+            </div>
+
+            <mat-form-field appearance="outline" [style.width.%]="100">
+              <mat-select
+                formControlName="countryId"
+                placeholder="Country"
+                #singleSelect
+              >
+                <mat-option>
+                  <ngx-mat-select-search
+                    placeholderLabel="Search..."
+                    noEntriesFoundLabel="no matching country found"
+                    [formControl]="countryFilterCtrl"
+                  ></ngx-mat-select-search>
+                </mat-option>
+                <mat-option
+                  [value]="country.id"
+                  *ngFor="let country of programCountries"
+                >
+                  <img [src]="country.flagUrl" alt="" class="country-flag" />
+                  <span>{{ country.name }}</span>
+                </mat-option>
+              </mat-select>
+              <mat-error
+                *ngIf="manageBankAccountFormControls['countryId'].invalid"
+              >
+                <img
+                  src="/assets/icons/error.svg"
+                  alt=""
+                  class="img-fluid error-icon"
+                />
+                {{ getErrorMessage('countryId') }}
+              </mat-error>
+            </mat-form-field>
+          </div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-6">
+          <label class="input-label">Bank Address</label>
+
+          <div class="row">
+            <div class="col-6">
+              <div class="input-style1 mb-3">
+                <mat-form-field appearance="outline" [style.width.rem]="10">
+                  <mat-select
+                    formControlName="bankCountry"
+                    placeholder="Country"
+                    #singleSelect
+                  >
+                    <mat-option>
+                      <ngx-mat-select-search
+                        placeholderLabel="Search..."
+                        noEntriesFoundLabel="no matching country found"
+                        [formControl]="countryFilterCtrl"
+                      ></ngx-mat-select-search>
+                    </mat-option>
+                    <mat-option
+                      [value]="country.name"
+                      *ngFor="let country of filteredCountry | async"
+                    >
+                      <img [src]="country.flag" alt="" class="country-flag" />
+                      <span>{{ country.name }}</span>
+                    </mat-option>
+                  </mat-select>
+                  <mat-error
+                    *ngIf="manageBankAccountFormControls['bankCountry'].invalid"
+                  >
+                    <img
+                      src="/assets/icons/error.svg"
+                      alt=""
+                      class="img-fluid error-icon"
+                    />
+                    {{ getErrorMessage('bankCountry') }}
+                  </mat-error>
+                </mat-form-field>
+              </div>
+            </div>
+
+            <div class="col-6">
+              <div class="input-style1 mb-3">
+                <mat-form-field appearance="outline" [style.width.%]="100">
+                  <input
+                    matInput
+                    formControlName="bankState"
+                    placeholder="State"
+                  />
+
+                  <mat-error
+                    *ngIf="manageBankAccountFormControls['bankState'].invalid"
+                  >
+                    <img
+                      src="/assets/icons/error.svg"
+                      alt=""
+                      class="img-fluid error-icon"
+                    />
+
+                    {{ getErrorMessage('bankState') }}
+                  </mat-error>
+                </mat-form-field>
+              </div>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-6">
+              <div class="input-style1 mb-3">
+                <mat-form-field appearance="outline" [style.width.%]="100">
+                  <input
+                    matInput
+                    formControlName="bankArea"
+                    placeholder="Area"
+                  />
+
+                  <mat-error
+                    *ngIf="manageBankAccountFormControls['bankArea'].invalid"
+                  >
+                    <img
+                      src="/assets/icons/error.svg"
+                      alt=""
+                      class="img-fluid error-icon"
+                    />
+
+                    {{ getErrorMessage('bankArea') }}
+                  </mat-error>
+                </mat-form-field>
+              </div>
+            </div>
+
+            <div class="col-6">
+              <div class="input-style1 mb-3">
+                <mat-form-field appearance="outline" [style.width.%]="100">
+                  <input
+                    matInput
+                    formControlName="bankStreetNumber"
+                    placeholder="Street Number"
+                  />
+
+                  <mat-error
+                    *ngIf="
+                      manageBankAccountFormControls['bankStreetNumber'].invalid
+                    "
+                  >
+                    <img
+                      src="/assets/icons/error.svg"
+                      alt=""
+                      class="img-fluid error-icon"
+                    />
+
+                    {{ getErrorMessage('bankStreetNumber') }}
+                  </mat-error>
+                </mat-form-field>
+              </div>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-6">
+              <div class="input-style1 mb-3">
+                <mat-form-field appearance="outline" [style.width.%]="100">
+                  <input
+                    matInput
+                    formControlName="bankBuilding"
+                    placeholder="Building"
+                  />
+
+                  <mat-error
+                    *ngIf="
+                      manageBankAccountFormControls['bankBuilding'].invalid
+                    "
+                  >
+                    <img
+                      src="/assets/icons/error.svg"
+                      alt=""
+                      class="img-fluid error-icon"
+                    />
+
+                    {{ getErrorMessage('bankBuilding') }}
+                  </mat-error>
+                </mat-form-field>
+              </div>
+            </div>
+
+            <div class="col-6">
+              <div class="input-style1 mb-3">
+                <mat-form-field appearance="outline" [style.width.%]="100">
+                  <input
+                    matInput
+                    formControlName="bankZipCode"
+                    placeholder="Zip code"
+                  />
+
+                  <mat-error
+                    *ngIf="manageBankAccountFormControls['bankZipCode'].invalid"
+                  >
+                    <img
+                      src="/assets/icons/error.svg"
+                      alt=""
+                      class="img-fluid error-icon"
+                    />
+
+                    {{ getErrorMessage('bankZipCode') }}
+                  </mat-error>
+                </mat-form-field>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-6">
+          <label class="input-label">Beneficiary Address</label>
+
+          <div class="row">
+            <div class="col-6">
+              <div class="input-style1 mb-3">
+                <mat-form-field appearance="outline" [style.width.rem]="10">
+                  <mat-select
+                    formControlName="beneficiaryCountry"
+                    placeholder="Country"
+                    #singleSelect
+                  >
+                    <mat-option>
+                      <ngx-mat-select-search
+                        placeholderLabel="Search..."
+                        noEntriesFoundLabel="no matching country found"
+                        [formControl]="countryFilterCtrl"
+                      ></ngx-mat-select-search>
+                    </mat-option>
+                    <mat-option
+                      [value]="country.name"
+                      *ngFor="let country of filteredCountry | async"
+                    >
+                      <img [src]="country.flag" alt="" class="country-flag" />
+                      <span>{{ country.name }}</span>
+                    </mat-option>
+                  </mat-select>
+                  <mat-error
+                    *ngIf="
+                      manageBankAccountFormControls['beneficiaryCountry']
+                        .invalid
+                    "
+                  >
+                    <img
+                      src="/assets/icons/error.svg"
+                      alt=""
+                      class="img-fluid error-icon"
+                    />
+                    {{ getErrorMessage('beneficiaryCountry') }}
+                  </mat-error>
+                </mat-form-field>
+              </div>
+            </div>
+
+            <div class="col-6">
+              <div class="input-style1 mb-3">
+                <mat-form-field appearance="outline" [style.width.%]="100">
+                  <input
+                    matInput
+                    formControlName="beneficiaryState"
+                    placeholder="State"
+                  />
+
+                  <mat-error
+                    *ngIf="
+                      manageBankAccountFormControls['beneficiaryState'].invalid
+                    "
+                  >
+                    <img
+                      src="/assets/icons/error.svg"
+                      alt=""
+                      class="img-fluid error-icon"
+                    />
+
+                    {{ getErrorMessage('beneficiaryState') }}
+                  </mat-error>
+                </mat-form-field>
+              </div>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-6">
+              <div class="input-style1 mb-3">
+                <mat-form-field appearance="outline" [style.width.%]="100">
+                  <input
+                    matInput
+                    formControlName="beneficiaryArea"
+                    placeholder="Area"
+                  />
+
+                  <mat-error
+                    *ngIf="
+                      manageBankAccountFormControls['beneficiaryArea'].invalid
+                    "
+                  >
+                    <img
+                      src="/assets/icons/error.svg"
+                      alt=""
+                      class="img-fluid error-icon"
+                    />
+
+                    {{ getErrorMessage('beneficiaryArea') }}
+                  </mat-error>
+                </mat-form-field>
+              </div>
+            </div>
+
+            <div class="col-6">
+              <div class="input-style1 mb-3">
+                <mat-form-field appearance="outline" [style.width.%]="100">
+                  <input
+                    matInput
+                    formControlName="beneficiaryStreetNumber"
+                    placeholder="Street Number"
+                  />
+
+                  <mat-error
+                    *ngIf="
+                      manageBankAccountFormControls['beneficiaryStreetNumber']
+                        .invalid
+                    "
+                  >
+                    <img
+                      src="/assets/icons/error.svg"
+                      alt=""
+                      class="img-fluid error-icon"
+                    />
+
+                    {{ getErrorMessage('beneficiaryStreetNumber') }}
+                  </mat-error>
+                </mat-form-field>
+              </div>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-6">
+              <div class="input-style1 mb-3">
+                <mat-form-field appearance="outline" [style.width.%]="100">
+                  <input
+                    matInput
+                    formControlName="beneficiaryBuilding"
+                    placeholder="Building"
+                  />
+
+                  <mat-error
+                    *ngIf="
+                      manageBankAccountFormControls['beneficiaryBuilding']
+                        .invalid
+                    "
+                  >
+                    <img
+                      src="/assets/icons/error.svg"
+                      alt=""
+                      class="img-fluid error-icon"
+                    />
+
+                    {{ getErrorMessage('beneficiaryBuilding') }}
+                  </mat-error>
+                </mat-form-field>
+              </div>
+            </div>
+
+            <div class="col-6">
+              <div class="input-style1 mb-3">
+                <mat-form-field appearance="outline" [style.width.%]="100">
+                  <input
+                    matInput
+                    formControlName="beneficiaryZipCode"
+                    placeholder="Zip code"
+                  />
+
+                  <mat-error
+                    *ngIf="
+                      manageBankAccountFormControls['beneficiaryZipCode']
+                        .invalid
+                    "
+                  >
+                    <img
+                      src="/assets/icons/error.svg"
+                      alt=""
+                      class="img-fluid error-icon"
+                    />
+
+                    {{ getErrorMessage('beneficiaryZipCode') }}
+                  </mat-error>
+                </mat-form-field>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="btn-group">
+        <div>
+          <button
+            type="button"
+            matRipple
+            class="btn opt-btn-primary-outline opt-btn-md"
+            (click)="closeDialog()"
+          >
+            Cancel
+          </button>
+        </div>
+
+        <div>
+          <button
+            type="submit"
+            matRipple
+            class="btn opt-btn-primary opt-btn-md"
+            [disabled]="
+              manageBankAccountForm.invalid || (isLoading | async) !== false
+            "
+          >
+            <ng-container *ngIf="data?.instance === 'create'">
+              Create
+            </ng-container>
+
+            <ng-container *ngIf="data?.instance === 'update'">
+              Update
+            </ng-container>
+
+            <ng-container *ngIf="(isLoading | async) !== false">
+              <app-button-loader></app-button-loader>
+            </ng-container>
+          </button>
+        </div>
+      </div>
+    </form>
+  </section>
+</mat-dialog-content>

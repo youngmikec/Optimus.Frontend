@@ -1,0 +1,30 @@
+<p class="opt-heading-6 fw-700">Reject Document</p>
+<p class="opt-para-1 fw-500">
+  Kindly make sure to check again before rejecting. This action cannot be
+  undone.
+</p>
+
+<div class="input-style1">
+  <label class="form-label opt-caption">Add a reason (Optional)</label>
+  <mat-form-field appearance="outline" [style.width.%]="100">
+    <textarea
+      type="text"
+      matInput
+      rows="5"
+      placeholder="Enter message"
+    ></textarea>
+  </mat-form-field>
+</div>
+
+<div class="d-flex justify-content-between mt-3">
+  <button matRipple class="btn opt-btn-primary-outline" (click)="cancel()">
+    Cancel
+  </button>
+
+  <button matRipple class="btn btn-primary" (click)="reject()">
+    Confirm Rejection
+    <ng-container *ngIf="buttonLoading | async">
+      <app-button-loader></app-button-loader>
+    </ng-container>
+  </button>
+</div>

@@ -1,0 +1,46 @@
+<section id="main">
+  <div class="header">
+    <div
+      class="d-flex justify-items-center align-items-center flex-column w-100 mt-4"
+    >
+      <img src="assets/images/check-blue.svg" alt="Check" />
+      <h6 class="opt-heading-6 fw-600 mb-0 mt-2">Delete Application Quote</h6>
+    </div>
+
+    <div matRipple class="close-icon-container" (click)="closeDialog()">
+      <img src="/assets/icons/modal-close-icon.svg" alt="modal close icon" />
+    </div>
+  </div>
+
+  <ng-container>
+    <div class="amount-container mb-3">
+      <div class="opt-para-1 mb-1 d-flex flex-column">
+        <p>Are you sure you want to delete this quote?</p>
+      </div>
+    </div>
+  </ng-container>
+
+  <div class="cta-container">
+    <button
+      matRipple
+      type="button"
+      class="btn opt-btn-primary-outline"
+      (click)="closeDialog()"
+    >
+      <ng-container> Cancel </ng-container>
+    </button>
+
+    <button
+      (click)="deleteQuote()"
+      matRipple
+      class="btn opt-btn-primary"
+      [disabled]="isLoading | async"
+    >
+      <ng-container> Delete </ng-container>
+
+      <ng-container *ngIf="isLoading | async">
+        <app-button-loader></app-button-loader>
+      </ng-container>
+    </button>
+  </div>
+</section>

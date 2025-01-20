@@ -1,0 +1,19 @@
+.select-table-row {
+  cursor: pointer;
+}
+
+.mat-column-resizable {
+  position: relative;
+  cursor: col-resize !important;
+  width: 4rem !important;
+}
+
+.mat-column-resizable .resize-handle {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 1px;
+  height: 100%;
+  background: black;
+  cursor: col-resize;
+}

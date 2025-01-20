@@ -1,0 +1,24 @@
+@use '../../../../../@core/styles/abstracts' as *;
+
+#applicant-info-wrapper {
+  .applicant-info-header {
+    h3 span {
+      color: $opt-secondary;
+    }
+
+    p {
+      color: $opt-neutral-400;
+    }
+  }
+
+  .btn-container {
+    button {
+      width: 100%;
+      // background-color: $opt-primary-400;
+      // border: none;
+      // color: $opt-primary-50;
+      display: flex;
+      gap: 1rem;
+    }
+  }
+}

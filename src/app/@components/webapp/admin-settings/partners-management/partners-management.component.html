@@ -1,0 +1,386 @@
+<!-- eslint-disable prettier/prettier -->
+<section id="user-management">
+  <div class="user-management-header">
+    <h6 class="opt-heading-6 fw-700 mb-0">Partners</h6>
+
+    <div class="table-controls">
+      <div class="input-style1 input-no-error">
+        <mat-form-field appearance="outline" [style.width.%]="100">
+          <span matPrefix class="img-fluid">
+            <img src="/assets/icons/search.svg" alt="icon" />
+          </span>
+
+          <input
+            [(ngModel)]="searchInputParam"
+            (ngModelChange)="onInputSearch()"
+            matInput
+            placeholder="Search Partners' list"
+          />
+        </mat-form-field>
+      </div>
+
+      <button
+        matRipple
+        [matMenuTriggerFor]="filter"
+        class="btn opt-btn-neutral opt-btn-with-icon"
+      >
+        <span class="img-fluid"
+          ><img src="/assets/icons/filter-icon.svg" alt="filter-icon"
+        /></span>
+        Filters
+      </button>
+
+      <mat-menu #filter="matMenu" class="opt-table-filter">
+        <div class="opt-table-filter-body" (click)="$event.stopPropagation()">
+          <p class="opt-caption mb-0 opt-table-filter-body-title">
+            Filter products by:
+          </p>
+
+          <ng-container *ngIf="filterResult && filterResult?.length !== 0">
+            <div class="opt-table-filter-items">
+              <ng-container *ngFor="let item of filterResult">
+                <mat-checkbox
+                  color="primary"
+                  [name]="item.name"
+                  (change)="onClickFilterOption()"
+                  [(ngModel)]="item.selected"
+                  [ngModelOptions]="{ standalone: true }"
+                >
+                  {{ item?.column }}
+                </mat-checkbox>
+              </ng-container>
+            </div>
+          </ng-container>
+
+          <div class="opt-table-filter-body-cta-container">
+            <button
+              matRipple
+              class="btn opt-btn-accent-outline"
+              (click)="clearFilterSelection()"
+            >
+              Clear selection
+            </button>
+          </div>
+        </div>
+      </mat-menu>
+
+      <button
+        matRipple
+        class="btn opt-btn-primary opt-btn-sm"
+        [disabled]="!this.permissions[1]"
+        *ngIf="this.permissions[1]"
+        routerLink="create"
+      >
+        Create New Partner
+      </button>
+    </div>
+  </div>
+
+  <div class="alert alert-primary d-flex align-items-center justify-content-between custom-alert" role="alert" *ngIf="( cancelSelection$ | async) === false">
+    <div class="d-flex">
+      <div (click)="cancel()" class="" style="cursor: pointer">
+        <svg
+          width="20"
+          height="20"
+          viewBox="0 0 20 20"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            d="M15.0171 15.0173L5.58897 5.58926"
+            stroke="#1D1D1D"
+            stroke-width="1.375"
+            stroke-linecap="round"
+          />
+          <path
+            d="M15.0175 5.58926L5.58939 15.0173"
+            stroke="#1D1D1D"
+            stroke-width="1.375"
+            stroke-linecap="round"
+          />
+        </svg>
+
+      </div>
+      <div class="mt-1">
+        <h6><span class="txt-black">Cancel Selection</span></h6>
+      </div>
+    </div>
+
+    <div class="d-flex align-items-center justify-content-between">
+    
+        
+        <button type="button" class="btn btn-danger ml-1" (click)="showActivationModal('Deactivate')">
+          <svg
+            width="16"
+            height="16"
+            viewBox="0 0 16 16"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M1.8335 7.9987C1.8335 4.60151 4.60297 1.83203 8.00016 1.83203C11.3974 1.83203 14.1668 4.60151 14.1668 7.9987C14.1668 11.3959 11.3974 14.1654 8.00016 14.1654C4.60297 14.1654 1.8335 11.3959 1.8335 7.9987ZM10.5937 10.5923C10.9823 10.2037 10.9823 9.56707 10.5937 9.17848L9.41394 7.9987L10.5937 6.81892C10.9823 6.43032 10.9823 5.79374 10.5937 5.40515C10.2051 5.01655 9.56854 5.01655 9.17994 5.40515L8.00016 6.58492L6.82038 5.40515C6.43179 5.01655 5.7952 5.01655 5.40661 5.40514C5.01801 5.79374 5.01801 6.43032 5.40661 6.81892L6.58639 7.9987L5.40661 9.17848C5.01801 9.56707 5.01801 10.2037 5.40661 10.5923C5.60532 10.791 5.86138 10.8854 6.1135 10.8854C6.36561 10.8854 6.62167 10.791 6.82038 10.5923L8.00016 9.41247L9.17994 10.5922C9.37865 10.791 9.63471 10.8854 9.88683 10.8854C10.1389 10.8854 10.395 10.791 10.5937 10.5923Z"
+              fill="#FDF2F3"
+              stroke="#FDF2F3"
+            />
+          </svg>
+         <span class="px-1">Deactivate Selected</span> 
+        </button>
+
+        <button type="button" class="btn btn-primary d-flex custom-button" (click)="showActivationModal('Activate')">
+          <svg
+            width="16"
+            height="16"
+            viewBox="0 0 16 16"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M11.5404 6.81892L11.5404 6.81897L11.5463 6.81288C11.9238 6.42243 11.9322 5.79698 11.5404 5.40515C11.1518 5.01655 10.5152 5.01655 10.1266 5.40515L7.0535 8.47826L5.87372 7.29848C5.48512 6.90988 4.84854 6.90988 4.45994 7.29848C4.07135 7.68707 4.07135 8.32366 4.45994 8.71225L6.34661 10.5989L6.70016 10.2454L6.34661 10.5989C6.53264 10.7849 6.78605 10.892 7.0535 10.892C7.32094 10.892 7.57435 10.785 7.76038 10.5989L11.5404 6.81892ZM1.8335 7.9987C1.8335 4.60151 4.60297 1.83203 8.00016 1.83203C11.3974 1.83203 14.1668 4.60151 14.1668 7.9987C14.1668 11.3959 11.3974 14.1654 8.00016 14.1654C4.60297 14.1654 1.8335 11.3959 1.8335 7.9987Z"
+              fill="#EBF0FF"
+              stroke="#EBF0FF"
+            />
+          </svg>
+          <span class="px-1">Activate Selected</span>
+        </button>
+    </div>
+  </div>
+
+  <mat-tab-group>
+    <mat-tab label="All Partners">
+      <ng-container *ngIf="dataSource !== null; else noTableData">
+        <div class="table-responsive">
+          <table mat-table [dataSource]="dataSource!" matSort>
+            <ng-container matColumnDef="Selected">
+              <!-- <span class="example-list-section"> -->
+              <!-- <mat-checkbox
+                class="example-margin"
+                [checked]="allComplete"
+                [color]="task.color"
+                [indeterminate]="someComplete()"
+                (change)="setAll($event.checked)"
+              >
+              </mat-checkbox> -->
+              <!-- </span> -->
+              <th mat-header-cell *matHeaderCellDef>
+                <mat-checkbox
+                  color="primary"
+                  (change)="$event ? masterToggle() : null"
+                  [checked]="selection.hasValue() && isAllSelected()"
+                >
+                </mat-checkbox>
+              </th>
+              <td mat-cell *matCellDef="let row">
+                <mat-checkbox
+                  color="primary"
+                  (click)="$event.stopPropagation()"
+                  (change)="$event ? selection.toggle(row) : null"
+                  [checked]="selection.isSelected(row)"
+                >
+                </mat-checkbox>
+              </td>
+            </ng-container>
+
+            <ng-container matColumnDef="Name">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header>Name</th>
+              <td
+                mat-cell
+                *matCellDef="let row"
+                matRipple
+                (click)="openViewPartnerDialog(row)"
+              >
+                <span class="d-flex justify-content-start align-items-center">
+                  <span>{{ row.firstName }} {{ row.lastName }} </span>
+                </span>
+              </td>
+            </ng-container>
+
+            <ng-container matColumnDef="Email">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header>Email</th>
+              <td
+                mat-cell
+                *matCellDef="let row"
+                matRipple
+                (click)="openViewPartnerDialog(row)"
+              >
+                <!-- {{ row.role.name }} -->
+                {{row.email}}
+              </td>
+            </ng-container>
+
+            <ng-container matColumnDef="Created Date">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                Created Date
+              </th>
+              <td
+                mat-cell
+                *matCellDef="let row"
+                matRipple
+                (click)="openViewPartnerDialog(row)"
+              >
+                <span class="d-flex justify-content-start align-items-center">
+                  <span>{{ row.branch.createdDate | date }}</span>
+                </span>
+              </td>
+            </ng-container>
+
+            <ng-container matColumnDef="Created By">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                Created By
+              </th>
+              <td
+                mat-cell
+                *matCellDef="let row"
+                matRipple
+                (click)="openViewPartnerDialog(row)"
+              >
+                <!-- <span class="d-flex justify-content-start align-items-center">
+                    <span>{{ row.createdByEmail }}</span>
+                  </span> -->
+                <span
+                  *ngIf="row.branch.createdByEmail"
+                  [matTooltip]="row.branch?.createdByEmail"
+                  matTooltipPosition="below"
+                  matTooltipClass="custom-tooltip"
+                >
+                  {{
+                    row.branch.createdByEmail.substring(0, 16) +
+                      (row.branch.createdByEmail.length > 16 ? '...' : '')
+                  }}
+                  <!-- {{ row.firstName }} {{ row.lastName }} -->
+                </span>
+              </td>
+            </ng-container>
+
+            <ng-container matColumnDef="Last Modified Date">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                Last Modified Date
+              </th>
+              <td
+                mat-cell
+                *matCellDef="let row"
+                matRipple
+                (click)="openViewPartnerDialog(row)"
+              >
+                <span class="d-flex justify-content-start align-items-center">
+                  <span>{{
+                    row.branch.lastModifiedDate !== 0
+                      ? (row.branch.lastModifiedDate | date)
+                      : ''
+                  }}</span>
+                </span>
+              </td>
+            </ng-container>
+
+            <ng-container matColumnDef="Last Modified By">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                Last Modified By
+              </th>
+              <td
+                mat-cell
+                *matCellDef="let row"
+                matRipple
+                (click)="openViewPartnerDialog(row)"
+              >
+                <!-- <span class="d-flex justify-content-start align-items-center">
+                    <span>{{ row.lastModifiedByEmail }}</span>
+                  </span> -->
+                <span
+                  *ngIf="row.branch.lastModifiedByEmail"
+                  [matTooltip]="row.branch?.lastModifiedByEmail"
+                  matTooltipPosition="below"
+                  matTooltipClass="custom-tooltip"
+                >
+                  {{
+                    row.branch.lastModifiedByEmail.substring(0, 16) +
+                      (row.branch.lastModifiedByEmail.length > 16 ? '...' : '')
+                  }}
+                  <!-- {{ row.firstName }} {{ row.lastName }} -->
+                </span>
+              </td>
+            </ng-container>
+
+            <ng-container matColumnDef="status">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header>Status</th>
+              <td
+                mat-cell
+                *matCellDef="let row"
+                matRipple
+                (click)="openViewPartnerDialog(row)"
+              >
+                <span
+                  [ngClass]="{
+                    'status-active': row.status === 'Active',
+                    'status-inactive': row.status === 'Inactive'
+                  }"
+                >
+                  {{ row.status }}
+                </span>
+              </td>
+            </ng-container>
+
+            <ng-container matColumnDef="actions">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header>Actions</th>
+              <td mat-cell *matCellDef="let row">
+                <div class="table-cta-container">
+                  <div
+                    class="cta-container"
+                    matRipple
+                    matTooltip="Edit"
+                    matTooltipPosition="above"
+                    matTooltipClass="custom-tooltip"
+                    *ngIf="canEditPartner"
+                    [routerLink]="
+                      this.permissions[2] === false
+                        ? null
+                        : 'edit/' + row.userId
+                    "
+                  >
+                    <img src="/assets/icons/edit.svg" alt="view icon" />
+                  </div>
+
+                  <div class="toggle-container" *ngIf="canChangePartnerStatus">
+                    <mat-slide-toggle
+                      matTooltipPosition="above"
+                      matTooltipClass="custom-tooltip"
+                      *ngIf="this.permissions[3]"
+                      [matTooltip]="
+                        row.status === 'Active' ? 'Deactivate' : 'Activate'
+                      "
+                      [checked]="row.status === 'Active' ? 'true' : 'false'"
+                      (toggleChange)="onToggle(row.partnerUserId, row.userId, row.status)"
+                    >
+                    </mat-slide-toggle>
+                  </div>
+                </div>
+              </td>
+            </ng-container>
+
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+
+            <!-- Row shown when there is no matching data. -->
+            <tr class="mat-row" *matNoDataRow>
+              <td class="mat-cell" colspan="4">No matching data"</td>
+            </tr>
+          </table>
+        </div>
+        <mat-paginator
+          [pageSizeOptions]="[
+            10, 20, 25, 30, 35, 40, 45, 50, 55, 60, 65, 70, 75, 80, 85, 90, 95,
+            100
+          ]"
+          showFirstLastButtons
+          [pageSize]="10"
+          [hidePageSize]="false"
+          [length]="totalRecords"
+          (page)="onPaginationChange($event)"
+        >
+        </mat-paginator>
+      </ng-container>
+
+      <ng-template #noTableData>
+        <app-table-loader></app-table-loader>
+      </ng-template>
+    </mat-tab>
+  </mat-tab-group>
+</section>

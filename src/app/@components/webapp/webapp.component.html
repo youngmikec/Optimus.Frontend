@@ -1,0 +1,18 @@
+<section id="webapp">
+  <aside>
+    <app-sidebar></app-sidebar>
+  </aside>
+
+  <main #main id="main">
+    <app-navbar></app-navbar>
+
+    <div #mainContent class="main-content">
+      <div [@routeAnimations]="outlet.isActivated ? outlet.activatedRoute : ''">
+        <router-outlet
+          #outlet="outlet"
+          (activate)="onRouteActivate($event)"
+        ></router-outlet>
+      </div>
+    </div>
+  </main>
+</section>

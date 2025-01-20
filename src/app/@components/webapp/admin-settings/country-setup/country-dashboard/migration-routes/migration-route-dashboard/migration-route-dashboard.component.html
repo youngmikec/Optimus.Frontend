@@ -1,0 +1,177 @@
+<ng-container *ngIf="(isLoading2 | async) !== false">
+  <div class="general-loader-container webapp-view">
+    <div class="general-loader-backdrop"></div>
+
+    <div class="general-loader-content">
+      <app-general-loader></app-general-loader>
+    </div>
+  </div>
+</ng-container>
+<section id="country">
+  <ng-container>
+    <div class="country-list-header">
+      <div class="header-group">
+        <div>
+          <div class="mb-1 image-container">
+            <img
+              [src]="selectedCountry?.flagUrl"
+              class="country-flag"
+              alt="flag"
+            />
+          </div>
+          <div class="country-flag-label">
+            {{ selectedCountry?.name }}
+          </div>
+        </div>
+        <div>
+          <div class="header-text-container">
+            <div class="opt-para-3 fw-600">
+              {{ selectedMigration.name }}
+            </div>
+
+            <div
+              *ngIf="migrationPermissions[2]"
+              class="pr-5"
+              matRipple
+              matTooltip="Edit"
+              matTooltipPosition="above"
+              matTooltipClass="custom-tooltip"
+              (click)="openAddOrEditCountry('edit', selectedMigration)"
+            >
+              <img src="/assets/icons/edit.svg" alt="edit icon" />
+            </div>
+          </div>
+          <p class="opt-para-1 fw-500 mb-0">
+            Currency:
+            {{ selectedCountry?.currency?.name }}
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <div class="country-progress-grid">
+      <div class="row dashboard-menus-container">
+        <div class="col-md-4">
+          <div class="dashboard-menus-items">
+            <div class="dashboard-menus-content">
+              <div>
+                <h6 class="opt-para-3 fw-400">Investment Tiers</h6>
+
+                <div class="opt-heading-4 fw-600">
+                  {{ totalInvestmentTier }}
+                </div>
+                <small class="opt-para-1" *ngIf="totalInvestmentTier === 0"
+                  >No investment tier has been created</small
+                >
+                <small class="opt-para-1" *ngIf="totalInvestmentTier > 0"
+                  >Last Updated {{ routeFeeLatestDate }}
+                </small>
+              </div>
+              <div class="dashboard-menus-button-container">
+                <button
+                  *ngIf="permissions2[1]"
+                  matRipple
+                  class="btn opt-btn-primary"
+                  (click)="openInvestmentModal('create')"
+                >
+                  Create Investment Tier
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-4">
+          <div class="dashboard-menus-items">
+            <div class="dashboard-menus-content">
+              <div>
+                <h6 class="opt-para-3 fw-400">Route Questions</h6>
+
+                <div class="opt-heading-4 fw-600">{{ totalRouteQuestion }}</div>
+                <small class="opt-para-1" *ngIf="totalRouteQuestion === 0"
+                  >No route question has been created</small
+                >
+                <small class="opt-para-1" *ngIf="totalRouteQuestion > 0"
+                  >Last Updated {{ routeQuestionLatestDate }}
+                </small>
+              </div>
+              <div class="dashboard-menus-button-container">
+                <button
+                  *ngIf="permissions1[1]"
+                  matRipple
+                  class="btn opt-btn-primary"
+                  routerLink="createQuestion"
+                >
+                  Create Route Question
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-4">
+          <div class="dashboard-menus-items">
+            <div class="dashboard-menus-content">
+              <div>
+                <h6 class="opt-para-3 fw-400">Route Fees</h6>
+
+                <div class="opt-heading-4 fw-600">{{ totalRouteFee }}</div>
+                <small class="opt-para-1" *ngIf="totalRouteFee === 0"
+                  >No route fee has been created</small
+                >
+                <small class="opt-para-1" *ngIf="totalRouteFee > 0"
+                  >Last Updated {{ routeFeeLatestDate }}
+                </small>
+              </div>
+              <div class="dashboard-menus-button-container">
+                <button
+                  *ngIf="permissions2[1]"
+                  matRipple
+                  class="btn opt-btn-primary"
+                  routerLink="createFee/create"
+                >
+                  Create Route Fee
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="country-progress-grid">
+      <div class="row dashboard-menus-container table-container">
+        <div class="col-md-4">
+          <div
+            class="dashboard-menus-items route-container"
+            *ngIf="permissions2[0]"
+          >
+            <app-investment-tiers
+              (routeFeeEvent)="totalInvestmentTierEvent($event)"
+            ></app-investment-tiers>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div
+            class="dashboard-menus-items route-container"
+            *ngIf="permissions1[0]"
+          >
+            <app-route-questions
+              (routeQuestionEvent)="totalRouteQuestionsEvent($event)"
+            ></app-route-questions>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div
+            class="dashboard-menus-items route-container"
+            *ngIf="permissions2[0]"
+          >
+            <app-route-fees
+              (routeFeeEvent)="totalRouteFeesEvent($event)"
+            ></app-route-fees>
+          </div>
+        </div>
+      </div>
+    </div>
+  </ng-container>
+</section>

@@ -1,0 +1,94 @@
+#sale-dashboard {
+  .z-index-2 {
+    z-index: 2;
+  }
+
+  position: relative !important;
+  // z-index: 1000 !important;
+  z-index: 100 !important;
+
+  .cursor-pointer {
+    cursor: pointer;
+  }
+
+  .navigation {
+    .inactive {
+      border: 2px solid #e7eaee !important;
+      border-radius: 30px !important;
+      color: #64748b;
+    }
+
+    .active {
+      background: #fcf0f0 !important;
+      border: 1.5px solid #80171a !important;
+      border-radius: 30px !important;
+    }
+
+    .nav-link {
+      @extend .cursor-pointer;
+      padding: 4px 14px !important;
+      margin: 0px 10px;
+    }
+  }
+
+  .status {
+    background-color: #eff5e0;
+    color: #a7c957;
+  }
+}
+
+:host ::ng-deep {
+  .mat-tab-label-active {
+    border-style: solid;
+    border-color: #80171a !important;
+    color: #80171a !important;
+    font-weight: 800;
+    background-color: #fcf0f0;
+  }
+
+  .mat-tab-header {
+    margin-block: 1rem;
+    margin-bottom: 1rem;
+  }
+
+  .mat-tab-group.mat-primary .mat-ink-bar,
+  .mat-tab-nav-bar.mat-primary .mat-ink-bar {
+    background-color: transparent !important;
+  }
+
+  .mat-tab-label {
+    padding: 10px 22px !important;
+    border-radius: 30px;
+    border-style: solid;
+    border-color: #e7eaee;
+    color: #64748b;
+    border-width: 1px;
+  }
+
+  .mat-tab-label {
+    padding: 10px 22px !important;
+    border-radius: 30px;
+    border-style: solid;
+    border-color: #e7eaee;
+    color: #64748b;
+    border-width: 1px;
+  }
+
+  .mat-tab-body-content {
+    overflow: hidden;
+  }
+}
+
+/* Large devices downwards (laptops/desktops, 992px and down) */
+@media only screen and (max-width: 1300px) {
+  .mat-tab-body.mat-tab-body-active {
+    border-top: 1px solid #dfdfdfc4 !important;
+  }
+}
+
+/* Extra large devices (large laptops and desktops, 1200px and up) */
+@media only screen and (min-width: 1300px) {
+  #sale-dashboard header {
+    margin-bottom: 0rem;
+  }
+}

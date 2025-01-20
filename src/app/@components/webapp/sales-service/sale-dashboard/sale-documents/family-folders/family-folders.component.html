@@ -1,0 +1,39 @@
+<ul class="folder-titles">
+  <li
+    [ngClass]="{ active: activeSection === 'doc-collection' }"
+    (click)="onClickDocumentTab('doc-collection')"
+  >
+    Documents Collected
+  </li>
+  <li
+    [ngClass]="{ active: activeSection === 'doc-certified' }"
+    (click)="onClickDocumentTab('doc-certified')"
+  >
+    Documents Certified
+  </li>
+  <li
+    [ngClass]="{ active: activeSection === 'sent-to-partner' }"
+    (click)="onClickDocumentTab('sent-to-partner')"
+  >
+    Sent to Partner
+  </li>
+</ul>
+
+<ng-container [ngSwitch]="activeSection">
+  <app-document-collected
+    *ngSwitchCase="'doc-collection'"
+    #documentCollected
+    [documentPhase]="documentPhase"
+  ></app-document-collected>
+
+  <app-document-processed
+    *ngSwitchCase="'doc-certified'"
+    [documentPhase]="documentPhase"
+  ></app-document-processed>
+
+  <app-document-sent-to-partner
+    *ngSwitchCase="'sent-to-partner'"
+    [documentPhase]="documentPhase"
+  >
+  </app-document-sent-to-partner>
+</ng-container>
